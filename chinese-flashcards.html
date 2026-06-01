@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>汉字 Flashcards — Top 100 Chinese Characters</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #f7f4ef;
+  --surface:   #ffffff;
+  --surface2:  #f0ece4;
+  --border:    rgba(0,0,0,0.10);
+  --border2:   rgba(0,0,0,0.18);
+  --text:      #1a1a1a;
+  --text2:     #6b6560;
+  --text3:     #a09890;
+  --red:       #B91C1C;
+  --red-light: #FEF2F2;
+  --red-border:#FECACA;
+  --green:     #16A34A;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:        #1c1917;
+    --surface:   #292524;
+    --surface2:  #1c1917;
+    --border:    rgba(255,255,255,0.10);
+    --border2:   rgba(255,255,255,0.18);
+    --text:      #f5f0eb;
+    --text2:     #a8a09a;
+    --text3:     #6b6560;
+    --red-light: #3b1212;
+    --red-border:#7a2020;
+  }
+}
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 24px 16px 48px;
+}
+
+.app {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ── Header ── */
+.header { margin-bottom: 24px; }
+.header h1 { font-size: 26px; font-weight: 700; font-family: 'Noto Serif SC', serif; color: var(--red); line-height: 1.2; }
+.header p  { font-size: 13px; color: var(--text2); margin-top: 4px; }
+
+/* ── Tier Tabs ── */
+.tier-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.tier-btn {
+  padding: 6px 16px;
+  border: 0.5px solid var(--border2);
+  border-radius: 20px;
+  background: var(--surface);
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--text2);
+  font-family: 'Noto Sans SC', sans-serif;
+  transition: all 0.15s;
+}
+.tier-btn.active  { background: var(--red); border-color: var(--red); color: #fff; font-weight: 500; }
+.tier-btn:hover:not(.active) { background: var(--surface2); }
+
+/* ── Action Buttons ── */
+.action-row { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.action-btn {
+  padding: 6px 14px;
+  border: 0.5px solid var(--border2);
+  border-radius: 20px;
+  background: var(--surface);
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--text2);
+  font-family: 'Noto Sans SC', sans-serif;
+  display: flex; align-items: center; gap: 5px;
+  transition: all 0.15s;
+}
+.action-btn:hover { background: var(--surface2); }
+.action-btn.on    { background: var(--red); border-color: var(--red); color: #fff; }
+
+/* ── Stats ── */
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+.stat {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  text-align: center;
+}
+.stat-num  { font-size: 24px; font-weight: 500; color: var(--text); }
+.stat-num.red   { color: var(--red); }
+.stat-num.green { color: var(--green); }
+.stat-label { font-size: 11px; color: var(--text3); margin-top: 2px; letter-spacing: 0.5px; }
+
+/* ── Progress ── */
+.progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.progress-track { flex: 1; height: 5px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
+.progress-fill  { height: 100%; background: var(--red); border-radius: 3px; transition: width 0.3s ease; }
+.progress-label { font-size: 13px; color: var(--text3); white-space: nowrap; min-width: 50px; text-align: right; }
+
+/* ── Card ── */
+.card-area { perspective: 1200px; cursor: pointer; user-select: none; margin-bottom: 12px; }
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 340px;
+  transform-style: preserve-3d;
+  transition: transform 0.52s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-inner.flipped { transform: rotateY(180deg); }
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius-lg);
+  border: 0.5px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  justify-content: flex-start;
+  overflow-y: auto;
+  padding-top: 20px;
+}
+
+/* Front */
+.hanzi-front { font-family: 'Noto Serif SC', serif; font-size: 110px; font-weight: 700; color: var(--red); line-height: 1; margin-bottom: 16px; }
+.freq-badge  { background: var(--red-light); color: var(--red); border: 0.5px solid var(--red-border); border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 500; margin-bottom: 20px; }
+.flip-hint   { font-size: 12px; color: var(--text3); }
+
+/* Back */
+.back-header { display: flex; align-items: baseline; gap: 14px; padding-bottom: 14px; border-bottom: 0.5px solid var(--border); margin-bottom: 14px; width: 100%; }
+.hanzi-back  { font-family: 'Noto Serif SC', serif; font-size: 54px; font-weight: 700; color: var(--red); line-height: 1; }
+.pinyin-back { font-size: 22px; color: var(--text2); letter-spacing: 1px; }
+.meaning     { font-size: 15px; color: var(--text); font-weight: 500; margin-bottom: 14px; width: 100%; }
+
+.example-box {
+  background: var(--surface2);
+  border-radius: var(--radius-sm);
+  border: 0.5px solid var(--border);
+  padding: 14px 16px;
+  width: 100%;
+}
+.ex-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px; }
+.ex-zh    { font-family: 'Noto Serif SC', serif; font-size: 18px; color: var(--text); margin-bottom: 5px; }
+.ex-py    { font-size: 13px; color: var(--text2); font-style: italic; margin-bottom: 4px; }
+.ex-en    { font-size: 13px; color: var(--text2); }
+
+/* ── Card counter ── */
+.card-counter { text-align: center; font-size: 13px; color: var(--text3); margin-bottom: 10px; }
+
+/* ── Nav ── */
+.nav-row { display: flex; gap: 8px; }
+.nav-btn {
+  flex: 1;
+  padding: 11px 16px;
+  border: 0.5px solid var(--border2);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--text);
+  font-family: 'Noto Sans SC', sans-serif;
+  transition: all 0.15s;
+}
+.nav-btn:hover    { background: var(--surface2); }
+.nav-btn:disabled { opacity: 0.35; cursor: default; }
+.nav-btn.primary  { background: var(--red); border-color: var(--red); color: #fff; font-weight: 500; }
+.nav-btn.primary:hover { background: #991B1B; }
+.nav-btn.learned  { background: var(--green); border-color: var(--green); color: #fff; font-weight: 500; }
+.nav-btn.learned:hover { background: #15803D; }
+
+/* ── Empty State ── */
+.empty {
+  text-align: center;
+  padding: 64px 20px;
+  color: var(--text2);
+  display: none;
+}
+.empty .icon { font-size: 48px; margin-bottom: 12px; }
+.empty h2   { font-size: 18px; font-weight: 500; margin-bottom: 8px; color: var(--text); }
+.empty p    { font-size: 14px; }
+
+/* ── Keyboard hint ── */
+.kbd-hint { text-align: center; font-size: 12px; color: var(--text3); margin-top: 16px; }
+.kbd { display: inline-block; background: var(--surface2); border: 0.5px solid var(--border2); border-radius: 4px; padding: 1px 6px; font-size: 11px; font-family: monospace; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <h1>汉字 Flashcards</h1>
+    <p>Top 100 most common Chinese characters · Tap a card to flip · Progress saved automatically</p>
+  </header>
+
+  <!-- Tier tabs -->
+  <div class="tier-row">
+    <button class="tier-btn active" data-tier="all">All 100</button>
+    <button class="tier-btn" data-tier="1">Top 25</button>
+    <button class="tier-btn" data-tier="2">26 – 50</button>
+    <button class="tier-btn" data-tier="3">51 – 75</button>
+    <button class="tier-btn" data-tier="4">76 – 100</button>
+  </div>
+
+  <!-- Actions -->
+  <div class="action-row">
+    <button class="action-btn" id="shuffle-btn">⇌ Shuffle</button>
+    <button class="action-btn" id="review-btn">★ Review unlearned</button>
+    <button class="action-btn" id="reset-btn">↺ Reset progress</button>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num" id="stat-total">0</div><div class="stat-label">In deck</div></div>
+    <div class="stat"><div class="stat-num green" id="stat-learned">0</div><div class="stat-label">Learned</div></div>
+    <div class="stat"><div class="stat-num red" id="stat-pct">0%</div><div class="stat-label">Progress</div></div>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="progress-row">
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <span class="progress-label" id="progress-label">1 / 100</span>
+  </div>
+
+  <!-- Flashcard -->
+  <div class="card-area" id="card-area" onclick="flipCard()">
+    <div class="card-inner" id="card-inner">
+      <!-- Front -->
+      <div class="card-face">
+        <div class="hanzi-front" id="front-hanzi">的</div>
+        <div class="freq-badge" id="front-freq">#1 · Most common</div>
+        <div class="flip-hint">Tap to reveal →</div>
+      </div>
+      <!-- Back -->
+      <div class="card-face card-back">
+        <div class="back-header">
+          <span class="hanzi-back" id="back-hanzi">的</span>
+          <span class="pinyin-back" id="back-pinyin">de</span>
+        </div>
+        <div class="meaning" id="back-meaning">possessive particle; of</div>
+        <div class="example-box">
+          <div class="ex-label">Example sentence</div>
+          <div class="ex-zh" id="ex-zh">这是我的书。</div>
+          <div class="ex-py" id="ex-py">Zhè shì wǒ de shū.</div>
+          <div class="ex-en" id="ex-en">This is my book.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-counter" id="card-counter">Card 1 of 100</div>
+
+  <!-- Navigation -->
+  <div class="nav-row">
+    <button class="nav-btn" id="prev-btn" onclick="prevCard()">← Prev</button>
+    <button class="nav-btn primary" id="learn-btn" onclick="toggleLearned()">★ Mark Learned</button>
+    <button class="nav-btn" id="next-btn" onclick="nextCard()">Next →</button>
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty" id="empty">
+    <div class="icon">🎉</div>
+    <h2>All learned!</h2>
+    <p>Every card in this set is marked as learned. Switch off Review mode to see all cards, or try the next tier.</p>
+    <br>
+    <button class="nav-btn" style="max-width:200px;margin:0 auto;display:block" onclick="toggleReview()">Show all cards</button>
+  </div>
+
+  <p class="kbd-hint">
+    Keyboard: <span class="kbd">Space</span> flip &nbsp;
+    <span class="kbd">←</span><span class="kbd">→</span> navigate &nbsp;
+    <span class="kbd">L</span> mark learned
+  </p>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+//  CHARACTER DATA
+//  To add more characters, append objects to this array following the same schema.
+//  Fields:
+//    id     - frequency rank (1 = most common)
+//    h      - Hanzi character
+//    p      - Pinyin with tone marks
+//    m      - English meaning
+//    zh     - Example sentence (Chinese)
+//    py     - Example sentence (Pinyin)
+//    en     - Example sentence (English)
+// ─────────────────────────────────────────────
+const DATA = [
+  {id:1,  h:"的", p:"de",    m:"possessive particle; of",               zh:"这是我的书。",           py:"Zhè shì wǒ de shū.",              en:"This is my book."},
+  {id:2,  h:"一", p:"yī",   m:"one; a single",                         zh:"一个苹果。",             py:"Yī gè píngguǒ.",                  en:"One apple."},
+  {id:3,  h:"是", p:"shì",  m:"to be; is; am; are",                    zh:"他是我的朋友。",          py:"Tā shì wǒ de péngyou.",           en:"He is my friend."},
+  {id:4,  h:"在", p:"zài",  m:"at; in; to be present",                 zh:"我在学校。",             py:"Wǒ zài xuéxiào.",                 en:"I am at school."},
+  {id:5,  h:"人", p:"rén",  m:"person; people; human being",           zh:"这个人很好。",            py:"Zhège rén hěn hǎo.",              en:"This person is very kind."},
+  {id:6,  h:"了", p:"le",   m:"(completed action particle)",           zh:"我吃了饭。",             py:"Wǒ chī le fàn.",                  en:"I have eaten."},
+  {id:7,  h:"有", p:"yǒu",  m:"to have; there is/are",                 zh:"我有一只猫。",            py:"Wǒ yǒu yī zhī māo.",              en:"I have a cat."},
+  {id:8,  h:"我", p:"wǒ",   m:"I; me; my",                             zh:"我是学生。",             py:"Wǒ shì xuésheng.",                en:"I am a student."},
+  {id:9,  h:"他", p:"tā",   m:"he; him",                               zh:"他在哪里？",             py:"Tā zài nǎlǐ?",                    en:"Where is he?"},
+  {id:10, h:"这", p:"zhè",  m:"this",                                  zh:"这是什么？",             py:"Zhè shì shénme?",                 en:"What is this?"},
+  {id:11, h:"个", p:"gè",   m:"(general measure word)",                zh:"三个苹果。",             py:"Sān gè píngguǒ.",                 en:"Three apples."},
+  {id:12, h:"们", p:"men",  m:"plural suffix for people",              zh:"我们是朋友。",            py:"Wǒmen shì péngyou.",              en:"We are friends."},
+  {id:13, h:"中", p:"zhōng",m:"middle; center; China",                 zh:"他在中国。",             py:"Tā zài Zhōngguó.",                en:"He is in China."},
+  {id:14, h:"来", p:"lái",  m:"to come; to arrive",                    zh:"请进来！",               py:"Qǐng jìnlái!",                    en:"Please come in!"},
+  {id:15, h:"上", p:"shàng",m:"above; up; on top of",                  zh:"书在桌子上。",            py:"Shū zài zhuōzi shàng.",           en:"The book is on the table."},
+  {id:16, h:"大", p:"dà",   m:"big; large; great",                     zh:"这只狗很大。",            py:"Zhè zhī gǒu hěn dà.",             en:"This dog is very big."},
+  {id:17, h:"为", p:"wèi",  m:"for; because of; to do",               zh:"为什么？",               py:"Wèi shénme?",                     en:"Why?"},
+  {id:18, h:"和", p:"hé",   m:"and; with; peaceful",                   zh:"猫和狗。",               py:"Māo hé gǒu.",                     en:"Cats and dogs."},
+  {id:19, h:"国", p:"guó",  m:"country; nation; state",                zh:"中国很大。",             py:"Zhōngguó hěn dà.",                en:"China is very big."},
+  {id:20, h:"地", p:"de",   m:"(adverb particle); earth; ground",      zh:"开心地笑。",             py:"Kāixīn de xiào.",                 en:"To smile happily."},
+  {id:21, h:"到", p:"dào",  m:"to arrive; to reach; until",            zh:"我到了！",               py:"Wǒ dào le!",                      en:"I arrived!"},
+  {id:22, h:"以", p:"yǐ",   m:"with; by means of; according to",       zh:"以后见。",               py:"Yǐhòu jiàn.",                     en:"See you later."},
+  {id:23, h:"说", p:"shuō", m:"to speak; to say; to tell",             zh:"他说中文。",             py:"Tā shuō Zhōngwén.",               en:"He speaks Chinese."},
+  {id:24, h:"时", p:"shí",  m:"time; period; hour; when",              zh:"什么时候？",             py:"Shénme shíhou?",                  en:"When?"},
+  {id:25, h:"要", p:"yào",  m:"to want; to need; will; must",          zh:"我要吃饭。",             py:"Wǒ yào chī fàn.",                 en:"I want to eat."},
+  {id:26, h:"就", p:"jiù",  m:"then; right away; just; only",          zh:"我就来。",               py:"Wǒ jiù lái.",                     en:"I'll be right there."},
+  {id:27, h:"出", p:"chū",  m:"to go out; to exit; out",               zh:"请出去。",               py:"Qǐng chūqù.",                     en:"Please go outside."},
+  {id:28, h:"会", p:"huì",  m:"can; will; know how to; meeting",       zh:"我会游泳。",             py:"Wǒ huì yóuyǒng.",                 en:"I can swim."},
+  {id:29, h:"可", p:"kě",   m:"can; may; passable; but",               zh:"可以吗？",               py:"Kěyǐ ma?",                        en:"Is that okay?"},
+  {id:30, h:"也", p:"yě",   m:"also; too; as well; either",            zh:"我也去。",               py:"Wǒ yě qù.",                       en:"I'm also going."},
+  {id:31, h:"你", p:"nǐ",   m:"you (singular)",                        zh:"你好！",                 py:"Nǐ hǎo!",                         en:"Hello!"},
+  {id:32, h:"对", p:"duì",  m:"correct; right; towards; to face",      zh:"对，没错。",             py:"Duì, méi cuò.",                   en:"Correct, that's right."},
+  {id:33, h:"生", p:"shēng",m:"life; to give birth; student; raw",      zh:"生日快乐！",             py:"Shēngrì kuàilè!",                 en:"Happy birthday!"},
+  {id:34, h:"能", p:"néng", m:"can; to be able to; energy",            zh:"我能跑步。",             py:"Wǒ néng pǎobù.",                  en:"I can run."},
+  {id:35, h:"而", p:"ér",   m:"and; but; while; then",                 zh:"学而思。",               py:"Xué ér sī.",                      en:"Learn and then reflect."},
+  {id:36, h:"子", p:"zǐ",   m:"child; son; (noun suffix)",             zh:"孩子真可爱。",            py:"Háizi zhēn kě'ài.",               en:"Children are so adorable."},
+  {id:37, h:"那", p:"nà",   m:"that; those; then (in that case)",      zh:"那是什么？",             py:"Nà shì shénme?",                  en:"What is that?"},
+  {id:38, h:"得", p:"de",   m:"(complement particle); to get/obtain",  zh:"跑得很快。",             py:"Pǎo de hěn kuài.",                en:"Runs very fast."},
+  {id:39, h:"于", p:"yú",   m:"at; in; from; than; for",               zh:"于是。",                 py:"Yúshì.",                          en:"And so; therefore."},
+  {id:40, h:"着", p:"zhe",  m:"(continuous aspect particle)",          zh:"他看着书。",             py:"Tā kàn zhe shū.",                 en:"He is reading a book."},
+  {id:41, h:"下", p:"xià",  m:"below; down; under; next",              zh:"楼下见！",               py:"Lóu xià jiàn!",                   en:"See you downstairs!"},
+  {id:42, h:"自", p:"zì",   m:"self; oneself; from; since",            zh:"自己做饭。",             py:"Zìjǐ zuòfàn.",                    en:"Cook for yourself."},
+  {id:43, h:"之", p:"zhī",  m:"(literary possessive particle); of",    zh:"之后再说。",             py:"Zhīhòu zài shuō.",                en:"Talk about it afterwards."},
+  {id:44, h:"年", p:"nián", m:"year; annual",                          zh:"新年快乐！",             py:"Xīnnián kuàilè!",                 en:"Happy New Year!"},
+  {id:45, h:"过", p:"guò",  m:"to pass; past experience (aspect)",     zh:"我去过北京。",            py:"Wǒ qùguò Běijīng.",               en:"I've been to Beijing."},
+  {id:46, h:"发", p:"fā",   m:"to send; to develop; to emit",          zh:"发短信。",               py:"Fā duǎnxìn.",                     en:"Send a text message."},
+  {id:47, h:"后", p:"hòu",  m:"after; behind; rear; later",            zh:"吃饭后散步。",            py:"Chī fàn hòu sànbù.",              en:"Walk after eating."},
+  {id:48, h:"作", p:"zuò",  m:"to do; to make; work; creation",        zh:"作业做完了。",            py:"Zuòyè zuò wán le.",               en:"The homework is done."},
+  {id:49, h:"里", p:"lǐ",   m:"inside; within; in",                    zh:"盒子里面。",             py:"Hézi lǐmiàn.",                    en:"Inside the box."},
+  {id:50, h:"用", p:"yòng", m:"to use; to employ; with",               zh:"用筷子吃饭。",            py:"Yòng kuàizi chī fàn.",            en:"Eat with chopsticks."},
+  {id:51, h:"道", p:"dào",  m:"road; way; method; to say",             zh:"知道了！",               py:"Zhīdào le!",                      en:"Got it! I understand!"},
+  {id:52, h:"行", p:"xíng", m:"to walk; OK; capable; a row",           zh:"你真行！",               py:"Nǐ zhēn xíng!",                   en:"You're amazing!"},
+  {id:53, h:"所", p:"suǒ",  m:"place; that which; so; therefore",      zh:"所以我来了。",            py:"Suǒyǐ wǒ lái le.",                en:"So I came."},
+  {id:54, h:"然", p:"rán",  m:"so; right; correct; naturally",         zh:"当然！",                 py:"Dāngrán!",                        en:"Of course!"},
+  {id:55, h:"家", p:"jiā",  m:"home; family; house; expert",           zh:"回家吃饭。",             py:"Huí jiā chī fàn.",                en:"Go home to eat."},
+  {id:56, h:"种", p:"zhǒng",m:"kind; type; species; to plant",         zh:"各种颜色。",             py:"Gè zhǒng yánsè.",                 en:"All kinds of colors."},
+  {id:57, h:"事", p:"shì",  m:"matter; affair; event; work",           zh:"没什么事。",             py:"Méi shénme shì.",                 en:"Nothing's the matter."},
+  {id:58, h:"成", p:"chéng",m:"to become; to succeed; to finish",      zh:"成功了！",               py:"Chénggōng le!",                   en:"Success!"},
+  {id:59, h:"方", p:"fāng", m:"square; direction; method; place",      zh:"北方很冷。",             py:"Běifāng hěn lěng.",               en:"The north is very cold."},
+  {id:60, h:"多", p:"duō",  m:"many; much; more; how (in questions)",  zh:"多谢！",                 py:"Duōxiè!",                         en:"Many thanks!"},
+  {id:61, h:"经", p:"jīng", m:"to pass through; scripture; already",   zh:"已经到了。",             py:"Yǐjīng dào le.",                  en:"Already arrived."},
+  {id:62, h:"么", p:"me",   m:"(question/softening particle)",         zh:"什么事？",               py:"Shénme shì?",                     en:"What's the matter?"},
+  {id:63, h:"去", p:"qù",   m:"to go; to leave",                       zh:"我去学校。",             py:"Wǒ qù xuéxiào.",                  en:"I go to school."},
+  {id:64, h:"法", p:"fǎ",   m:"law; method; way; France",              zh:"没办法。",               py:"Méi bànfǎ.",                      en:"There's no way around it."},
+  {id:65, h:"学", p:"xué",  m:"to study; to learn; school",            zh:"学中文很有趣。",          py:"Xué Zhōngwén hěn yǒuqù.",         en:"Studying Chinese is fun."},
+  {id:66, h:"如", p:"rú",   m:"if; as; like; as if",                   zh:"如果下雨，就待在家。",    py:"Rúguǒ xià yǔ, jiù dāi zài jiā.",  en:"If it rains, stay home."},
+  {id:67, h:"都", p:"dōu",  m:"all; both; entirely; even",             zh:"大家都来了。",            py:"Dàjiā dōu lái le.",               en:"Everyone came."},
+  {id:68, h:"同", p:"tóng", m:"same; alike; together; with",           zh:"同学们，上课了。",        py:"Tóngxuémen, shàngkè le.",         en:"Classmates, class is starting."},
+  {id:69, h:"现", p:"xiàn", m:"now; to appear; present",               zh:"现在几点了？",            py:"Xiànzài jǐ diǎn le?",             en:"What time is it now?"},
+  {id:70, h:"当", p:"dāng", m:"when; to serve as; to be",              zh:"我想当老师。",            py:"Wǒ xiǎng dāng lǎoshī.",           en:"I want to be a teacher."},
+  {id:71, h:"没", p:"méi",  m:"not; have not; no",                     zh:"没有问题。",             py:"Méiyǒu wèntí.",                   en:"No problem."},
+  {id:72, h:"动", p:"dòng", m:"to move; motion; to use",               zh:"动物园里有熊猫。",        py:"Dòngwùyuán lǐ yǒu xióngmāo.",    en:"There are pandas at the zoo."},
+  {id:73, h:"面", p:"miàn", m:"face; surface; side; noodles",          zh:"我喜欢吃面条。",          py:"Wǒ xǐhuān chī miàntiáo.",         en:"I like to eat noodles."},
+  {id:74, h:"起", p:"qǐ",   m:"to rise; to start; to get up",          zh:"起床了！",               py:"Qǐchuáng le!",                    en:"Get up!"},
+  {id:75, h:"看", p:"kàn",  m:"to look; to see; to watch; to read",    zh:"我们去看电影！",          py:"Wǒmen qù kàn diànyǐng!",          en:"Let's go watch a movie!"},
+  {id:76, h:"定", p:"dìng", m:"to decide; certain; fixed; definite",   zh:"一定能成功！",            py:"Yīdìng néng chénggōng!",          en:"You can definitely succeed!"},
+  {id:77, h:"天", p:"tiān", m:"sky; day; heaven; weather",             zh:"今天天气真好。",          py:"Jīntiān tiānqì zhēn hǎo.",        en:"The weather is lovely today."},
+  {id:78, h:"分", p:"fēn",  m:"to divide; minute; point; part",        zh:"考试得了一百分！",        py:"Kǎoshì dé le yībǎi fēn!",         en:"Got 100 points on the exam!"},
+  {id:79, h:"还", p:"hái",  m:"still; yet; also; even more",           zh:"还有饺子！",             py:"Hái yǒu jiǎozi!",                 en:"There are also dumplings!"},
+  {id:80, h:"进", p:"jìn",  m:"to enter; to go in; to advance",        zh:"请进来坐。",             py:"Qǐng jìnlái zuò.",                en:"Please come in and sit."},
+  {id:81, h:"好", p:"hǎo",  m:"good; well; fine; OK",                  zh:"你好，老师！",            py:"Nǐ hǎo, lǎoshī!",                 en:"Hello, teacher!"},
+  {id:82, h:"小", p:"xiǎo", m:"small; little; young; petty",           zh:"小猫咪好可爱。",          py:"Xiǎo māomī hǎo kě'ài.",           en:"The little kitten is so cute."},
+  {id:83, h:"部", p:"bù",   m:"part; section; department",             zh:"全部做完了。",            py:"Quánbù zuò wán le.",              en:"Everything is finished."},
+  {id:84, h:"其", p:"qí",   m:"his/her/its; that; other; this",        zh:"其他同学呢？",            py:"Qítā tóngxué ne?",                en:"What about the other classmates?"},
+  {id:85, h:"些", p:"xiē",  m:"some; a few; a little",                 zh:"一些朋友来了。",          py:"Yīxiē péngyou lái le.",           en:"Some friends came."},
+  {id:86, h:"主", p:"zhǔ",  m:"main; master; host; owner",             zh:"主人回来了。",            py:"Zhǔrén huílái le.",               en:"The owner came back."},
+  {id:87, h:"样", p:"yàng", m:"appearance; kind; manner; way",         zh:"这样就对了。",            py:"Zhèyàng jiù duì le.",             en:"That's the right way."},
+  {id:88, h:"理", p:"lǐ",   m:"reason; principle; to manage",          zh:"道理很简单。",            py:"Dàolǐ hěn jiǎndān.",              en:"The reasoning is simple."},
+  {id:89, h:"心", p:"xīn",  m:"heart; mind; core; feelings",           zh:"开心最重要！",            py:"Kāixīn zuì zhòngyào!",            en:"Being happy is most important!"},
+  {id:90, h:"她", p:"tā",   m:"she; her",                              zh:"她是我的姐姐。",          py:"Tā shì wǒ de jiějie.",            en:"She is my older sister."},
+  {id:91, h:"本", p:"běn",  m:"root; origin; this; (measure for books)",zh:"这本书很好看。",         py:"Zhè běn shū hěn hǎokàn.",         en:"This book is very good."},
+  {id:92, h:"前", p:"qián", m:"front; before; former; ago",            zh:"以前我不会说中文。",      py:"Yǐqián wǒ bù huì shuō Zhōngwén.", en:"I couldn't speak Chinese before."},
+  {id:93, h:"开", p:"kāi",  m:"to open; to turn on; to start",         zh:"开门！",                 py:"Kāi mén!",                        en:"Open the door!"},
+  {id:94, h:"但", p:"dàn",  m:"but; however; only",                    zh:"但是我不知道。",          py:"Dànshì wǒ bù zhīdào.",            en:"But I don't know."},
+  {id:95, h:"因", p:"yīn",  m:"because; reason; cause; due to",        zh:"因为下雨，我们没去。",    py:"Yīnwèi xià yǔ, wǒmen méi qù.",   en:"We didn't go because of the rain."},
+  {id:96, h:"只", p:"zhǐ",  m:"only; just; merely",                    zh:"只有一个。",             py:"Zhǐyǒu yī gè.",                   en:"There is only one."},
+  {id:97, h:"从", p:"cóng", m:"from; since; through; follow",          zh:"从北京来的。",            py:"Cóng Běijīng lái de.",            en:"(I) came from Beijing."},
+  {id:98, h:"想", p:"xiǎng",m:"to think; to want; to miss; to plan",   zh:"我想你！",               py:"Wǒ xiǎng nǐ!",                    en:"I miss you!"},
+  {id:99, h:"实", p:"shí",  m:"real; solid; true; fact; honest",       zh:"其实很简单。",            py:"Qíshí hěn jiǎndān.",              en:"Actually, it's quite simple."},
+  {id:100,h:"它", p:"tā",   m:"it (non-human things or animals)",      zh:"它是我的狗。",            py:"Tā shì wǒ de gǒu.",               en:"It is my dog."}
+];
+
+// ─────────────────────────────────────────────
+//  STATE
+// ─────────────────────────────────────────────
+const STORAGE_KEY = 'hsk-flashcard-learned-v1';
+
+let learned     = new Set();
+let currentTier = 'all';
+let shuffleOn   = false;
+let reviewOnly  = false;
+let deck        = [];
+let idx         = 0;
+let isFlipped   = false;
+
+// ─────────────────────────────────────────────
+//  PERSISTENCE  (localStorage — no server needed)
+// ─────────────────────────────────────────────
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) learned = new Set(JSON.parse(raw));
+  } catch (e) { console.warn('Could not load progress:', e); }
+}
+
+function saveProgress() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...learned])); }
+  catch (e) { console.warn('Could not save progress:', e); }
+}
+
+// ─────────────────────────────────────────────
+//  DECK MANAGEMENT
+// ─────────────────────────────────────────────
+function buildDeck() {
+  const ranges = { 1:[1,25], 2:[26,50], 3:[51,75], 4:[76,100] };
+  let src = currentTier === 'all' ? [...DATA] : DATA.filter(c => {
+    const [lo, hi] = ranges[currentTier];
+    return c.id >= lo && c.id <= hi;
+  });
+  if (reviewOnly) src = src.filter(c => !learned.has(c.id));
+  deck = shuffleOn ? src.sort(() => Math.random() - 0.5) : src;
+  idx = 0;
+  isFlipped = false;
+  render();
+}
+
+// ─────────────────────────────────────────────
+//  RENDER
+// ─────────────────────────────────────────────
+function render() {
+  const empty = deck.length === 0;
+  document.getElementById('card-area').style.display   = empty ? 'none'  : 'block';
+  document.getElementById('card-counter').style.display= empty ? 'none'  : 'block';
+  document.querySelector('.nav-row').style.display     = empty ? 'none'  : 'flex';
+  document.getElementById('empty').style.display       = empty ? 'block' : 'none';
+
+  // Stats (always reflect full DATA)
+  const learnedCount = [...DATA].filter(c => learned.has(c.id)).length;
+  document.getElementById('stat-total').textContent   = deck.length;
+  document.getElementById('stat-learned').textContent = learnedCount;
+  document.getElementById('stat-pct').textContent     = Math.round(learnedCount / DATA.length * 100) + '%';
+
+  if (empty) return;
+
+  const c = deck[idx];
+
+  // Front
+  document.getElementById('front-hanzi').textContent = c.h;
+  document.getElementById('front-freq').textContent  = '#' + c.id + (c.id === 1 ? ' · Most common' : '');
+
+  // Back
+  document.getElementById('back-hanzi').textContent   = c.h;
+  document.getElementById('back-pinyin').textContent  = c.p;
+  document.getElementById('back-meaning').textContent = c.m;
+  document.getElementById('ex-zh').textContent        = c.zh;
+  document.getElementById('ex-py').textContent        = c.py;
+  document.getElementById('ex-en').textContent        = c.en;
+
+  // Progress
+  const pct = deck.length > 1 ? (idx / (deck.length - 1)) * 100 : 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = (idx + 1) + ' / ' + deck.length;
+  document.getElementById('card-counter').textContent = 'Card ' + (idx + 1) + ' of ' + deck.length;
+
+  // Flip state
+  document.getElementById('card-inner').classList.toggle('flipped', isFlipped);
+
+  // Mark learned button
+  const isLearned = learned.has(c.id);
+  const btn = document.getElementById('learn-btn');
+  btn.textContent = isLearned ? '✓ Learned' : '★ Mark Learned';
+  btn.className   = 'nav-btn ' + (isLearned ? 'learned' : 'primary');
+
+  // Prev/Next buttons
+  document.getElementById('prev-btn').disabled = idx === 0;
+  document.getElementById('next-btn').disabled = idx === deck.length - 1;
+}
+
+// ─────────────────────────────────────────────
+//  ACTIONS
+// ─────────────────────────────────────────────
+function flipCard() {
+  isFlipped = !isFlipped;
+  document.getElementById('card-inner').classList.toggle('flipped', isFlipped);
+}
+
+function nextCard() {
+  if (idx < deck.length - 1) { idx++; isFlipped = false; render(); }
+}
+
+function prevCard() {
+  if (idx > 0) { idx--; isFlipped = false; render(); }
+}
+
+function toggleLearned() {
+  if (!deck[idx]) return;
+  const id = deck[idx].id;
+  if (learned.has(id)) learned.delete(id); else learned.add(id);
+  saveProgress();
+  // In review-only mode, remove the just-learned card from deck
+  if (reviewOnly && learned.has(id)) {
+    deck.splice(idx, 1);
+    if (idx >= deck.length) idx = Math.max(0, deck.length - 1);
+    isFlipped = false;
+  }
+  render();
+}
+
+function toggleShuffle() {
+  shuffleOn = !shuffleOn;
+  document.getElementById('shuffle-btn').classList.toggle('on', shuffleOn);
+  buildDeck();
+}
+
+function toggleReview() {
+  reviewOnly = !reviewOnly;
+  const btn = document.getElementById('review-btn');
+  btn.classList.toggle('on', reviewOnly);
+  btn.textContent = reviewOnly ? '★ All cards' : '★ Review unlearned';
+  buildDeck();
+}
+
+function resetProgress() {
+  if (!confirm('Reset all progress? This cannot be undone.')) return;
+  learned.clear();
+  saveProgress();
+  render();
+}
+
+// ─────────────────────────────────────────────
+//  EVENT LISTENERS
+// ─────────────────────────────────────────────
+// Tier tabs
+document.querySelectorAll('.tier-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tier-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTier = btn.dataset.tier;
+    buildDeck();
+  });
+});
+
+document.getElementById('shuffle-btn').addEventListener('click', toggleShuffle);
+document.getElementById('review-btn').addEventListener('click', toggleReview);
+document.getElementById('reset-btn').addEventListener('click', resetProgress);
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  switch (e.key) {
+    case ' ':         e.preventDefault(); flipCard();       break;
+    case 'ArrowRight':                    nextCard();        break;
+    case 'ArrowLeft':                     prevCard();        break;
+    case 'l': case 'L':                  toggleLearned();   break;
+  }
+});
+
+// ─────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────
+loadProgress();
+buildDeck();
+</script>
+</body>
+</html>
