@@ -370,7 +370,7 @@ h1{font-size:24px;font-weight:700;font-family:'Noto Serif SC',serif;color:var(--
 
 
 <!-- TOAST -->
-<div class="toast" id="toast">
+<div class="toast" id="toast"></div>
 
 <script>
 
@@ -1891,6 +1891,38 @@ let reviewOnly = false;
 let deck = [];
 let idx = 0;
 let isFlipped = false;
+// ── CONNECTIONS (hoisted so render() can access them) ──
+const CONNECTIONS_KEY = 'hsk1500-connections-v1';
+let connections = {};
+function loadConnections(){
+  try{ const r=localStorage.getItem(CONNECTIONS_KEY); if(r) connections=JSON.parse(r); }catch(e){}
+}
+function saveConnections(){
+  try{ localStorage.setItem(CONNECTIONS_KEY, JSON.stringify(connections)); }catch(e){}
+}
+function getLinkedIds(cardId){
+  return connections[cardId] || [];
+}
+function renderRelatedTray(){
+  const tray = document.getElementById('related-tray');
+  if(!deck[idx]){ tray.classList.remove('visible'); return; }
+  const c = deck[idx];
+  const linkedIds = getLinkedIds(c.id);
+  if(linkedIds.length===0){ tray.classList.remove('visible'); return; }
+  tray.classList.add('visible');
+  const row = document.getElementById('related-cards-row');
+  row.innerHTML='';
+  linkedIds.forEach(lid=>{
+    const linked = DATA.find(d=>d.id===lid);
+    if(!linked) return;
+    const mc = document.createElement('div');
+    mc.className='mini-card';
+    mc.innerHTML=`<div class="mini-card-hanzi">${linked.h}</div><div class="mini-card-pinyin">${linked.p}</div><div class="mini-card-meaning">${linked.m}</div>`;
+    mc.addEventListener('click', e=>{ e.stopPropagation(); mc.classList.toggle('flipped-mini'); });
+    row.appendChild(mc);
+  });
+}
+
 
 function loadProgress(){
   try{const r=localStorage.getItem(STORAGE_KEY);if(r)learned=new Set(JSON.parse(r));}catch(e){}
@@ -1913,7 +1945,7 @@ function buildDeck(){
   idx=0; isFlipped=false; render();
 }
 
-function render(){
+function _renderCore(){
   const empty=deck.length===0;
   document.getElementById('card-area').style.display=empty?'none':'block';
   document.getElementById('card-counter').style.display=empty?'none':'block';
@@ -1940,6 +1972,7 @@ function render(){
   document.getElementById('progress-fill').style.width=pct+'%';
   document.getElementById('progress-label').textContent=(idx+1)+' / '+deck.length;
   document.getElementById('card-counter').textContent='Card '+(idx+1)+' of '+deck.length;
+  const _lbl=document.getElementById('card-counter-text'); if(_lbl) _lbl.textContent='Card '+(idx+1)+' of '+deck.length;
   document.getElementById('card-inner').classList.toggle('flipped',isFlipped);
   const isLearned=learned.has(c.id);
   const btn=document.getElementById('learn-btn');
@@ -2184,21 +2217,8 @@ document.addEventListener('keydown',e=>{
 loadCustomCards();
 
 // ══════════════════════════════════════════════
-// CARD CONNECTIONS
+// CARD CONNECTIONS (declarations hoisted above)
 // ══════════════════════════════════════════════
-const CONNECTIONS_KEY = 'hsk1500-connections-v1';
-let connections = {}; // { cardId: [linkedId, linkedId, ...] }
-
-function loadConnections(){
-  try{ const r=localStorage.getItem(CONNECTIONS_KEY); if(r) connections=JSON.parse(r); }catch(e){}
-}
-function saveConnections(){
-  try{ localStorage.setItem(CONNECTIONS_KEY, JSON.stringify(connections)); }catch(e){}
-}
-
-function getLinkedIds(cardId){
-  return connections[cardId] || [];
-}
 
 function setLinks(cardId, linkedIds){
   if(linkedIds.length===0){ delete connections[cardId]; }
@@ -2217,34 +2237,12 @@ function setLinks(cardId, linkedIds){
   saveConnections();
 }
 
-// ── RENDER RELATED TRAY ──
-function renderRelatedTray(){
-  const tray = document.getElementById('related-tray');
-  if(!deck[idx]){ tray.classList.remove('visible'); return; }
-  const c = deck[idx];
-  const linkedIds = getLinkedIds(c.id);
-  if(linkedIds.length===0){ tray.classList.remove('visible'); return; }
+// renderRelatedTray hoisted above
 
-  tray.classList.add('visible');
-  const row = document.getElementById('related-cards-row');
-  row.innerHTML='';
-  linkedIds.forEach(lid=>{
-    const linked = DATA.find(d=>d.id===lid);
-    if(!linked) return;
-    const mc = document.createElement('div');
-    mc.className='mini-card';
-    mc.innerHTML=`<div class="mini-card-hanzi">${linked.h}</div><div class="mini-card-pinyin">${linked.p}</div><div class="mini-card-meaning">${linked.m}</div>`;
-    mc.addEventListener('click', e=>{ e.stopPropagation(); mc.classList.toggle('flipped-mini'); });
-    row.appendChild(mc);
-  });
-}
-
-// Patch render to also render related tray
-const _origRender = render;
-window.render = function(){
-  _origRender();
+// render() = core render + related tray + connect button
+function render(){
+  _renderCore();
   renderRelatedTray();
-  // Update connect button state
   if(deck[idx]){
     const btn = document.getElementById('connect-btn-inline');
     if(btn){
@@ -2253,7 +2251,7 @@ window.render = function(){
       btn.textContent = hasLinks ? '⛓ 已关联 '+getLinkedIds(deck[idx].id).length : '⛓ 关联卡片';
     }
   }
-};
+}
 
 // ── CONNECT MODAL LOGIC ──
 let connectTargetId = null;
@@ -2374,12 +2372,7 @@ document.getElementById('connect-modal-overlay').addEventListener('click', e=>{
   btn.addEventListener('click', openConnectModal);
   counter.appendChild(btn);
   // Patch render to update label too
-  const origRender2 = window.render;
-  window.render = function(){
-    origRender2();
-    const lbl = document.getElementById('card-counter-text');
-    if(lbl && deck[idx]) lbl.textContent = 'Card '+(idx+1)+' of '+deck.length;
-  };
+  // card-counter-text is updated by the main render override above
 })();
 
 loadConnections();
@@ -2387,6 +2380,4 @@ loadConnections();
 </script>
 
 </body>
-</html
-
->
+</html>
