@@ -1,0 +1,2392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>汉字 Flashcards — Top 1500 Chinese Characters</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f4ef;--surface:#ffffff;--surface2:#f0ece4;--border:rgba(0,0,0,.10);
+  --border2:rgba(0,0,0,.18);--text:#1a1a1a;--text2:#6b6560;--text3:#a09890;
+  --red:#B91C1C;--red-light:#FEF2F2;--red-border:#FECACA;--green:#16A34A;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1c1917;--surface:#292524;--surface2:#1c1917;
+  --border:rgba(255,255,255,.10);--border2:rgba(255,255,255,.18);
+  --text:#f5f0eb;--text2:#a8a09a;--text3:#6b6560;
+  --red-light:#3b1212;--red-border:#7a2020;
+}}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:20px 16px 48px}
+.app{max-width:600px;margin:0 auto}
+h1{font-size:24px;font-weight:700;font-family:'Noto Serif SC',serif;color:var(--red)}
+.subtitle{font-size:13px;color:var(--text2);margin-top:4px;margin-bottom:20px}
+.tier-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tier-btn{padding:5px 13px;border:.5px solid var(--border2);border-radius:20px;background:var(--surface);font-size:12px;cursor:pointer;color:var(--text2);font-family:'Noto Sans SC',sans-serif;transition:all .15s}
+.tier-btn.active{background:var(--red);border-color:var(--red);color:#fff;font-weight:500}
+.tier-btn:hover:not(.active){background:var(--surface2)}
+.action-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.action-btn{padding:5px 13px;border:.5px solid var(--border2);border-radius:20px;background:var(--surface);font-size:12px;cursor:pointer;color:var(--text2);font-family:'Noto Sans SC',sans-serif;transition:all .15s}
+.action-btn:hover{background:var(--surface2)}
+.action-btn.on{background:var(--red);border-color:var(--red);color:#fff}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.stat{background:var(--surface);border:.5px solid var(--border);border-radius:var(--radius-md);padding:10px;text-align:center}
+.stat-num{font-size:22px;font-weight:500}
+.stat-num.red{color:var(--red)}
+.stat-num.green{color:var(--green)}
+.stat-label{font-size:11px;color:var(--text3);margin-top:2px}
+.progress-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.progress-track{flex:1;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:var(--red);border-radius:3px;transition:width .3s}
+.progress-label{font-size:12px;color:var(--text3);white-space:nowrap;min-width:48px;text-align:right}
+.card-area{perspective:1200px;cursor:pointer;user-select:none;margin-bottom:10px}
+.card-inner{position:relative;width:100%;height:320px;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.card-inner.flipped{transform:rotateY(180deg)}
+.card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--radius-lg);border:.5px solid var(--border);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.card-back{transform:rotateY(180deg);justify-content:flex-start;overflow-y:auto;padding-top:18px}
+.hanzi-front{font-family:'Noto Serif SC',serif;font-size:110px;font-weight:700;color:var(--red);line-height:1;margin-bottom:14px}
+.freq-badge{background:var(--red-light);color:var(--red);border:.5px solid var(--red-border);border-radius:20px;padding:3px 12px;font-size:12px;font-weight:500;margin-bottom:16px}
+.flip-hint{font-size:12px;color:var(--text3)}
+.back-header{display:flex;align-items:baseline;gap:12px;padding-bottom:12px;border-bottom:.5px solid var(--border);margin-bottom:12px;width:100%}
+.hanzi-back{font-family:'Noto Serif SC',serif;font-size:50px;font-weight:700;color:var(--red);line-height:1}
+.pinyin-back{font-size:20px;color:var(--text2);letter-spacing:1px}
+.meaning{font-size:14px;color:var(--text);font-weight:500;margin-bottom:12px;width:100%}
+.example-box{background:var(--surface2);border-radius:var(--radius-sm);border:.5px solid var(--border);padding:12px 14px;width:100%}
+.ex-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.ex-zh{font-family:'Noto Serif SC',serif;font-size:17px;color:var(--text);margin-bottom:4px}
+.ex-py{font-size:12px;color:var(--text2);font-style:italic;margin-bottom:3px}
+.ex-en{font-size:12px;color:var(--text2)}
+.card-counter{text-align:center;font-size:12px;color:var(--text3);margin-bottom:8px}
+.nav-row{display:flex;gap:8px}
+.nav-btn{flex:1;padding:10px;border:.5px solid var(--border2);border-radius:var(--radius-sm);background:var(--surface);font-size:13px;cursor:pointer;color:var(--text);font-family:'Noto Sans SC',sans-serif;transition:all .15s}
+.nav-btn:hover{background:var(--surface2)}
+.nav-btn:disabled{opacity:.35;cursor:default}
+.nav-btn.primary{background:var(--red);border-color:var(--red);color:#fff;font-weight:500}
+.nav-btn.primary:hover{background:#991B1B}
+.nav-btn.learned{background:var(--green);border-color:var(--green);color:#fff;font-weight:500}
+.nav-btn.learned:hover{background:#15803D}
+.empty{text-align:center;padding:60px 20px;color:var(--text2);display:none}
+.empty .icon{font-size:48px;margin-bottom:12px}
+.empty h2{font-size:18px;font-weight:500;margin-bottom:8px;color:var(--text)}
+.kbd-hint{text-align:center;font-size:12px;color:var(--text3);margin-top:14px}
+.kbd{display:inline-block;background:var(--surface2);border:.5px solid var(--border2);border-radius:3px;padding:1px 5px;font-family:monospace;font-size:11px}
+
+/* ── SEARCH BAR ── */
+.search-row{display:flex;gap:8px;margin-bottom:14px;align-items:center}
+.search-wrap{position:relative;flex:1}
+.search-wrap .search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;opacity:.5}
+#search-input{width:100%;padding:8px 12px 8px 32px;border:.5px solid var(--border2);border-radius:20px;background:var(--surface);font-size:14px;color:var(--text);font-family:'Noto Sans SC',sans-serif;outline:none;transition:border-color .2s}
+#search-input:focus{border-color:var(--red)}
+#search-input::placeholder{color:var(--text3)}
+#search-clear{padding:8px 14px;border:.5px solid var(--border2);border-radius:20px;background:var(--surface);font-size:12px;cursor:pointer;color:var(--text2);font-family:'Noto Sans SC',sans-serif;white-space:nowrap;transition:all .15s}
+#search-clear:hover{background:var(--surface2)}
+
+/* ── SEARCH RESULT PANEL ── */
+#search-result{display:none;background:var(--surface);border:.5px solid var(--border2);border-radius:var(--radius-md);padding:16px;margin-bottom:14px;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.sr-found{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.sr-hanzi{font-family:'Noto Serif SC',serif;font-size:56px;font-weight:700;color:var(--red);line-height:1}
+.sr-info{flex:1;min-width:140px}
+.sr-pinyin{font-size:18px;color:var(--text2);margin-bottom:4px}
+.sr-meaning{font-size:13px;color:var(--text);margin-bottom:8px}
+.sr-examples{background:var(--surface2);border-radius:var(--radius-sm);border:.5px solid var(--border);padding:10px 12px}
+.sr-examples .ex-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.sr-examples .ex-zh{font-family:'Noto Serif SC',serif;font-size:15px;color:var(--text);margin-bottom:3px}
+.sr-examples .ex-py{font-size:11px;color:var(--text2);font-style:italic;margin-bottom:2px}
+.sr-examples .ex-en{font-size:11px;color:var(--text2)}
+.sr-goto{margin-top:10px;padding:6px 14px;background:var(--red);border:none;border-radius:20px;color:#fff;font-size:12px;cursor:pointer;font-family:'Noto Sans SC',sans-serif;transition:background .15s}
+.sr-goto:hover{background:#991B1B}
+.sr-badge{font-size:11px;color:var(--text3);margin-top:4px}
+.sr-not-found{text-align:center;padding:8px 0}
+.sr-not-found .sr-nf-char{font-family:'Noto Serif SC',serif;font-size:42px;color:var(--text3);margin-bottom:6px}
+.sr-not-found p{font-size:13px;color:var(--text2);margin-bottom:10px}
+.sr-add-btn{padding:7px 18px;background:var(--red);border:none;border-radius:20px;color:#fff;font-size:13px;cursor:pointer;font-family:'Noto Sans SC',sans-serif;transition:background .15s}
+.sr-add-btn:hover{background:#991B1B}
+
+/* ── ADD CARD MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border-radius:var(--radius-lg);border:.5px solid var(--border2);width:100%;max-width:480px;max-height:90vh;overflow-y:auto;padding:24px;position:relative;animation:modalIn .25s cubic-bezier(.34,1.56,.64,1)}
+@keyframes modalIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+.modal-title{font-family:'Noto Serif SC',serif;font-size:20px;font-weight:700;color:var(--red);margin-bottom:4px}
+.modal-sub{font-size:12px;color:var(--text3);margin-bottom:18px}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text3);line-height:1;transition:color .15s}
+.modal-close:hover{color:var(--text)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;font-weight:500}
+.field input,.field textarea{width:100%;padding:9px 12px;border:.5px solid var(--border2);border-radius:var(--radius-sm);background:var(--surface2);font-size:14px;color:var(--text);font-family:'Noto Sans SC',sans-serif;outline:none;transition:border-color .2s;resize:vertical}
+.field input:focus,.field textarea:focus{border-color:var(--red);background:var(--surface)}
+.field .hanzi-preview{font-family:'Noto Serif SC',serif;font-size:48px;font-weight:700;color:var(--red);text-align:center;padding:8px;background:var(--surface2);border-radius:var(--radius-sm);border:.5px solid var(--border);margin-bottom:14px;min-height:70px;display:flex;align-items:center;justify-content:center;letter-spacing:2px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modal-actions{display:flex;gap:8px;margin-top:6px}
+.modal-save{flex:1;padding:10px;background:var(--red);border:none;border-radius:var(--radius-sm);color:#fff;font-size:14px;font-weight:500;cursor:pointer;font-family:'Noto Sans SC',sans-serif;transition:background .15s}
+.modal-save:hover{background:#991B1B}
+.modal-cancel{padding:10px 18px;border:.5px solid var(--border2);border-radius:var(--radius-sm);background:var(--surface);font-size:14px;cursor:pointer;color:var(--text2);font-family:'Noto Sans SC',sans-serif;transition:all .15s}
+.modal-cancel:hover{background:var(--surface2)}
+.custom-badge{background:#1d4ed8;color:#fff;border-radius:20px;padding:1px 7px;font-size:10px;font-weight:600;margin-left:5px;vertical-align:middle}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-family:'Noto Sans SC',sans-serif;z-index:200;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s;opacity:0;pointer-events:none;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+@media(prefers-color-scheme:dark){.toast{background:#f5f0eb;color:#1a1a1a}}
+/* ── CONNECTED CARDS TRAY ── */
+.related-tray{margin-bottom:10px;display:none}
+.related-tray.visible{display:block}
+.related-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.related-label::before,.related-label::after{content:'';flex:1;height:.5px;background:var(--border2)}
+.related-cards-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.related-cards-row::-webkit-scrollbar{display:none}
+.mini-card{min-width:80px;background:var(--surface);border:.5px solid var(--border2);border-radius:var(--radius-md);padding:10px 8px;cursor:pointer;transition:all .18s;text-align:center;position:relative;flex-shrink:0}
+.mini-card:hover{border-color:var(--red);transform:translateY(-2px);box-shadow:0 4px 12px rgba(185,28,28,.15)}
+.mini-card.flipped-mini{border-color:var(--red);background:var(--red-light)}
+.mini-card-hanzi{font-family:'Noto Serif SC',serif;font-size:28px;font-weight:700;color:var(--red);line-height:1;margin-bottom:4px}
+.mini-card-pinyin{font-size:10px;color:var(--text2);display:none}
+.mini-card-meaning{font-size:10px;color:var(--text2);display:none;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mini-card.flipped-mini .mini-card-pinyin,.mini-card.flipped-mini .mini-card-meaning{display:block}
+.mini-card.flipped-mini .mini-card-hanzi{font-size:20px;margin-bottom:3px}
+
+/* ── CONNECT MODAL ── */
+#connect-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;align-items:center;justify-content:center;padding:16px}
+#connect-modal-overlay.open{display:flex}
+.connect-modal{background:var(--surface);border-radius:var(--radius-lg);border:.5px solid var(--border2);width:100%;max-width:520px;max-height:88vh;overflow-y:auto;padding:24px;position:relative;animation:modalIn .25s cubic-bezier(.34,1.56,.64,1)}
+.connect-modal-title{font-family:'Noto Serif SC',serif;font-size:20px;font-weight:700;color:var(--red);margin-bottom:2px}
+.connect-modal-sub{font-size:12px;color:var(--text3);margin-bottom:18px}
+.current-card-preview{display:flex;align-items:center;gap:14px;background:var(--red-light);border:.5px solid var(--red-border);border-radius:var(--radius-md);padding:12px 16px;margin-bottom:16px}
+.current-card-preview .ccp-hanzi{font-family:'Noto Serif SC',serif;font-size:44px;font-weight:700;color:var(--red);line-height:1}
+.current-card-preview .ccp-info{flex:1}
+.current-card-preview .ccp-pinyin{font-size:15px;color:var(--text2)}
+.current-card-preview .ccp-meaning{font-size:12px;color:var(--text)}
+.connect-search-wrap{position:relative;margin-bottom:12px}
+.connect-search-wrap input{width:100%;padding:9px 12px 9px 34px;border:.5px solid var(--border2);border-radius:var(--radius-sm);background:var(--surface2);font-size:14px;color:var(--text);font-family:'Noto Serif SC',sans-serif;outline:none;transition:border-color .2s}
+.connect-search-wrap input:focus{border-color:var(--red);background:var(--surface)}
+.connect-search-wrap .cs-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:13px;opacity:.5;pointer-events:none}
+.connect-results{max-height:220px;overflow-y:auto;border:.5px solid var(--border);border-radius:var(--radius-sm);margin-bottom:14px}
+.connect-result-item{display:flex;align-items:center;gap:10px;padding:9px 12px;cursor:pointer;border-bottom:.5px solid var(--border);transition:background .12s}
+.connect-result-item:last-child{border-bottom:none}
+.connect-result-item:hover{background:var(--surface2)}
+.connect-result-item.selected{background:var(--red-light)}
+.cri-hanzi{font-family:'Noto Serif SC',serif;font-size:24px;font-weight:700;color:var(--red);width:36px;text-align:center}
+.cri-info{flex:1}
+.cri-pinyin{font-size:12px;color:var(--text2)}
+.cri-meaning{font-size:11px;color:var(--text3)}
+.cri-check{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;transition:all .15s}
+.connect-result-item.selected .cri-check{background:var(--red);border-color:var(--red);color:#fff}
+.connected-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;min-height:32px}
+.chip{display:inline-flex;align-items:center;gap:5px;background:var(--red-light);border:.5px solid var(--red-border);border-radius:20px;padding:4px 10px;font-size:12px;color:var(--red)}
+.chip-hanzi{font-family:'Noto Serif SC',serif;font-weight:700;font-size:15px}
+.chip-remove{background:none;border:none;cursor:pointer;color:var(--red);font-size:14px;line-height:1;padding:0;margin-left:2px;opacity:.7;transition:opacity .15s}
+.chip-remove:hover{opacity:1}
+.chip-empty{font-size:12px;color:var(--text3);font-style:italic;padding:6px 2px}
+.connect-save-row{display:flex;gap:8px}
+.connect-save{flex:1;padding:10px;background:var(--red);border:none;border-radius:var(--radius-sm);color:#fff;font-size:14px;font-weight:500;cursor:pointer;font-family:'Noto Sans SC',sans-serif;transition:background .15s}
+.connect-save:hover{background:#991B1B}
+.connect-cancel{padding:10px 18px;border:.5px solid var(--border2);border-radius:var(--radius-sm);background:var(--surface);font-size:14px;cursor:pointer;color:var(--text2);font-family:'Noto Sans SC',sans-serif;transition:all .15s}
+.connect-cancel:hover{background:var(--surface2)}
+.connect-btn-inline{padding:4px 10px;border:.5px solid var(--border2);border-radius:20px;background:var(--surface);font-size:11px;cursor:pointer;color:var(--text3);font-family:'Noto Sans SC',sans-serif;transition:all .15s;margin-left:auto}
+.connect-btn-inline:hover{background:var(--surface2);color:var(--text)}
+.connect-btn-inline.has-links{border-color:var(--red);color:var(--red);background:var(--red-light)}
+
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>汉字 Flashcards</h1>
+  <p class="subtitle">Top 1500 most common Chinese characters · Tap a card to flip · Progress saved automatically</p>
+
+  <!-- SEARCH -->
+  <div class="search-row">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search-input" placeholder="搜索汉字… (e.g. 你, 爱, 学)" maxlength="5" autocomplete="off" autocorrect="off" spellcheck="false">
+    </div>
+    <button id="search-clear" style="display:none">✕ 清除</button>
+  </div>
+
+  <!-- SEARCH RESULT PANEL -->
+  <div id="search-result"></div>
+
+  <div class="tier-row">
+    <button class="tier-btn active" data-tier="all">All 1500</button>
+    <button class="tier-btn" data-tier="1">1–100</button>
+    <button class="tier-btn" data-tier="2">101–300</button>
+    <button class="tier-btn" data-tier="3">301–600</button>
+    <button class="tier-btn" data-tier="4">601–1000</button>
+    <button class="tier-btn" data-tier="5">1001–1500</button>
+  </div>
+
+  <div class="action-row">
+    <button class="action-btn" id="shuffle-btn">⇌ Shuffle</button>
+    <button class="action-btn" id="review-btn">★ Review unlearned</button>
+    <button class="action-btn" id="reset-btn">↺ Reset progress</button>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num" id="stat-total">0</div><div class="stat-label">In deck</div></div>
+    <div class="stat"><div class="stat-num green" id="stat-learned">0</div><div class="stat-label">Learned</div></div>
+    <div class="stat"><div class="stat-num red" id="stat-pct">0%</div><div class="stat-label">Progress</div></div>
+  </div>
+
+  <div class="progress-row">
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <span class="progress-label" id="progress-label">1 / 1500</span>
+  </div>
+
+  <div class="card-area" id="card-area" onclick="flipCard()">
+    <div class="card-inner" id="card-inner">
+      <div class="card-face">
+        <div class="hanzi-front" id="front-hanzi">的</div>
+        <div class="freq-badge" id="front-freq">#1 · Most common</div>
+        <div class="flip-hint">Tap to reveal →</div>
+      </div>
+      <div class="card-face card-back">
+        <div class="back-header">
+          <span class="hanzi-back" id="back-hanzi">的</span>
+          <span class="pinyin-back" id="back-pinyin">de</span>
+        </div>
+        <div class="meaning" id="back-meaning">possessive particle; of</div>
+        <div class="example-box">
+          <div class="ex-label">Example sentence</div>
+          <div class="ex-zh" id="ex-zh">这是我的书。</div>
+          <div class="ex-py" id="ex-py">Zhè shì wǒ de shū.</div>
+          <div class="ex-en" id="ex-en">This is my book.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-counter" id="card-counter">Card 1 of 1500</div>
+
+  <!-- RELATED CARDS TRAY -->
+  <div class="related-tray" id="related-tray">
+    <div class="related-label">关联卡片 Related Cards</div>
+    <div class="related-cards-row" id="related-cards-row"></div>
+  </div>
+
+  <div class="nav-row">
+    <button class="nav-btn" id="prev-btn" onclick="prevCard()">← Prev</button>
+    <button class="nav-btn primary" id="learn-btn" onclick="toggleLearned()">★ Mark Learned</button>
+    <button class="nav-btn" id="next-btn" onclick="nextCard()">Next →</button>
+  </div>
+
+  <div class="empty" id="empty">
+    <div class="icon">🎉</div>
+    <h2>All learned!</h2>
+    <p>Every card in this set is marked as learned. Switch off Review mode to see all cards.</p>
+    <br>
+    <button class="nav-btn" style="max-width:200px;margin:0 auto;display:block" onclick="toggleReview()">Show all cards</button>
+  </div>
+
+  <p class="kbd-hint">
+    <span class="kbd">Space</span> flip &nbsp;
+    <span class="kbd">←</span><span class="kbd">→</span> navigate &nbsp;
+    <span class="kbd">L</span> mark learned
+  </p>
+</div>
+
+
+<!-- ADD CARD MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <button class="modal-close" id="modal-close">✕</button>
+    <div class="modal-title">添加新卡片</div>
+    <div class="modal-sub">Add a new flashcard to your personal deck</div>
+
+    <div class="field">
+      <div class="hanzi-preview" id="modal-preview">？</div>
+    </div>
+
+    <div class="field">
+      <label>汉字 Character(s) *</label>
+      <input type="text" id="new-hanzi" placeholder="e.g. 你好" maxlength="10" autocomplete="off" autocorrect="off" spellcheck="false">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>拼音 Pinyin *</label>
+        <input type="text" id="new-pinyin" placeholder="e.g. nǐ hǎo" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="field">
+        <label>意思 Meaning *</label>
+        <input type="text" id="new-meaning" placeholder="e.g. hello" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>词组 / 例句 Example phrase *</label>
+      <input type="text" id="new-zh" placeholder="e.g. 你好，朋友！" autocomplete="off" autocorrect="off" spellcheck="false">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>例句拼音 Pinyin of example</label>
+        <input type="text" id="new-ex-py" placeholder="e.g. Nǐ hǎo, péngyou!" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="field">
+        <label>英文翻译 English translation</label>
+        <input type="text" id="new-ex-en" placeholder="e.g. Hello, friend!" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="modal-cancel" id="modal-cancel">取消 Cancel</button>
+      <button class="modal-save" id="modal-save">✓ 保存 Save Card</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- CONNECT MODAL -->
+<div id="connect-modal-overlay">
+  <div class="connect-modal">
+    <button class="modal-close" id="connect-modal-close">✕</button>
+    <div class="connect-modal-title">关联卡片 Link Cards</div>
+    <div class="connect-modal-sub">Connect related characters — they'll appear beside this card as quick-flip mini cards</div>
+
+    <div class="current-card-preview" id="ccp-preview">
+      <div class="ccp-hanzi" id="ccp-hanzi">—</div>
+      <div class="ccp-info">
+        <div class="ccp-pinyin" id="ccp-pinyin"></div>
+        <div class="ccp-meaning" id="ccp-meaning"></div>
+      </div>
+    </div>
+
+    <div style="font-size:11px;color:var(--text3);margin-bottom:6px;font-weight:500;text-transform:uppercase;letter-spacing:.6px">Currently linked <span id="link-count">0</span></div>
+    <div class="connected-chips" id="connected-chips"><span class="chip-empty">No cards linked yet</span></div>
+
+    <div style="font-size:11px;color:var(--text3);margin-bottom:6px;font-weight:500;text-transform:uppercase;letter-spacing:.6px">Search to add</div>
+    <div class="connect-search-wrap">
+      <span class="cs-icon">🔍</span>
+      <input type="text" id="connect-search" placeholder="Type a character or pinyin…" autocomplete="off" autocorrect="off" spellcheck="false">
+    </div>
+    <div class="connect-results" id="connect-results"></div>
+
+    <div class="connect-save-row">
+      <button class="connect-cancel" id="connect-cancel">取消 Cancel</button>
+      <button class="connect-save" id="connect-save">✓ 保存关联 Save Links</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+
+<script>
+
+const DATA = [
+  {id:1,h:"的",p:"de",m:"possessive particle; of",zh:"这是我的书。",py:"Zhè shì wǒ de shū.",en:"This is my book."},
+  {id:2,h:"一",p:"yī",m:"one; a single",zh:"一个苹果。",py:"Yī gè píngguǒ.",en:"One apple."},
+  {id:3,h:"是",p:"shì",m:"to be; is; am; are",zh:"他是我的朋友。",py:"Tā shì wǒ de péngyou.",en:"He is my friend."},
+  {id:4,h:"在",p:"zài",m:"at; in; to be present",zh:"我在学校。",py:"Wǒ zài xuéxiào.",en:"I am at school."},
+  {id:5,h:"人",p:"rén",m:"person; people; human",zh:"这个人很好。",py:"Zhège rén hěn hǎo.",en:"This person is very kind."},
+  {id:6,h:"了",p:"le",m:"(completed action particle)",zh:"我吃了饭。",py:"Wǒ chī le fàn.",en:"I have eaten."},
+  {id:7,h:"有",p:"yǒu",m:"to have; there is/are",zh:"我有一只猫。",py:"Wǒ yǒu yī zhī māo.",en:"I have a cat."},
+  {id:8,h:"我",p:"wǒ",m:"I; me; my",zh:"我是学生。",py:"Wǒ shì xuésheng.",en:"I am a student."},
+  {id:9,h:"他",p:"tā",m:"he; him",zh:"他在哪里？",py:"Tā zài nǎlǐ?",en:"Where is he?"},
+  {id:10,h:"这",p:"zhè",m:"this",zh:"这是什么？",py:"Zhè shì shénme?",en:"What is this?"},
+  {id:11,h:"个",p:"gè",m:"(general measure word)",zh:"三个苹果。",py:"Sān gè píngguǒ.",en:"Three apples."},
+  {id:12,h:"们",p:"men",m:"plural suffix for people",zh:"我们是朋友。",py:"Wǒmen shì péngyou.",en:"We are friends."},
+  {id:13,h:"中",p:"zhōng",m:"middle; center; China",zh:"他在中国。",py:"Tā zài Zhōngguó.",en:"He is in China."},
+  {id:14,h:"来",p:"lái",m:"to come; to arrive",zh:"请进来！",py:"Qǐng jìnlái!",en:"Please come in!"},
+  {id:15,h:"上",p:"shàng",m:"above; up; on top of",zh:"书在桌子上。",py:"Shū zài zhuōzi shàng.",en:"The book is on the table."},
+  {id:16,h:"大",p:"dà",m:"big; large; great",zh:"这只狗很大。",py:"Zhè zhī gǒu hěn dà.",en:"This dog is very big."},
+  {id:17,h:"为",p:"wèi",m:"for; because of; in order to",zh:"为什么？",py:"Wèi shénme?",en:"Why?"},
+  {id:18,h:"和",p:"hé",m:"and; with; peaceful",zh:"猫和狗。",py:"Māo hé gǒu.",en:"Cats and dogs."},
+  {id:19,h:"国",p:"guó",m:"country; nation; state",zh:"中国很大。",py:"Zhōngguó hěn dà.",en:"China is very big."},
+  {id:20,h:"地",p:"de",m:"(adverb particle); earth; ground",zh:"开心地笑。",py:"Kāixīn de xiào.",en:"To smile happily."},
+  {id:21,h:"到",p:"dào",m:"to arrive; to reach; until",zh:"我到了！",py:"Wǒ dào le!",en:"I arrived!"},
+  {id:22,h:"以",p:"yǐ",m:"with; by means of; according to",zh:"以后见。",py:"Yǐhòu jiàn.",en:"See you later."},
+  {id:23,h:"说",p:"shuō",m:"to speak; to say; to tell",zh:"他说中文。",py:"Tā shuō Zhōngwén.",en:"He speaks Chinese."},
+  {id:24,h:"时",p:"shí",m:"time; period; hour; when",zh:"什么时候？",py:"Shénme shíhou?",en:"When?"},
+  {id:25,h:"要",p:"yào",m:"to want; to need; will; must",zh:"我要吃饭。",py:"Wǒ yào chī fàn.",en:"I want to eat."},
+  {id:26,h:"就",p:"jiù",m:"then; right away; just; only",zh:"我就来。",py:"Wǒ jiù lái.",en:"I'll be right there."},
+  {id:27,h:"出",p:"chū",m:"to go out; to exit; out",zh:"请出去。",py:"Qǐng chūqù.",en:"Please go outside."},
+  {id:28,h:"会",p:"huì",m:"can; will; know how to; meeting",zh:"我会游泳。",py:"Wǒ huì yóuyǒng.",en:"I can swim."},
+  {id:29,h:"可",p:"kě",m:"can; may; passable; but",zh:"可以吗？",py:"Kěyǐ ma?",en:"Is that okay?"},
+  {id:30,h:"也",p:"yě",m:"also; too; as well; either",zh:"我也去。",py:"Wǒ yě qù.",en:"I'm also going."},
+  {id:31,h:"你",p:"nǐ",m:"you (singular)",zh:"你好！",py:"Nǐ hǎo!",en:"Hello!"},
+  {id:32,h:"对",p:"duì",m:"correct; right; towards; to face",zh:"对，没错。",py:"Duì, méi cuò.",en:"Correct, that's right."},
+  {id:33,h:"生",p:"shēng",m:"life; to give birth; student; raw",zh:"生日快乐！",py:"Shēngrì kuàilè!",en:"Happy birthday!"},
+  {id:34,h:"能",p:"néng",m:"can; to be able to; energy",zh:"我能跑步。",py:"Wǒ néng pǎobù.",en:"I can run."},
+  {id:35,h:"而",p:"ér",m:"and; but; while; then",zh:"学而思。",py:"Xué ér sī.",en:"Learn and then reflect."},
+  {id:36,h:"子",p:"zǐ",m:"child; son; (noun suffix)",zh:"孩子真可爱。",py:"Háizi zhēn kě'ài.",en:"Children are so adorable."},
+  {id:37,h:"那",p:"nà",m:"that; those; then",zh:"那是什么？",py:"Nà shì shénme?",en:"What is that?"},
+  {id:38,h:"得",p:"de",m:"(complement particle); to get",zh:"跑得很快。",py:"Pǎo de hěn kuài.",en:"Runs very fast."},
+  {id:39,h:"于",p:"yú",m:"at; in; from; than; for",zh:"于是。",py:"Yúshì.",en:"And so; therefore."},
+  {id:40,h:"着",p:"zhe",m:"(continuous aspect particle)",zh:"他看着书。",py:"Tā kàn zhe shū.",en:"He is reading a book."},
+  {id:41,h:"下",p:"xià",m:"below; down; under; next",zh:"楼下见！",py:"Lóu xià jiàn!",en:"See you downstairs!"},
+  {id:42,h:"自",p:"zì",m:"self; oneself; from; since",zh:"自己做饭。",py:"Zìjǐ zuòfàn.",en:"Cook for yourself."},
+  {id:43,h:"之",p:"zhī",m:"(literary possessive particle); of",zh:"之后再说。",py:"Zhīhòu zài shuō.",en:"Talk about it afterwards."},
+  {id:44,h:"年",p:"nián",m:"year; annual",zh:"新年快乐！",py:"Xīnnián kuàilè!",en:"Happy New Year!"},
+  {id:45,h:"过",p:"guò",m:"to pass; past experience (aspect)",zh:"我去过北京。",py:"Wǒ qùguò Běijīng.",en:"I've been to Beijing."},
+  {id:46,h:"发",p:"fā",m:"to send; to develop; to emit",zh:"发短信。",py:"Fā duǎnxìn.",en:"Send a text message."},
+  {id:47,h:"后",p:"hòu",m:"after; behind; rear; later",zh:"吃饭后散步。",py:"Chī fàn hòu sànbù.",en:"Walk after eating."},
+  {id:48,h:"作",p:"zuò",m:"to do; to make; work; creation",zh:"作业做完了。",py:"Zuòyè zuò wán le.",en:"The homework is done."},
+  {id:49,h:"里",p:"lǐ",m:"inside; within; in",zh:"盒子里面。",py:"Hézi lǐmiàn.",en:"Inside the box."},
+  {id:50,h:"用",p:"yòng",m:"to use; to employ; with",zh:"用筷子吃饭。",py:"Yòng kuàizi chī fàn.",en:"Eat with chopsticks."},
+  {id:51,h:"道",p:"dào",m:"road; way; method; to say",zh:"知道了！",py:"Zhīdào le!",en:"Got it! I understand!"},
+  {id:52,h:"行",p:"xíng",m:"to walk; OK; capable; a row",zh:"你真行！",py:"Nǐ zhēn xíng!",en:"You're amazing!"},
+  {id:53,h:"所",p:"suǒ",m:"place; that which; so; therefore",zh:"所以我来了。",py:"Suǒyǐ wǒ lái le.",en:"So I came."},
+  {id:54,h:"然",p:"rán",m:"so; right; correct; naturally",zh:"当然！",py:"Dāngrán!",en:"Of course!"},
+  {id:55,h:"家",p:"jiā",m:"home; family; house; expert",zh:"回家吃饭。",py:"Huí jiā chī fàn.",en:"Go home to eat."},
+  {id:56,h:"种",p:"zhǒng",m:"kind; type; species; to plant",zh:"各种颜色。",py:"Gè zhǒng yánsè.",en:"All kinds of colors."},
+  {id:57,h:"事",p:"shì",m:"matter; affair; event; work",zh:"没什么事。",py:"Méi shénme shì.",en:"Nothing's the matter."},
+  {id:58,h:"成",p:"chéng",m:"to become; to succeed; to finish",zh:"成功了！",py:"Chénggōng le!",en:"Success!"},
+  {id:59,h:"方",p:"fāng",m:"square; direction; method; place",zh:"北方很冷。",py:"Běifāng hěn lěng.",en:"The north is very cold."},
+  {id:60,h:"多",p:"duō",m:"many; much; more; how",zh:"多谢！",py:"Duōxiè!",en:"Many thanks!"},
+  {id:61,h:"经",p:"jīng",m:"to pass through; scripture; already",zh:"已经到了。",py:"Yǐjīng dào le.",en:"Already arrived."},
+  {id:62,h:"么",p:"me",m:"(question/softening particle)",zh:"什么事？",py:"Shénme shì?",en:"What's the matter?"},
+  {id:63,h:"去",p:"qù",m:"to go; to leave",zh:"我去学校。",py:"Wǒ qù xuéxiào.",en:"I go to school."},
+  {id:64,h:"法",p:"fǎ",m:"law; method; way; France",zh:"没办法。",py:"Méi bànfǎ.",en:"There's no way around it."},
+  {id:65,h:"学",p:"xué",m:"to study; to learn; school",zh:"学中文很有趣。",py:"Xué Zhōngwén hěn yǒuqù.",en:"Studying Chinese is fun."},
+  {id:66,h:"如",p:"rú",m:"if; as; like; as if",zh:"如果下雨就待在家。",py:"Rúguǒ xià yǔ jiù dāi zài jiā.",en:"If it rains, stay home."},
+  {id:67,h:"都",p:"dōu",m:"all; both; entirely; even",zh:"大家都来了。",py:"Dàjiā dōu lái le.",en:"Everyone came."},
+  {id:68,h:"同",p:"tóng",m:"same; alike; together; with",zh:"同学们，上课了。",py:"Tóngxuémen, shàngkè le.",en:"Classmates, class is starting."},
+  {id:69,h:"现",p:"xiàn",m:"now; to appear; present",zh:"现在几点了？",py:"Xiànzài jǐ diǎn le?",en:"What time is it now?"},
+  {id:70,h:"当",p:"dāng",m:"when; to serve as; to be",zh:"我想当老师。",py:"Wǒ xiǎng dāng lǎoshī.",en:"I want to be a teacher."},
+  {id:71,h:"没",p:"méi",m:"not; have not; no",zh:"没有问题。",py:"Méiyǒu wèntí.",en:"No problem."},
+  {id:72,h:"动",p:"dòng",m:"to move; motion; to use",zh:"动物园里有熊猫。",py:"Dòngwùyuán lǐ yǒu xióngmāo.",en:"There are pandas at the zoo."},
+  {id:73,h:"面",p:"miàn",m:"face; surface; side; noodles",zh:"我喜欢吃面条。",py:"Wǒ xǐhuān chī miàntiáo.",en:"I like to eat noodles."},
+  {id:74,h:"起",p:"qǐ",m:"to rise; to start; to get up",zh:"起床了！",py:"Qǐchuáng le!",en:"Get up!"},
+  {id:75,h:"看",p:"kàn",m:"to look; to see; to watch; to read",zh:"我们去看电影！",py:"Wǒmen qù kàn diànyǐng!",en:"Let's go watch a movie!"},
+  {id:76,h:"定",p:"dìng",m:"to decide; certain; fixed; definite",zh:"一定能成功！",py:"Yīdìng néng chénggōng!",en:"You can definitely succeed!"},
+  {id:77,h:"天",p:"tiān",m:"sky; day; heaven; weather",zh:"今天天气真好。",py:"Jīntiān tiānqì zhēn hǎo.",en:"The weather is lovely today."},
+  {id:78,h:"分",p:"fēn",m:"to divide; minute; point; part",zh:"考试得了一百分！",py:"Kǎoshì dé le yībǎi fēn!",en:"Got 100 points on the exam!"},
+  {id:79,h:"还",p:"hái",m:"still; yet; also; even more",zh:"还有饺子！",py:"Hái yǒu jiǎozi!",en:"There are also dumplings!"},
+  {id:80,h:"进",p:"jìn",m:"to enter; to go in; to advance",zh:"请进来坐。",py:"Qǐng jìnlái zuò.",en:"Please come in and sit."},
+  {id:81,h:"好",p:"hǎo",m:"good; well; fine; OK",zh:"你好，老师！",py:"Nǐ hǎo, lǎoshī!",en:"Hello, teacher!"},
+  {id:82,h:"小",p:"xiǎo",m:"small; little; young; petty",zh:"小猫咪好可爱。",py:"Xiǎo māomī hǎo kě'ài.",en:"The little kitten is so cute."},
+  {id:83,h:"部",p:"bù",m:"part; section; department",zh:"全部做完了。",py:"Quánbù zuò wán le.",en:"Everything is finished."},
+  {id:84,h:"其",p:"qí",m:"his/her/its; that; other; this",zh:"其他同学呢？",py:"Qítā tóngxué ne?",en:"What about the other classmates?"},
+  {id:85,h:"些",p:"xiē",m:"some; a few; a little",zh:"一些朋友来了。",py:"Yīxiē péngyou lái le.",en:"Some friends came."},
+  {id:86,h:"主",p:"zhǔ",m:"main; master; host; owner",zh:"主人回来了。",py:"Zhǔrén huílái le.",en:"The owner came back."},
+  {id:87,h:"样",p:"yàng",m:"appearance; kind; manner; way",zh:"这样就对了。",py:"Zhèyàng jiù duì le.",en:"That's the right way."},
+  {id:88,h:"理",p:"lǐ",m:"reason; principle; to manage",zh:"道理很简单。",py:"Dàolǐ hěn jiǎndān.",en:"The reasoning is simple."},
+  {id:89,h:"心",p:"xīn",m:"heart; mind; core; feelings",zh:"开心最重要！",py:"Kāixīn zuì zhòngyào!",en:"Being happy is most important!"},
+  {id:90,h:"她",p:"tā",m:"she; her",zh:"她是我的姐姐。",py:"Tā shì wǒ de jiějie.",en:"She is my older sister."},
+  {id:91,h:"本",p:"běn",m:"root; origin; this; (measure for books)",zh:"这本书很好看。",py:"Zhè běn shū hěn hǎokàn.",en:"This book is very good."},
+  {id:92,h:"前",p:"qián",m:"front; before; former; ago",zh:"以前我不会说中文。",py:"Yǐqián wǒ bù huì shuō Zhōngwén.",en:"I couldn't speak Chinese before."},
+  {id:93,h:"开",p:"kāi",m:"to open; to turn on; to start",zh:"开门！",py:"Kāi mén!",en:"Open the door!"},
+  {id:94,h:"但",p:"dàn",m:"but; however; only",zh:"但是我不知道。",py:"Dànshì wǒ bù zhīdào.",en:"But I don't know."},
+  {id:95,h:"因",p:"yīn",m:"because; reason; cause; due to",zh:"因为下雨，我们没去。",py:"Yīnwèi xià yǔ, wǒmen méi qù.",en:"We didn't go because of the rain."},
+  {id:96,h:"只",p:"zhǐ",m:"only; just; merely",zh:"只有一个。",py:"Zhǐyǒu yī gè.",en:"There is only one."},
+  {id:97,h:"从",p:"cóng",m:"from; since; through; follow",zh:"从北京来的。",py:"Cóng Běijīng lái de.",en:"(I) came from Beijing."},
+  {id:98,h:"想",p:"xiǎng",m:"to think; to want; to miss; to plan",zh:"我想你！",py:"Wǒ xiǎng nǐ!",en:"I miss you!"},
+  {id:99,h:"实",p:"shí",m:"real; solid; true; fact; honest",zh:"其实很简单。",py:"Qíshí hěn jiǎndān.",en:"Actually, it's quite simple."},
+  {id:100,h:"它",p:"tā",m:"it (non-human things or animals)",zh:"它是我的狗。",py:"Tā shì wǒ de gǒu.",en:"It is my dog."},
+  {id:101,h:"不",p:"bù",m:"not; no; un-",zh:"我不去。",py:"Wǒ bù qù.",en:"I'm not going."},
+  {id:102,h:"与",p:"yǔ",m:"and; with; to give",zh:"你与我。",py:"Nǐ yǔ wǒ.",en:"You and I."},
+  {id:103,h:"又",p:"yòu",m:"again; also; both; and",zh:"又来了！",py:"Yòu lái le!",en:"Here we go again!"},
+  {id:104,h:"长",p:"cháng",m:"long; length; forte",zh:"长城很长。",py:"Chángchéng hěn cháng.",en:"The Great Wall is very long."},
+  {id:105,h:"点",p:"diǎn",m:"point; dot; o'clock; a bit",zh:"一点点。",py:"Yī diǎn diǎn.",en:"Just a little bit."},
+  {id:106,h:"问",p:"wèn",m:"to ask; question; to inquire",zh:"我问你。",py:"Wǒ wèn nǐ.",en:"I'll ask you."},
+  {id:107,h:"将",p:"jiāng",m:"will; about to; general (military)",zh:"将来会更好。",py:"Jiānglái huì gèng hǎo.",en:"The future will be better."},
+  {id:108,h:"两",p:"liǎng",m:"two; both; a few",zh:"两个人。",py:"Liǎng gè rén.",en:"Two people."},
+  {id:109,h:"使",p:"shǐ",m:"to use; to make; cause; envoy",zh:"使用手机。",py:"Shǐyòng shǒujī.",en:"Use a cell phone."},
+  {id:110,h:"新",p:"xīn",m:"new; fresh; novel",zh:"新的开始。",py:"Xīn de kāishǐ.",en:"A new beginning."},
+  {id:111,h:"很",p:"hěn",m:"very; quite; extremely",zh:"很好吃！",py:"Hěn hǎo chī!",en:"Very delicious!"},
+  {id:112,h:"民",p:"mín",m:"people; folk; civilian",zh:"人民。",py:"Rénmín.",en:"The people."},
+  {id:113,h:"万",p:"wàn",m:"ten thousand; myriad; all",zh:"一万块钱。",py:"Yī wàn kuài qián.",en:"Ten thousand yuan."},
+  {id:114,h:"总",p:"zǒng",m:"total; always; chief; general",zh:"总是这样。",py:"Zǒng shì zhèyàng.",en:"It's always like this."},
+  {id:115,h:"给",p:"gěi",m:"to give; to; for",zh:"给我看看。",py:"Gěi wǒ kànkan.",en:"Let me take a look."},
+  {id:116,h:"被",p:"bèi",m:"(passive marker); by; quilt",zh:"被老师表扬了。",py:"Bèi lǎoshī biǎoyáng le.",en:"Got praised by the teacher."},
+  {id:117,h:"十",p:"shí",m:"ten; 10",zh:"十分钟后。",py:"Shí fēnzhōng hòu.",en:"Ten minutes later."},
+  {id:118,h:"据",p:"jù",m:"according to; evidence; to hold",zh:"据说很好吃。",py:"Jùshuō hěn hǎo chī.",en:"I heard it's delicious."},
+  {id:119,h:"无",p:"wú",m:"without; none; not have; no",zh:"无所不知。",py:"Wú suǒ bù zhī.",en:"Know everything."},
+  {id:120,h:"已",p:"yǐ",m:"already; then; to stop",zh:"已经很晚了。",py:"Yǐjīng hěn wǎn le.",en:"It's already very late."},
+  {id:121,h:"月",p:"yuè",m:"moon; month",zh:"这个月很忙。",py:"Zhège yuè hěn máng.",en:"This month is very busy."},
+  {id:122,h:"第",p:"dì",m:"(ordinal prefix); number...th",zh:"第一名！",py:"Dì yī míng!",en:"First place!"},
+  {id:123,h:"关",p:"guān",m:"to close; pass; to concern",zh:"关门！",py:"Guān mén!",en:"Close the door!"},
+  {id:124,h:"气",p:"qì",m:"air; spirit; breath; anger",zh:"天气真好。",py:"Tiānqì zhēn hǎo.",en:"The weather is lovely."},
+  {id:125,h:"化",p:"huà",m:"to change; to transform; -ize",zh:"文化很重要。",py:"Wénhuà hěn zhòngyào.",en:"Culture is very important."},
+  {id:126,h:"话",p:"huà",m:"speech; words; to talk",zh:"说话！",py:"Shuō huà!",en:"Speak!"},
+  {id:127,h:"数",p:"shù",m:"number; count; several",zh:"数学很难。",py:"Shùxué hěn nán.",en:"Math is very difficult."},
+  {id:128,h:"叫",p:"jiào",m:"to call; to be called; to shout",zh:"你叫什么名字？",py:"Nǐ jiào shénme míngzì?",en:"What's your name?"},
+  {id:129,h:"让",p:"ràng",m:"to let; to allow; to yield",zh:"让我看看。",py:"Ràng wǒ kànkan.",en:"Let me see."},
+  {id:130,h:"利",p:"lì",m:"benefit; profit; sharp; favorable",zh:"这对我有利。",py:"Zhè duì wǒ yǒu lì.",en:"This benefits me."},
+  {id:131,h:"明",p:"míng",m:"bright; clear; next (day); to understand",zh:"明天见！",py:"Míngtiān jiàn!",en:"See you tomorrow!"},
+  {id:132,h:"意",p:"yì",m:"meaning; idea; thought; wish",zh:"你是什么意思？",py:"Nǐ shì shénme yìsi?",en:"What do you mean?"},
+  {id:133,h:"写",p:"xiě",m:"to write",zh:"写作业。",py:"Xiě zuòyè.",en:"Do (write) homework."},
+  {id:134,h:"名",p:"míng",m:"name; fame; (measure for people)",zh:"第一名。",py:"Dì yī míng.",en:"First place."},
+  {id:135,h:"日",p:"rì",m:"sun; day; Japan-related",zh:"每日一学。",py:"Měi rì yī xué.",en:"Learn something new every day."},
+  {id:136,h:"知",p:"zhī",m:"to know; knowledge",zh:"知道了。",py:"Zhīdào le.",en:"I see; I understand."},
+  {id:137,h:"水",p:"shuǐ",m:"water; liquid",zh:"喝水。",py:"Hē shuǐ.",en:"Drink water."},
+  {id:138,h:"场",p:"chǎng",m:"field; venue; occasion",zh:"操场上玩。",py:"Cāochǎng shàng wán.",en:"Play on the sports field."},
+  {id:139,h:"机",p:"jī",m:"machine; opportunity; airplane",zh:"坐飞机去。",py:"Zuò fēijī qù.",en:"Go by airplane."},
+  {id:140,h:"情",p:"qíng",m:"feeling; emotion; situation; love",zh:"感情很深。",py:"Gǎnqíng hěn shēn.",en:"The feelings are deep."},
+  {id:141,h:"工",p:"gōng",m:"work; industry; worker",zh:"上班工作。",py:"Shàngbān gōngzuò.",en:"Go to work."},
+  {id:142,h:"见",p:"jiàn",m:"to see; to meet; view",zh:"再见！",py:"Zàijiàn!",en:"Goodbye!"},
+  {id:143,h:"力",p:"lì",m:"strength; power; ability",zh:"努力学习！",py:"Nǔlì xuéxí!",en:"Study hard!"},
+  {id:144,h:"带",p:"dài",m:"to take along; zone; belt; tape",zh:"带雨伞。",py:"Dài yǔsǎn.",en:"Bring an umbrella."},
+  {id:145,h:"比",p:"bǐ",m:"to compare; than; ratio",zh:"比我高。",py:"Bǐ wǒ gāo.",en:"Taller than me."},
+  {id:146,h:"最",p:"zuì",m:"most; -est (superlative)",zh:"最喜欢吃饺子。",py:"Zuì xǐhuān chī jiǎozi.",en:"Love eating dumplings most."},
+  {id:147,h:"系",p:"xì",m:"system; to tie; series; department",zh:"联系我！",py:"Liánxì wǒ!",en:"Contact me!"},
+  {id:148,h:"及",p:"jí",m:"and; to reach; up to; in time",zh:"以及。",py:"Yǐjí.",en:"As well as; and."},
+  {id:149,h:"全",p:"quán",m:"complete; whole; all; entirely",zh:"全家人。",py:"Quán jiā rén.",en:"The whole family."},
+  {id:150,h:"位",p:"wèi",m:"position; seat; (honorific measure)",zh:"各位同学。",py:"Gèwèi tóngxué.",en:"Everyone (dear classmates)."},
+  {id:151,h:"几",p:"jǐ",m:"how many; several; a few",zh:"你几岁？",py:"Nǐ jǐ suì?",en:"How old are you?"},
+  {id:152,h:"特",p:"tè",m:"special; particular; especially",zh:"特别好吃！",py:"Tèbié hǎo chī!",en:"Especially delicious!"},
+  {id:153,h:"三",p:"sān",m:"three",zh:"三个好朋友。",py:"Sān gè hǎo péngyou.",en:"Three good friends."},
+  {id:154,h:"代",p:"dài",m:"generation; dynasty; to substitute",zh:"新一代。",py:"Xīn yī dài.",en:"A new generation."},
+  {id:155,h:"结",p:"jié",m:"to tie; to conclude; result; knot",zh:"结束了。",py:"Jiéshù le.",en:"It's over; finished."},
+  {id:156,h:"体",p:"tǐ",m:"body; form; style; physical",zh:"身体健康。",py:"Shēntǐ jiànkāng.",en:"Good health."},
+  {id:157,h:"际",p:"jì",m:"boundary; occasion; between",zh:"国际学校。",py:"Guójì xuéxiào.",en:"International school."},
+  {id:158,h:"者",p:"zhě",m:"(agentive suffix); one who; -er",zh:"学习者。",py:"Xuéxí zhě.",en:"A learner."},
+  {id:159,h:"华",p:"huá",m:"Chinese; magnificent; splendid",zh:"中华文化。",py:"Zhōnghuá wénhuà.",en:"Chinese culture."},
+  {id:160,h:"文",p:"wén",m:"language; literature; writing; culture",zh:"中文好难！",py:"Zhōngwén hǎo nán!",en:"Chinese is so hard!"},
+  {id:161,h:"今",p:"jīn",m:"today; now; current; this",zh:"今天几号？",py:"Jīntiān jǐ hào?",en:"What's today's date?"},
+  {id:162,h:"号",p:"hào",m:"number; date; size; mark",zh:"几号？",py:"Jǐ hào?",en:"What date/number?"},
+  {id:163,h:"重",p:"zhòng",m:"heavy; important; serious",zh:"这很重要。",py:"Zhè hěn zhòngyào.",en:"This is very important."},
+  {id:164,h:"向",p:"xiàng",m:"towards; direction; to face",zh:"向前走。",py:"Xiàng qián zǒu.",en:"Walk forward."},
+  {id:165,h:"次",p:"cì",m:"time; occasion; order; next",zh:"下次再来。",py:"Xià cì zài lái.",en:"Come again next time."},
+  {id:166,h:"该",p:"gāi",m:"should; ought to; this/that; owe",zh:"你该睡觉了。",py:"Nǐ gāi shuìjiào le.",en:"You should go to sleep."},
+  {id:167,h:"若",p:"ruò",m:"if; as if; like; weak",zh:"若是这样。",py:"Ruò shì zhèyàng.",en:"If that's the case."},
+  {id:168,h:"更",p:"gèng",m:"more; even more; to change",zh:"更好了！",py:"Gèng hǎo le!",en:"Even better!"},
+  {id:169,h:"期",p:"qī",m:"period; phase; to expect; scheduled",zh:"星期几？",py:"Xīngqī jǐ?",en:"What day of the week?"},
+  {id:170,h:"活",p:"huó",m:"to live; alive; work; living; flexible",zh:"生活很美好。",py:"Shēnghuó hěn měihǎo.",en:"Life is beautiful."},
+  {id:171,h:"回",p:"huí",m:"to return; to go back; time (measure)",zh:"回家了！",py:"Huí jiā le!",en:"Going home!"},
+  {id:172,h:"通",p:"tōng",m:"to connect; through; common; to communicate",zh:"交通方便。",py:"Jiāotōng fāngbiàn.",en:"Transportation is convenient."},
+  {id:173,h:"外",p:"wài",m:"outside; foreign; other",zh:"外面下雨了。",py:"Wàimiàn xià yǔ le.",en:"It's raining outside."},
+  {id:174,h:"必",p:"bì",m:"must; certainly; necessarily",zh:"必须努力。",py:"Bìxū nǔlì.",en:"Must work hard."},
+  {id:175,h:"目",p:"mù",m:"eye; item; list; title",zh:"题目是什么？",py:"Títù shì shénme?",en:"What's the topic/title?"},
+  {id:176,h:"内",p:"nèi",m:"inside; within; internal",zh:"室内游泳。",py:"Shìnèi yóuyǒng.",en:"Indoor swimming."},
+  {id:177,h:"告",p:"gào",m:"to tell; to announce; to sue",zh:"告诉我。",py:"Gàosu wǒ.",en:"Tell me."},
+  {id:178,h:"世",p:"shì",m:"world; generation; era; lifetime",zh:"世界真大。",py:"Shìjiè zhēn dà.",en:"The world is so big."},
+  {id:179,h:"型",p:"xíng",m:"type; model; mold; style",zh:"新型产品。",py:"Xīn xíng chǎnpǐn.",en:"New type of product."},
+  {id:180,h:"支",p:"zhī",m:"to support; branch; (measure for pens)",zh:"一支铅笔。",py:"Yī zhī qiānbǐ.",en:"One pencil."},
+  {id:181,h:"正",p:"zhèng",m:"correct; upright; just; exactly",zh:"正好！",py:"Zhènghǎo!",en:"Perfect! Just right!"},
+  {id:182,h:"受",p:"shòu",m:"to receive; to endure; to bear",zh:"受不了！",py:"Shòu bù liǎo!",en:"Can't stand it!"},
+  {id:183,h:"加",p:"jiā",m:"to add; plus; more",zh:"加油！",py:"Jiāyóu!",en:"Go for it! Come on!"},
+  {id:184,h:"何",p:"hé",m:"how; what; why; which; any",zh:"为何？",py:"Wèihé?",en:"Why?"},
+  {id:185,h:"产",p:"chǎn",m:"to produce; product; property",zh:"国产手机。",py:"Guóchǎn shǒujī.",en:"Domestically made phone."},
+  {id:186,h:"军",p:"jūn",m:"army; military; soldier",zh:"解放军。",py:"Jiěfàngjūn.",en:"People's Liberation Army."},
+  {id:187,h:"市",p:"shì",m:"city; market; to buy/sell",zh:"城市生活。",py:"Chéngshì shēnghuó.",en:"City life."},
+  {id:188,h:"间",p:"jiān",m:"between; room; space; time",zh:"时间到了！",py:"Shíjiān dào le!",en:"Time is up!"},
+  {id:189,h:"反",p:"fǎn",m:"reverse; to oppose; to turn back",zh:"反正都一样。",py:"Fǎnzhèng dōu yīyàng.",en:"Anyway it's all the same."},
+  {id:190,h:"打",p:"dǎ",m:"to hit; to play (sports); to call",zh:"打电话。",py:"Dǎ diànhuà.",en:"Make a phone call."},
+  {id:191,h:"具",p:"jù",m:"tool; to possess; (measure for sets)",zh:"玩具很多。",py:"Wánjù hěn duō.",en:"Lots of toys."},
+  {id:192,h:"联",p:"lián",m:"to link; unite; alliance; couplet",zh:"联系我哦。",py:"Liánxì wǒ ō.",en:"Stay in touch with me."},
+  {id:193,h:"太",p:"tài",m:"too; excessively; very; great",zh:"太好了！",py:"Tài hǎo le!",en:"Great! Wonderful!"},
+  {id:194,h:"业",p:"yè",m:"profession; industry; studies; karma",zh:"毕业了！",py:"Bìyè le!",en:"Graduated!"},
+  {id:195,h:"组",p:"zǔ",m:"group; team; to organize",zh:"分组讨论。",py:"Fēnzǔ tǎolùn.",en:"Discuss in groups."},
+  {id:196,h:"书",p:"shū",m:"book; letter; document",zh:"图书馆。",py:"Túshūguǎn.",en:"Library."},
+  {id:197,h:"己",p:"jǐ",m:"oneself; self",zh:"自己的事。",py:"Zìjǐ de shì.",en:"One's own business."},
+  {id:198,h:"需",p:"xū",m:"to need; need; requirement",zh:"需要帮助吗？",py:"Xūyào bāngzhù ma?",en:"Need any help?"},
+  {id:199,h:"四",p:"sì",m:"four; 4",zh:"四季如春。",py:"Sì jì rú chūn.",en:"Spring-like all four seasons."},
+  {id:200,h:"七",p:"qī",m:"seven; 7",zh:"七彩虹。",py:"Qī cǎi hóng.",en:"Seven-colored rainbow."},
+  {id:201,h:"五",p:"wǔ",m:"five; 5",zh:"五颜六色。",py:"Wǔ yán liù sè.",en:"Colorful (lit. five colors six colors)."},
+  {id:202,h:"六",p:"liù",m:"six; 6",zh:"六月份。",py:"Liù yuèfèn.",en:"The month of June."},
+  {id:203,h:"八",p:"bā",m:"eight; 8",zh:"八月份。",py:"Bā yuèfèn.",en:"The month of August."},
+  {id:204,h:"九",p:"jiǔ",m:"nine; 9",zh:"九月份。",py:"Jiǔ yuèfèn.",en:"The month of September."},
+  {id:205,h:"二",p:"èr",m:"two; 2; second",zh:"二月份。",py:"Èr yuèfèn.",en:"February."},
+  {id:206,h:"百",p:"bǎi",m:"hundred; 100",zh:"一百分！",py:"Yī bǎi fēn!",en:"One hundred points!"},
+  {id:207,h:"千",p:"qiān",m:"thousand; 1000",zh:"一千元。",py:"Yī qiān yuán.",en:"One thousand yuan."},
+  {id:208,h:"元",p:"yuán",m:"yuan (currency); element; first",zh:"一元硬币。",py:"Yī yuán yìngbì.",en:"A one-yuan coin."},
+  {id:209,h:"义",p:"yì",m:"righteousness; meaning; justice",zh:"讲义气。",py:"Jiǎng yìqì.",en:"Be loyal to friends."},
+  {id:210,h:"各",p:"gè",m:"each; every; various",zh:"各种各样。",py:"Gè zhǒng gè yàng.",en:"All kinds."},
+  {id:211,h:"原",p:"yuán",m:"original; source; to forgive; plain",zh:"原来如此。",py:"Yuánlái rúcǐ.",en:"So that's how it is!"},
+  {id:212,h:"花",p:"huā",m:"flower; to spend (money/time); pattern",zh:"花很漂亮。",py:"Huā hěn piàoliang.",en:"The flowers are beautiful."},
+  {id:213,h:"物",p:"wù",m:"thing; object; creature",zh:"动物很可爱。",py:"Dòngwù hěn kě'ài.",en:"Animals are cute."},
+  {id:214,h:"口",p:"kǒu",m:"mouth; opening; (measure for people/wells)",zh:"人口很多。",py:"Rénkǒu hěn duō.",en:"Large population."},
+  {id:215,h:"电",p:"diàn",m:"electricity; electric; telegram",zh:"充电。",py:"Chōng diàn.",en:"Charge (a battery)."},
+  {id:216,h:"门",p:"mén",m:"door; gate; (measure for subjects)",zh:"门口见。",py:"Ménkǒu jiàn.",en:"Meet at the entrance."},
+  {id:217,h:"头",p:"tóu",m:"head; top; (suffix for person/thing)",zh:"头发很长。",py:"Tóufa hěn cháng.",en:"Long hair."},
+  {id:218,h:"走",p:"zǒu",m:"to walk; to go; to leave",zh:"走路上学。",py:"Zǒulù shàngxué.",en:"Walk to school."},
+  {id:219,h:"声",p:"shēng",m:"sound; voice; (measure for sounds)",zh:"大声说！",py:"Dà shēng shuō!",en:"Speak loudly!"},
+  {id:220,h:"手",p:"shǒu",m:"hand; (measure for skills)",zh:"洗手！",py:"Xǐ shǒu!",en:"Wash your hands!"},
+  {id:221,h:"友",p:"yǒu",m:"friend; friendly",zh:"好朋友。",py:"Hǎo péngyou.",en:"Good friends."},
+  {id:222,h:"白",p:"bái",m:"white; clear; in vain",zh:"白色的云。",py:"Báisè de yún.",en:"White clouds."},
+  {id:223,h:"黑",p:"hēi",m:"black; dark; wicked",zh:"黑夜里的星星。",py:"Hēi yè lǐ de xīngxīng.",en:"Stars in the dark night."},
+  {id:224,h:"红",p:"hóng",m:"red; revolutionary; bonus",zh:"红色的花。",py:"Hóngsè de huā.",en:"Red flowers."},
+  {id:225,h:"绿",p:"lǜ",m:"green",zh:"绿色的树。",py:"Lǜsè de shù.",en:"Green trees."},
+  {id:226,h:"黄",p:"huáng",m:"yellow; (surname Huang)",zh:"黄色的太阳。",py:"Huángsè de tàiyáng.",en:"Yellow sun."},
+  {id:227,h:"蓝",p:"lán",m:"blue",zh:"蓝天白云。",py:"Lán tiān bái yún.",en:"Blue sky white clouds."},
+  {id:228,h:"食",p:"shí",m:"food; to eat (formal)",zh:"食物很美味。",py:"Shíwù hěn měiwèi.",en:"The food is delicious."},
+  {id:229,h:"饭",p:"fàn",m:"cooked rice; meal",zh:"吃晚饭。",py:"Chī wǎnfàn.",en:"Eat dinner."},
+  {id:230,h:"菜",p:"cài",m:"vegetable; dish; cuisine",zh:"中国菜很好吃。",py:"Zhōngguó cài hěn hǎo chī.",en:"Chinese food is delicious."},
+  {id:231,h:"茶",p:"chá",m:"tea",zh:"喝茶。",py:"Hē chá.",en:"Drink tea."},
+  {id:232,h:"鱼",p:"yú",m:"fish",zh:"吃鱼。",py:"Chī yú.",en:"Eat fish."},
+  {id:233,h:"肉",p:"ròu",m:"meat; flesh",zh:"我不吃肉。",py:"Wǒ bù chī ròu.",en:"I don't eat meat."},
+  {id:234,h:"语",p:"yǔ",m:"language; words; to say",zh:"语文课。",py:"Yǔwén kè.",en:"Chinese language class."},
+  {id:235,h:"课",p:"kè",m:"class; lesson; subject",zh:"上课了！",py:"Shàng kè le!",en:"Class is starting!"},
+  {id:236,h:"校",p:"xiào",m:"school",zh:"学校很大。",py:"Xuéxiào hěn dà.",en:"The school is big."},
+  {id:237,h:"老",p:"lǎo",m:"old; aged; experienced; always",zh:"老师好！",py:"Lǎoshī hǎo!",en:"Hello teacher!"},
+  {id:238,h:"师",p:"shī",m:"teacher; master; expert",zh:"老师很好。",py:"Lǎoshī hěn hǎo.",en:"The teacher is great."},
+  {id:239,h:"习",p:"xí",m:"to practice; habit; custom",zh:"学习很重要。",py:"Xuéxí hěn zhòngyào.",en:"Learning is very important."},
+  {id:240,h:"题",p:"tí",m:"topic; question; problem; title",zh:"这道题太难了。",py:"Zhè dào tí tài nán le.",en:"This problem is too difficult."},
+  {id:241,h:"难",p:"nán",m:"difficult; hard; embarrassing",zh:"太难了！",py:"Tài nán le!",en:"Too difficult!"},
+  {id:242,h:"易",p:"yì",m:"easy; simple; to change",zh:"容易记住。",py:"Róngyì jìzhù.",en:"Easy to remember."},
+  {id:243,h:"懂",p:"dǒng",m:"to understand; to know",zh:"我懂了！",py:"Wǒ dǒng le!",en:"I understand!"},
+  {id:244,h:"答",p:"dá",m:"to answer; answer; reply",zh:"回答问题。",py:"Huídá wèntí.",en:"Answer the question."},
+  {id:245,h:"错",p:"cuò",m:"wrong; mistake; error",zh:"没错！",py:"Méi cuò!",en:"That's right! (No mistake!)"},
+  {id:246,h:"真",p:"zhēn",m:"real; true; genuine; really",zh:"真的吗？",py:"Zhēn de ma?",en:"Really?"},
+  {id:247,h:"假",p:"jiǎ",m:"fake; false; holiday",zh:"放假了！",py:"Fàngjià le!",en:"It's holiday time!"},
+  {id:248,h:"候",p:"hòu",m:"time; to wait on; season",zh:"等候。",py:"Děnghòu.",en:"Wait; await."},
+  {id:249,h:"找",p:"zhǎo",m:"to look for; to find; to seek",zh:"找不到！",py:"Zhǎo bù dào!",en:"Can't find it!"},
+  {id:250,h:"等",p:"děng",m:"to wait; to be equal; etc.",zh:"等一下！",py:"Děng yīxià!",en:"Wait a moment!"},
+  {id:251,h:"快",p:"kuài",m:"fast; quick; happy; soon",zh:"快点来！",py:"Kuài diǎn lái!",en:"Come quickly!"},
+  {id:252,h:"慢",p:"màn",m:"slow; slowly",zh:"慢慢来。",py:"Màn màn lái.",en:"Take it slowly."},
+  {id:253,h:"高",p:"gāo",m:"tall; high; excellent",zh:"他很高。",py:"Tā hěn gāo.",en:"He is very tall."},
+  {id:254,h:"矮",p:"ǎi",m:"short (in height); low",zh:"我比他矮。",py:"Wǒ bǐ tā ǎi.",en:"I'm shorter than him."},
+  {id:255,h:"胖",p:"pàng",m:"fat; chubby; plump",zh:"猫咪很胖。",py:"Māomī hěn pàng.",en:"The kitty is very chubby."},
+  {id:256,h:"瘦",p:"shòu",m:"thin; slim; lean",zh:"她很瘦。",py:"Tā hěn shòu.",en:"She is very slim."},
+  {id:257,h:"冷",p:"lěng",m:"cold; indifferent",zh:"今天很冷。",py:"Jīntiān hěn lěng.",en:"It's very cold today."},
+  {id:258,h:"热",p:"rè",m:"hot; heat; fever; popular",zh:"天气很热。",py:"Tiānqì hěn rè.",en:"The weather is very hot."},
+  {id:259,h:"暖",p:"nuǎn",m:"warm; warm-hearted",zh:"春天很暖和。",py:"Chūntiān hěn nuǎnhuo.",en:"Spring is warm."},
+  {id:260,h:"凉",p:"liáng",m:"cool; cold; disappointed",zh:"秋天凉快。",py:"Qiūtiān liángkuai.",en:"Autumn is cool."},
+  {id:261,h:"春",p:"chūn",m:"spring (season)",zh:"春天来了。",py:"Chūntiān lái le.",en:"Spring is here."},
+  {id:262,h:"夏",p:"xià",m:"summer",zh:"夏天很热。",py:"Xiàtiān hěn rè.",en:"Summer is very hot."},
+  {id:263,h:"秋",p:"qiū",m:"autumn; fall",zh:"秋天的叶子。",py:"Qiūtiān de yèzi.",en:"Autumn leaves."},
+  {id:264,h:"冬",p:"dōng",m:"winter",zh:"冬天下雪。",py:"Dōngtiān xià xuě.",en:"It snows in winter."},
+  {id:265,h:"雨",p:"yǔ",m:"rain; to rain",zh:"下雨了！",py:"Xià yǔ le!",en:"It's raining!"},
+  {id:266,h:"雪",p:"xuě",m:"snow; to snow",zh:"下雪了！",py:"Xià xuě le!",en:"It's snowing!"},
+  {id:267,h:"风",p:"fēng",m:"wind; style; custom",zh:"风很大。",py:"Fēng hěn dà.",en:"The wind is strong."},
+  {id:268,h:"阳",p:"yáng",m:"sun; positive; male; bright",zh:"太阳出来了。",py:"Tàiyáng chūlái le.",en:"The sun came out."},
+  {id:269,h:"云",p:"yún",m:"cloud",zh:"白云。",py:"Bái yún.",en:"White clouds."},
+  {id:270,h:"星",p:"xīng",m:"star; (honorific for celebrities)",zh:"星星闪闪亮。",py:"Xīngxīng shǎnshǎn liàng.",en:"The stars are shining brightly."},
+  {id:271,h:"光",p:"guāng",m:"light; ray; glory; bare",zh:"阳光明媚。",py:"Yángguāng míngmèi.",en:"The sunshine is bright."},
+  {id:272,h:"火",p:"huǒ",m:"fire; anger; popular; ammunition",zh:"着火了！",py:"Zháohuǒ le!",en:"It's on fire!"},
+  {id:273,h:"土",p:"tǔ",m:"earth; soil; local; native",zh:"土地。",py:"Tǔdì.",en:"Land; soil."},
+  {id:274,h:"石",p:"shí",m:"stone; rock",zh:"石头。",py:"Shítou.",en:"Stone; rock."},
+  {id:275,h:"金",p:"jīn",m:"gold; metal; money",zh:"黄金。",py:"Huángjīn.",en:"Gold."},
+  {id:276,h:"木",p:"mù",m:"wood; tree; numb",zh:"木头。",py:"Mùtou.",en:"Wood; lumber."},
+  {id:277,h:"树",p:"shù",m:"tree",zh:"大树。",py:"Dà shù.",en:"Big tree."},
+  {id:278,h:"草",p:"cǎo",m:"grass; draft; careless; herb",zh:"草地上玩。",py:"Cǎodì shàng wán.",en:"Play on the grass."},
+  {id:279,h:"鸟",p:"niǎo",m:"bird",zh:"小鸟唱歌。",py:"Xiǎo niǎo chànggē.",en:"The little bird sings."},
+  {id:280,h:"虫",p:"chóng",m:"insect; worm; invertebrate",zh:"毛毛虫。",py:"Máomáochóng.",en:"Caterpillar."},
+  {id:281,h:"猫",p:"māo",m:"cat",zh:"我的猫很可爱。",py:"Wǒ de māo hěn kě'ài.",en:"My cat is very cute."},
+  {id:282,h:"狗",p:"gǒu",m:"dog",zh:"狗是好朋友。",py:"Gǒu shì hǎo péngyou.",en:"Dogs are good friends."},
+  {id:283,h:"马",p:"mǎ",m:"horse",zh:"骑马。",py:"Qí mǎ.",en:"Ride a horse."},
+  {id:284,h:"牛",p:"niú",m:"cow; ox; awesome (slang)",zh:"真牛！",py:"Zhēn niú!",en:"Awesome!"},
+  {id:285,h:"羊",p:"yáng",m:"sheep; goat",zh:"小羊。",py:"Xiǎo yáng.",en:"Little lamb."},
+  {id:286,h:"猪",p:"zhū",m:"pig; pork",zh:"小猪佩奇！",py:"Xiǎo zhū Pèiqí!",en:"Peppa Pig!"},
+  {id:287,h:"鸡",p:"jī",m:"chicken; fowl",zh:"鸡蛋。",py:"Jīdàn.",en:"Egg (lit. chicken egg)."},
+  {id:288,h:"兔",p:"tù",m:"rabbit",zh:"小白兔。",py:"Xiǎo bái tù.",en:"Little white rabbit."},
+  {id:289,h:"熊",p:"xióng",m:"bear",zh:"熊猫。",py:"Xióngmāo.",en:"Panda."},
+  {id:290,h:"象",p:"xiàng",m:"elephant; appearance; image",zh:"大象。",py:"Dàxiàng.",en:"Elephant."},
+  {id:291,h:"飞",p:"fēi",m:"to fly; to flit",zh:"飞机。",py:"Fēijī.",en:"Airplane."},
+  {id:292,h:"车",p:"chē",m:"vehicle; car",zh:"坐车去。",py:"Zuò chē qù.",en:"Go by car."},
+  {id:293,h:"船",p:"chuán",m:"boat; ship",zh:"坐船旅行。",py:"Zuò chuán lǚxíng.",en:"Travel by boat."},
+  {id:294,h:"路",p:"lù",m:"road; path; route; way",zh:"过马路。",py:"Guò mǎlù.",en:"Cross the road."},
+  {id:295,h:"桥",p:"qiáo",m:"bridge",zh:"过桥。",py:"Guò qiáo.",en:"Cross the bridge."},
+  {id:296,h:"楼",p:"lóu",m:"building; floor; storey",zh:"上楼。",py:"Shàng lóu.",en:"Go upstairs."},
+  {id:297,h:"房",p:"fáng",m:"house; room; building",zh:"房子。",py:"Fángzi.",en:"House."},
+  {id:298,h:"窗",p:"chuāng",m:"window",zh:"打开窗户。",py:"Dǎkāi chuānghù.",en:"Open the window."},
+  {id:299,h:"床",p:"chuáng",m:"bed",zh:"起床！",py:"Qǐchuáng!",en:"Get out of bed!"},
+  {id:300,h:"桌",p:"zhuō",m:"table; desk",zh:"桌子上的书。",py:"Zhuōzi shàng de shū.",en:"Books on the desk."},
+  {id:301,h:"椅",p:"yǐ",m:"chair",zh:"坐椅子。",py:"Zuò yǐzi.",en:"Sit on the chair."},
+  {id:302,h:"灯",p:"dēng",m:"lamp; light; lantern",zh:"开灯！",py:"Kāi dēng!",en:"Turn on the light!"},
+  {id:303,h:"钟",p:"zhōng",m:"clock; bell",zh:"闹钟。",py:"Nàozhōng.",en:"Alarm clock."},
+  {id:304,h:"笔",p:"bǐ",m:"pen; pencil; stroke",zh:"铅笔。",py:"Qiānbǐ.",en:"Pencil."},
+  {id:305,h:"纸",p:"zhǐ",m:"paper",zh:"一张纸。",py:"Yī zhāng zhǐ.",en:"A piece of paper."},
+  {id:306,h:"字",p:"zì",m:"character; word; handwriting",zh:"写汉字。",py:"Xiě Hànzì.",en:"Write Chinese characters."},
+  {id:307,h:"词",p:"cí",m:"word; lyrics",zh:"学新词。",py:"Xué xīn cí.",en:"Learn new words."},
+  {id:308,h:"句",p:"jù",m:"sentence; (measure for sentences)",zh:"说一句话。",py:"Shuō yī jù huà.",en:"Say a sentence."},
+  {id:309,h:"故",p:"gù",m:"old; hence; reason; to die",zh:"故事。",py:"Gùshi.",en:"Story; tale."},
+  {id:310,h:"歌",p:"gē",m:"song; to sing",zh:"唱歌。",py:"Chànggē.",en:"Sing a song."},
+  {id:311,h:"音",p:"yīn",m:"sound; music; news",zh:"音乐。",py:"Yīnyuè.",en:"Music."},
+  {id:312,h:"乐",p:"lè",m:"happy; joy; music (yuè)",zh:"快乐。",py:"Kuàilè.",en:"Happy."},
+  {id:313,h:"画",p:"huà",m:"to paint; picture; drawing",zh:"画画。",py:"Huà huà.",en:"Draw; paint."},
+  {id:314,h:"色",p:"sè",m:"color; appearance; kind",zh:"颜色。",py:"Yánsè.",en:"Color."},
+  {id:315,h:"彩",p:"cǎi",m:"color; multicolored; prize",zh:"彩虹。",py:"Cǎihóng.",en:"Rainbow."},
+  {id:316,h:"跑",p:"pǎo",m:"to run; to flee",zh:"跑步锻炼。",py:"Pǎobù duànliàn.",en:"Run for exercise."},
+  {id:317,h:"跳",p:"tiào",m:"to jump; to skip; to dance",zh:"跳舞。",py:"Tiàowǔ.",en:"Dance."},
+  {id:318,h:"坐",p:"zuò",m:"to sit; to travel by",zh:"请坐！",py:"Qǐng zuò!",en:"Please sit!"},
+  {id:319,h:"站",p:"zhàn",m:"to stand; station; stop",zh:"公交站。",py:"Gōngjiāo zhàn.",en:"Bus stop."},
+  {id:320,h:"睡",p:"shuì",m:"to sleep; to lie down",zh:"睡觉了！",py:"Shuìjiào le!",en:"Time to sleep!"},
+  {id:321,h:"醒",p:"xǐng",m:"to wake up; to be clear-headed",zh:"醒来了。",py:"Xǐng lái le.",en:"Woke up."},
+  {id:322,h:"笑",p:"xiào",m:"to smile; to laugh",zh:"大家都笑了。",py:"Dàjiā dōu xiào le.",en:"Everyone laughed."},
+  {id:323,h:"哭",p:"kū",m:"to cry; to weep",zh:"不要哭。",py:"Bù yào kū.",en:"Don't cry."},
+  {id:324,h:"唱",p:"chàng",m:"to sing",zh:"唱歌。",py:"Chànggē.",en:"Sing."},
+  {id:325,h:"玩",p:"wán",m:"to play; to enjoy",zh:"出去玩！",py:"Chūqù wán!",en:"Go out and play!"},
+  {id:326,h:"喝",p:"hē",m:"to drink",zh:"喝水。",py:"Hē shuǐ.",en:"Drink water."},
+  {id:327,h:"吃",p:"chī",m:"to eat; to have a meal",zh:"吃饭了！",py:"Chī fàn le!",en:"Time to eat!"},
+  {id:328,h:"做",p:"zuò",m:"to do; to make; to be",zh:"做作业。",py:"Zuò zuòyè.",en:"Do homework."},
+  {id:329,h:"买",p:"mǎi",m:"to buy; to purchase",zh:"买东西。",py:"Mǎi dōngxi.",en:"Buy things/go shopping."},
+  {id:330,h:"卖",p:"mài",m:"to sell",zh:"卖东西。",py:"Mài dōngxi.",en:"Sell things."},
+  {id:331,h:"送",p:"sòng",m:"to send; to give (gift); to escort",zh:"送礼物。",py:"Sòng lǐwù.",en:"Give a gift."},
+  {id:332,h:"接",p:"jiē",m:"to receive; to connect; to meet",zh:"接电话。",py:"Jiē diànhuà.",en:"Answer the phone."},
+  {id:333,h:"放",p:"fàng",m:"to put; to release; to let go",zh:"放学了！",py:"Fàngxué le!",en:"School is out!"},
+  {id:334,h:"举",p:"jǔ",m:"to lift; to raise; to choose",zh:"举手。",py:"Jǔ shǒu.",en:"Raise your hand."},
+  {id:335,h:"拿",p:"ná",m:"to take; to hold; to get",zh:"拿去吧。",py:"Ná qù ba.",en:"Take it."},
+  {id:336,h:"推",p:"tuī",m:"to push; to promote",zh:"推门。",py:"Tuī mén.",en:"Push the door."},
+  {id:337,h:"拉",p:"lā",m:"to pull; to play (string instruments)",zh:"拉小提琴。",py:"Lā xiǎotíqín.",en:"Play violin."},
+  {id:338,h:"抱",p:"bào",m:"to hug; to hold in arms",zh:"抱抱！",py:"Bàobào!",en:"Hug!"},
+  {id:339,h:"亲",p:"qīn",m:"parent; relative; to kiss; dear",zh:"亲爱的妈妈。",py:"Qīn'ài de māma.",en:"Dear mom."},
+  {id:340,h:"爱",p:"ài",m:"love; to love; to like",zh:"我爱你！",py:"Wǒ ài nǐ!",en:"I love you!"},
+  {id:341,h:"喜",p:"xǐ",m:"happy; to like; joy",zh:"喜欢你。",py:"Xǐhuān nǐ.",en:"Like you."},
+  {id:342,h:"欢",p:"huān",m:"happy; joyful; to enjoy",zh:"欢迎！",py:"Huānyíng!",en:"Welcome!"},
+  {id:343,h:"怕",p:"pà",m:"to fear; afraid of",zh:"不怕！",py:"Bù pà!",en:"Not afraid!"},
+  {id:344,h:"忘",p:"wàng",m:"to forget",zh:"忘了！",py:"Wàng le!",en:"Forgot!"},
+  {id:345,h:"记",p:"jì",m:"to remember; to record; mark",zh:"记住了！",py:"Jìzhù le!",en:"Got it! Remembered!"},
+  {id:346,h:"念",p:"niàn",m:"to read aloud; to miss; to study",zh:"念书。",py:"Niàn shū.",en:"Study; read books aloud."},
+  {id:347,h:"读",p:"dú",m:"to read; to study",zh:"读书好。",py:"Dú shū hǎo.",en:"Reading is great."},
+  {id:348,h:"听",p:"tīng",m:"to listen; to hear; to obey",zh:"听音乐。",py:"Tīng yīnyuè.",en:"Listen to music."},
+  {id:349,h:"讲",p:"jiǎng",m:"to speak; to explain; to stress",zh:"讲故事。",py:"Jiǎng gùshi.",en:"Tell a story."},
+  {id:350,h:"喊",p:"hǎn",m:"to shout; to call out",zh:"大声喊。",py:"Dà shēng hǎn.",en:"Shout loudly."},
+  {id:351,h:"教",p:"jiāo",m:"to teach; teaching",zh:"教中文。",py:"Jiāo Zhōngwén.",en:"Teach Chinese."},
+  {id:352,h:"帮",p:"bāng",m:"to help; group; gang",zh:"帮帮我！",py:"Bāng bāng wǒ!",en:"Help me!"},
+  {id:353,h:"谢",p:"xiè",m:"to thank; to decline; to wither",zh:"谢谢！",py:"Xièxiè!",en:"Thank you!"},
+  {id:354,h:"请",p:"qǐng",m:"to please; to invite; please",zh:"请进！",py:"Qǐng jìn!",en:"Please come in!"},
+  {id:355,h:"坏",p:"huài",m:"bad; broken; corrupt",zh:"坏掉了！",py:"Huài diào le!",en:"It's broken!"},
+  {id:356,h:"美",p:"měi",m:"beautiful; America; good",zh:"美丽的风景。",py:"Měilì de fēngjǐng.",en:"Beautiful scenery."},
+  {id:357,h:"亮",p:"liàng",m:"bright; shiny; light",zh:"真漂亮！",py:"Zhēn piàoliang!",en:"So beautiful!"},
+  {id:358,h:"暗",p:"àn",m:"dark; dim; secret",zh:"天暗了。",py:"Tiān àn le.",en:"It got dark."},
+  {id:359,h:"干",p:"gān",m:"dry; (gàn: to do; work)",zh:"干什么？",py:"Gàn shénme?",en:"What are you doing?"},
+  {id:360,h:"净",p:"jìng",m:"clean; pure; only",zh:"干干净净。",py:"Gān gān jìng jìng.",en:"Spotlessly clean."},
+  {id:361,h:"脏",p:"zāng",m:"dirty; filthy",zh:"衣服脏了。",py:"Yīfu zāng le.",en:"The clothes got dirty."},
+  {id:362,h:"香",p:"xiāng",m:"fragrant; nice-smelling; delicious",zh:"好香啊！",py:"Hǎo xiāng a!",en:"So fragrant!"},
+  {id:363,h:"甜",p:"tián",m:"sweet",zh:"很甜！",py:"Hěn tián!",en:"Very sweet!"},
+  {id:364,h:"苦",p:"kǔ",m:"bitter; painful; to suffer",zh:"苦尽甘来。",py:"Kǔ jìn gān lái.",en:"After bitterness comes sweetness."},
+  {id:365,h:"辣",p:"là",m:"spicy; hot; vicious",zh:"太辣了！",py:"Tài là le!",en:"Too spicy!"},
+  {id:366,h:"酸",p:"suān",m:"sour; acidic; aching",zh:"柠檬很酸。",py:"Níngméng hěn suān.",en:"Lemons are very sour."},
+  {id:367,h:"咸",p:"xián",m:"salty",zh:"太咸了。",py:"Tài xián le.",en:"Too salty."},
+  {id:368,h:"饿",p:"è",m:"hungry; to starve",zh:"我好饿！",py:"Wǒ hǎo è!",en:"I'm so hungry!"},
+  {id:369,h:"渴",p:"kě",m:"thirsty; to yearn for",zh:"好渴啊。",py:"Hǎo kě a.",en:"So thirsty."},
+  {id:370,h:"累",p:"lèi",m:"tired; weary",zh:"我好累。",py:"Wǒ hǎo lèi.",en:"I'm so tired."},
+  {id:371,h:"困",p:"kùn",m:"sleepy; to be in difficulty",zh:"好困啊。",py:"Hǎo kùn a.",en:"So sleepy."},
+  {id:372,h:"病",p:"bìng",m:"sick; illness; disease",zh:"生病了。",py:"Shēngbìng le.",en:"Got sick."},
+  {id:373,h:"痛",p:"tòng",m:"pain; to hurt; deeply",zh:"好痛！",py:"Hǎo tòng!",en:"It hurts!"},
+  {id:374,h:"健",p:"jiàn",m:"healthy; strong; to strengthen",zh:"健康第一。",py:"Jiànkāng dì yī.",en:"Health comes first."},
+  {id:375,h:"药",p:"yào",m:"medicine; drug; to poison",zh:"吃药。",py:"Chī yào.",en:"Take medicine."},
+  {id:376,h:"医",p:"yī",m:"medical; doctor; to cure",zh:"看医生。",py:"Kàn yīshēng.",en:"See a doctor."},
+  {id:377,h:"院",p:"yuàn",m:"courtyard; institution",zh:"医院。",py:"Yīyuàn.",en:"Hospital."},
+  {id:378,h:"安",p:"ān",m:"peaceful; safe; to install",zh:"平安！",py:"Píng'ān!",en:"Safe and sound!"},
+  {id:379,h:"危",p:"wēi",m:"danger; dangerous; high",zh:"危险！",py:"Wēixiǎn!",en:"Danger!"},
+  {id:380,h:"救",p:"jiù",m:"to rescue; to save",zh:"救命！",py:"Jiùmìng!",en:"Help! (lit. save my life)"},
+  {id:381,h:"助",p:"zhù",m:"to help; assistance",zh:"互相帮助。",py:"Hùxiāng bāngzhù.",en:"Help each other."},
+  {id:382,h:"合",p:"hé",m:"to combine; to suit; to close",zh:"合适。",py:"Héshì.",en:"Suitable; appropriate."},
+  {id:383,h:"适",p:"shì",m:"suitable; comfortable; to suit",zh:"舒适的家。",py:"Shūshì de jiā.",en:"Comfortable home."},
+  {id:384,h:"办",p:"bàn",m:"to handle; to manage; to do",zh:"怎么办？",py:"Zěnme bàn?",en:"What to do?"},
+  {id:385,h:"解",p:"jiě",m:"to explain; to solve; to undo",zh:"解决问题。",py:"Jiějué wèntí.",en:"Solve a problem."},
+  {id:386,h:"决",p:"jué",m:"to decide; definitely",zh:"决定了！",py:"Juédìng le!",en:"Decided!"},
+  {id:387,h:"选",p:"xuǎn",m:"to choose; to select; election",zh:"选哪个？",py:"Xuǎn nǎ gè?",en:"Which one to choose?"},
+  {id:388,h:"计",p:"jì",m:"to count; plan; scheme; total",zh:"计划。",py:"Jìhuà.",en:"Plan."},
+  {id:389,h:"算",p:"suàn",m:"to count; to calculate; to reckon",zh:"算了。",py:"Suàn le.",en:"Forget it; let it go."},
+  {id:390,h:"量",p:"liàng",m:"amount; quantity; to measure",zh:"分量很多。",py:"Fènliàng hěn duō.",en:"A large portion."},
+  {id:391,h:"考",p:"kǎo",m:"to examine; to test",zh:"考试加油！",py:"Kǎoshì jiāyóu!",en:"Good luck on the exam!"},
+  {id:392,h:"试",p:"shì",m:"to try; test; examination",zh:"试一试。",py:"Shì yī shì.",en:"Give it a try."},
+  {id:393,h:"练",p:"liàn",m:"to practice; to drill; to train",zh:"练习！",py:"Liànxí!",en:"Practice!"},
+  {id:394,h:"清",p:"qīng",m:"clear; clean; pure; peaceful",zh:"说清楚。",py:"Shuō qīngchǔ.",en:"Speak clearly."},
+  {id:395,h:"断",p:"duàn",m:"to break; to cut off; to judge",zh:"判断。",py:"Pànduàn.",en:"Judge; determine."},
+  {id:396,h:"继",p:"jì",m:"to continue; to inherit",zh:"继续！",py:"Jìxù!",en:"Continue!"},
+  {id:397,h:"停",p:"tíng",m:"to stop; to park; to stay",zh:"停下来！",py:"Tíng xiàlái!",en:"Stop!"},
+  {id:398,h:"始",p:"shǐ",m:"to begin; start; first",zh:"开始了！",py:"Kāishǐ le!",en:"Starting!"},
+  {id:399,h:"终",p:"zhōng",m:"end; final; all along",zh:"终于！",py:"Zhōngyú!",en:"Finally!"},
+  {id:400,h:"初",p:"chū",m:"beginning; first; elementary",zh:"初中。",py:"Chūzhōng.",en:"Middle school."},
+  {id:401,h:"步",p:"bù",m:"step; pace; walking; situation",zh:"一步一步。",py:"Yī bù yī bù.",en:"Step by step."},
+  {id:402,h:"退",p:"tuì",m:"to retreat; to withdraw; to return",zh:"退一步。",py:"Tuì yī bù.",en:"Take a step back."},
+  {id:403,h:"左",p:"zuǒ",m:"left; left side; wrong",zh:"向左转。",py:"Xiàng zuǒ zhuǎn.",en:"Turn left."},
+  {id:404,h:"右",p:"yòu",m:"right; right side",zh:"向右转。",py:"Xiàng yòu zhuǎn.",en:"Turn right."},
+  {id:405,h:"东",p:"dōng",m:"east",zh:"东方。",py:"Dōngfāng.",en:"The East; orient."},
+  {id:406,h:"西",p:"xī",m:"west; western",zh:"东西。",py:"Dōngxi.",en:"Thing; stuff."},
+  {id:407,h:"南",p:"nán",m:"south",zh:"向南走。",py:"Xiàng nán zǒu.",en:"Go south."},
+  {id:408,h:"北",p:"běi",m:"north",zh:"北京。",py:"Běijīng.",en:"Beijing (lit. northern capital)."},
+  {id:409,h:"城",p:"chéng",m:"city; town; wall",zh:"城市。",py:"Chéngshì.",en:"City."},
+  {id:410,h:"乡",p:"xiāng",m:"village; hometown; rural",zh:"回乡下。",py:"Huí xiāngxia.",en:"Go back to the countryside."},
+  {id:411,h:"村",p:"cūn",m:"village; hamlet",zh:"农村。",py:"Nóngcūn.",en:"Rural area; village."},
+  {id:412,h:"区",p:"qū",m:"area; district; zone",zh:"这个区。",py:"Zhège qū.",en:"This district."},
+  {id:413,h:"省",p:"shěng",m:"province; to save",zh:"节省时间。",py:"Jiéshěng shíjiān.",en:"Save time."},
+  {id:414,h:"界",p:"jiè",m:"boundary; world; scope",zh:"世界。",py:"Shìjiè.",en:"World."},
+  {id:415,h:"边",p:"biān",m:"side; edge; border",zh:"旁边。",py:"Pángbiān.",en:"Beside; next to."},
+  {id:416,h:"近",p:"jìn",m:"near; close; recently",zh:"很近。",py:"Hěn jìn.",en:"Very close/near."},
+  {id:417,h:"远",p:"yuǎn",m:"far; distant; deep",zh:"好远啊。",py:"Hǎo yuǎn a.",en:"So far away."},
+  {id:418,h:"底",p:"dǐ",m:"bottom; base; end",zh:"到底？",py:"Dàodǐ?",en:"After all; in the end?"},
+  {id:419,h:"顶",p:"dǐng",m:"top; peak; (measure for hats)",zh:"山顶。",py:"Shāndǐng.",en:"Mountaintop."},
+  {id:420,h:"宽",p:"kuān",m:"wide; broad; generous",zh:"很宽。",py:"Hěn kuān.",en:"Very wide."},
+  {id:421,h:"窄",p:"zhǎi",m:"narrow; petty; cramped",zh:"路很窄。",py:"Lù hěn zhǎi.",en:"The road is narrow."},
+  {id:422,h:"深",p:"shēn",m:"deep; dark (color); profound",zh:"深蓝色。",py:"Shēn lánsè.",en:"Deep blue."},
+  {id:423,h:"浅",p:"qiǎn",m:"shallow; light (color); simple",zh:"浅蓝色。",py:"Qiǎn lánsè.",en:"Light blue."},
+  {id:424,h:"厚",p:"hòu",m:"thick; generous; kind",zh:"这本书很厚。",py:"Zhè běn shū hěn hòu.",en:"This book is very thick."},
+  {id:425,h:"薄",p:"báo",m:"thin; slight; weak",zh:"薄薄的纸。",py:"Báobáo de zhǐ.",en:"Thin paper."},
+  {id:426,h:"轻",p:"qīng",m:"light (in weight); gentle",zh:"轻轻地。",py:"Qīngqīng de.",en:"Gently."},
+  {id:427,h:"硬",p:"yìng",m:"hard; stiff; firm",zh:"这个很硬。",py:"Zhège hěn yìng.",en:"This is very hard."},
+  {id:428,h:"软",p:"ruǎn",m:"soft; weak; faint",zh:"好软啊。",py:"Hǎo ruǎn a.",en:"So soft."},
+  {id:429,h:"圆",p:"yuán",m:"round; circle; yuan",zh:"圆形。",py:"Yuánxíng.",en:"Round shape."},
+  {id:430,h:"直",p:"zhí",m:"straight; vertical; frank",zh:"直走。",py:"Zhí zǒu.",en:"Go straight."},
+  {id:431,h:"弯",p:"wān",m:"to bend; curve; crooked",zh:"转弯。",py:"Zhuǎnwān.",en:"Turn; curve."},
+  {id:432,h:"平",p:"píng",m:"flat; peaceful; equal; average",zh:"平安。",py:"Píng'ān.",en:"Safe and sound."},
+  {id:433,h:"急",p:"jí",m:"urgent; quick; anxious",zh:"不要急！",py:"Bù yào jí!",en:"Don't be anxious!"},
+  {id:434,h:"忙",p:"máng",m:"busy; hurried",zh:"你好忙啊！",py:"Nǐ hǎo máng a!",en:"You're so busy!"},
+  {id:435,h:"闲",p:"xián",m:"idle; free time; not in use",zh:"有闲的时候。",py:"Yǒu xián de shíhou.",en:"When you have free time."},
+  {id:436,h:"空",p:"kōng",m:"empty; sky; free time",zh:"有空吗？",py:"Yǒu kòng ma?",en:"Are you free?"},
+  {id:437,h:"满",p:"mǎn",m:"full; satisfied; entirely",zh:"满足了！",py:"Mǎnzú le!",en:"Satisfied!"},
+  {id:438,h:"够",p:"gòu",m:"enough; to reach",zh:"够了！",py:"Gòu le!",en:"That's enough!"},
+  {id:439,h:"少",p:"shǎo",m:"few; little; to lack",zh:"少一点。",py:"Shǎo yīdiǎn.",en:"A little less."},
+  {id:440,h:"半",p:"bàn",m:"half; semi-",zh:"半小时。",py:"Bàn xiǎoshí.",en:"Half an hour."},
+  {id:441,h:"双",p:"shuāng",m:"pair; double; even number",zh:"一双鞋。",py:"Yī shuāng xié.",en:"A pair of shoes."},
+  {id:442,h:"单",p:"dān",m:"single; list; receipt; only",zh:"单独。",py:"Dāndú.",en:"Alone; separately."},
+  {id:443,h:"共",p:"gòng",m:"together; common; total",zh:"一共。",py:"Yīgòng.",en:"Altogether; in total."},
+  {id:444,h:"每",p:"měi",m:"every; each",zh:"每天。",py:"Měitiān.",en:"Every day."},
+  {id:445,h:"再",p:"zài",m:"again; then; furthermore",zh:"再见！",py:"Zàijiàn!",en:"Goodbye!"},
+  {id:446,h:"才",p:"cái",m:"just now; then and only then; talent",zh:"才来。",py:"Cái lái.",en:"Just arrived."},
+  {id:447,h:"刚",p:"gāng",m:"just (now); hard; firm",zh:"刚刚。",py:"Gānggāng.",en:"Just now."},
+  {id:448,h:"曾",p:"céng",m:"once; ever; formerly",zh:"曾经。",py:"Céngjīng.",en:"Once; used to."},
+  {id:449,h:"久",p:"jiǔ",m:"long time; for a long time",zh:"好久不见！",py:"Hǎo jiǔ bú jiàn!",en:"Long time no see!"},
+  {id:450,h:"早",p:"zǎo",m:"early; morning; good morning",zh:"早上好！",py:"Zǎoshang hǎo!",en:"Good morning!"},
+  {id:451,h:"晚",p:"wǎn",m:"late; evening; night",zh:"晚安！",py:"Wǎn'ān!",en:"Good night!"},
+  {id:452,h:"午",p:"wǔ",m:"noon; midday",zh:"中午吃什么？",py:"Zhōngwǔ chī shénme?",en:"What to eat for lunch?"},
+  {id:453,h:"夜",p:"yè",m:"night; nighttime",zh:"夜晚很美。",py:"Yèwǎn hěn měi.",en:"The night is beautiful."},
+  {id:454,h:"刻",p:"kè",m:"quarter hour; to carve; strict",zh:"六点一刻。",py:"Liù diǎn yī kè.",en:"Quarter past six."},
+  {id:455,h:"秒",p:"miǎo",m:"second (time unit)",zh:"三十秒。",py:"Sānshí miǎo.",en:"Thirty seconds."},
+  {id:456,h:"周",p:"zhōu",m:"week; circle; all around",zh:"这周很忙。",py:"Zhè zhōu hěn máng.",en:"This week is very busy."},
+  {id:457,h:"节",p:"jié",m:"festival; joint; section",zh:"节日快乐！",py:"Jiérì kuàilè!",en:"Happy holiday!"},
+  {id:458,h:"岁",p:"suì",m:"year (of age); years old",zh:"几岁？",py:"Jǐ suì?",en:"How old?"},
+  {id:459,h:"死",p:"sǐ",m:"to die; dead; fixed; extremely",zh:"累死了！",py:"Lèi sǐ le!",en:"Dead tired!"},
+  {id:460,h:"幼",p:"yòu",m:"young; infant; childhood",zh:"幼儿园。",py:"Yòu'éryuán.",en:"Kindergarten."},
+  {id:461,h:"童",p:"tóng",m:"child; childhood",zh:"儿童。",py:"Értóng.",en:"Child; children."},
+  {id:462,h:"青",p:"qīng",m:"young; green; blue-green",zh:"青春。",py:"Qīngchūn.",en:"Youth; adolescence."},
+  {id:463,h:"辈",p:"bèi",m:"generation; lifetime",zh:"这一辈子。",py:"Zhè yī bèizi.",en:"This lifetime."},
+  {id:464,h:"爸",p:"bà",m:"dad; father",zh:"爸爸！",py:"Bàba!",en:"Dad!"},
+  {id:465,h:"妈",p:"mā",m:"mom; mother",zh:"妈妈！",py:"Māma!",en:"Mom!"},
+  {id:466,h:"父",p:"fù",m:"father",zh:"父亲。",py:"Fùqīn.",en:"Father."},
+  {id:467,h:"母",p:"mǔ",m:"mother",zh:"母亲。",py:"Mǔqīn.",en:"Mother."},
+  {id:468,h:"哥",p:"gē",m:"older brother",zh:"哥哥。",py:"Gēge.",en:"Older brother."},
+  {id:469,h:"姐",p:"jiě",m:"older sister",zh:"姐姐。",py:"Jiějie.",en:"Older sister."},
+  {id:470,h:"弟",p:"dì",m:"younger brother",zh:"弟弟。",py:"Dìdi.",en:"Younger brother."},
+  {id:471,h:"妹",p:"mèi",m:"younger sister",zh:"妹妹。",py:"Mèimei.",en:"Younger sister."},
+  {id:472,h:"祖",p:"zǔ",m:"ancestor; grandfather",zh:"祖父。",py:"Zǔfù.",en:"Grandfather."},
+  {id:473,h:"孙",p:"sūn",m:"grandchild",zh:"孙子。",py:"Sūnzi.",en:"Grandson."},
+  {id:474,h:"叔",p:"shū",m:"uncle (father's younger brother)",zh:"叔叔。",py:"Shūshu.",en:"Uncle."},
+  {id:475,h:"阿",p:"ā",m:"(prefix for relatives); ah!",zh:"阿姨。",py:"Āyí.",en:"Auntie."},
+  {id:476,h:"姨",p:"yí",m:"maternal aunt",zh:"阿姨好！",py:"Āyí hǎo!",en:"Hello auntie!"},
+  {id:477,h:"邻",p:"lín",m:"neighbor; neighboring",zh:"邻居。",py:"Línjū.",en:"Neighbor."},
+  {id:478,h:"住",p:"zhù",m:"to live; to stay; to stop",zh:"住哪里？",py:"Zhù nǎlǐ?",en:"Where do you live?"},
+  {id:479,h:"搬",p:"bān",m:"to move (house); to carry",zh:"搬家了。",py:"Bān jiā le.",en:"Moved house."},
+  {id:480,h:"室",p:"shì",m:"room; office; (suffix for rooms)",zh:"教室。",py:"Jiàoshì.",en:"Classroom."},
+  {id:481,h:"厅",p:"tīng",m:"hall; living room; department",zh:"客厅。",py:"Kètīng.",en:"Living room."},
+  {id:482,h:"厨",p:"chú",m:"kitchen",zh:"厨房。",py:"Chúfáng.",en:"Kitchen."},
+  {id:483,h:"洗",p:"xǐ",m:"to wash; to bathe",zh:"洗手！",py:"Xǐ shǒu!",en:"Wash your hands!"},
+  {id:484,h:"换",p:"huàn",m:"to change; to exchange",zh:"换衣服。",py:"Huàn yīfu.",en:"Change clothes."},
+  {id:485,h:"穿",p:"chuān",m:"to wear; to pass through",zh:"穿什么？",py:"Chuān shénme?",en:"What to wear?"},
+  {id:486,h:"衣",p:"yī",m:"clothing; garment",zh:"衣服。",py:"Yīfu.",en:"Clothes."},
+  {id:487,h:"裤",p:"kù",m:"pants; trousers",zh:"裤子。",py:"Kùzi.",en:"Pants."},
+  {id:488,h:"裙",p:"qún",m:"skirt",zh:"穿裙子。",py:"Chuān qúnzi.",en:"Wear a skirt."},
+  {id:489,h:"鞋",p:"xié",m:"shoes",zh:"穿鞋子。",py:"Chuān xiézi.",en:"Put on shoes."},
+  {id:490,h:"帽",p:"mào",m:"hat; cap",zh:"戴帽子。",py:"Dài màozi.",en:"Wear a hat."},
+  {id:491,h:"眼",p:"yǎn",m:"eye; hole",zh:"眼睛。",py:"Yǎnjing.",en:"Eyes."},
+  {id:492,h:"耳",p:"ěr",m:"ear",zh:"耳朵。",py:"Ěrduo.",en:"Ear."},
+  {id:493,h:"鼻",p:"bí",m:"nose",zh:"鼻子。",py:"Bízi.",en:"Nose."},
+  {id:494,h:"嘴",p:"zuǐ",m:"mouth; beak",zh:"嘴巴。",py:"Zuǐba.",en:"Mouth."},
+  {id:495,h:"脸",p:"liǎn",m:"face; cheek",zh:"洗脸。",py:"Xǐ liǎn.",en:"Wash face."},
+  {id:496,h:"背",p:"bèi",m:"back (of body); to memorize",zh:"背课文。",py:"Bèi kèwén.",en:"Memorize the text."},
+  {id:497,h:"腰",p:"yāo",m:"waist; lower back",zh:"腰痛。",py:"Yāo tòng.",en:"Backache."},
+  {id:498,h:"腿",p:"tuǐ",m:"leg; thigh",zh:"腿很酸。",py:"Tuǐ hěn suān.",en:"Legs are sore."},
+  {id:499,h:"脚",p:"jiǎo",m:"foot; leg",zh:"脚步声。",py:"Jiǎobù shēng.",en:"Sound of footsteps."},
+  {id:500,h:"骨",p:"gǔ",m:"bone; skeleton",zh:"骨头。",py:"Gǔtou.",en:"Bone."},
+  {id:501,h:"血",p:"xuè",m:"blood",zh:"血型。",py:"Xuèxíng.",en:"Blood type."},
+  {id:502,h:"脑",p:"nǎo",m:"brain; mind",zh:"大脑。",py:"Dànǎo.",en:"Brain."},
+  {id:503,h:"钱",p:"qián",m:"money; coin",zh:"没钱！",py:"Méi qián!",en:"No money!"},
+  {id:504,h:"付",p:"fù",m:"to pay; to hand over",zh:"付钱。",py:"Fù qián.",en:"Pay money."},
+  {id:505,h:"存",p:"cún",m:"to exist; to save; to store",zh:"存钱。",py:"Cún qián.",en:"Save money."},
+  {id:506,h:"借",p:"jiè",m:"to borrow; to lend",zh:"借我看看。",py:"Jiè wǒ kànkan.",en:"Let me borrow it."},
+  {id:507,h:"富",p:"fù",m:"rich; wealthy; abundant",zh:"富裕。",py:"Fùyù.",en:"Wealthy; prosperous."},
+  {id:508,h:"礼",p:"lǐ",m:"gift; courtesy; ceremony",zh:"礼物。",py:"Lǐwù.",en:"Gift."},
+  {id:509,h:"奖",p:"jiǎng",m:"prize; award; to praise",zh:"得奖了！",py:"Dé jiǎng le!",en:"Won a prize!"},
+  {id:510,h:"功",p:"gōng",m:"achievement; skill; work",zh:"成功。",py:"Chénggōng.",en:"Success."},
+  {id:511,h:"失",p:"shī",m:"to lose; to miss; fault",zh:"失败了。",py:"Shībài le.",en:"Failed."},
+  {id:512,h:"赢",p:"yíng",m:"to win; winner",zh:"赢了！",py:"Yíng le!",en:"Won!"},
+  {id:513,h:"输",p:"shū",m:"to lose; to transport",zh:"输了没关系。",py:"Shū le méi guānxi.",en:"It's okay to lose."},
+  {id:514,h:"赛",p:"sài",m:"competition; race; to compete",zh:"比赛加油！",py:"Bǐsài jiāyóu!",en:"Cheer on in competition!"},
+  {id:515,h:"运",p:"yùn",m:"to move; luck; fortune",zh:"好运！",py:"Hǎo yùn!",en:"Good luck!"},
+  {id:516,h:"育",p:"yù",m:"to educate; to nurture",zh:"体育课。",py:"Tǐyù kè.",en:"Physical education class."},
+  {id:517,h:"游",p:"yóu",m:"to swim; to travel; to play",zh:"游泳。",py:"Yóuyǒng.",en:"Swimming."},
+  {id:518,h:"球",p:"qiú",m:"ball; globe; sphere",zh:"踢球。",py:"Tī qiú.",en:"Kick a ball."},
+  {id:519,h:"足",p:"zú",m:"foot; sufficient; enough",zh:"足球。",py:"Zúqiú.",en:"Soccer/football."},
+  {id:520,h:"篮",p:"lán",m:"basket; basketball",zh:"篮球。",py:"Lánqiú.",en:"Basketball."},
+  {id:521,h:"网",p:"wǎng",m:"net; network; web",zh:"上网。",py:"Shàng wǎng.",en:"Go online."},
+  {id:522,h:"武",p:"wǔ",m:"martial; military",zh:"武术。",py:"Wǔshù.",en:"Martial arts."},
+  {id:523,h:"术",p:"shù",m:"art; skill; method",zh:"艺术。",py:"Yìshù.",en:"Art."},
+  {id:524,h:"艺",p:"yì",m:"art; craft; skill",zh:"才艺。",py:"Cáiyì.",en:"Talent and skills."},
+  {id:525,h:"技",p:"jì",m:"skill; technology",zh:"技术。",py:"Jìshù.",en:"Technology; skill."},
+  {id:526,h:"巧",p:"qiǎo",m:"skillful; ingenious; coincidentally",zh:"真巧！",py:"Zhēn qiǎo!",en:"What a coincidence!"},
+  {id:527,h:"聪",p:"cōng",m:"intelligent; clever",zh:"聪明！",py:"Cōngmíng!",en:"Smart!"},
+  {id:528,h:"智",p:"zhì",m:"wisdom; knowledge",zh:"智慧。",py:"Zhìhuì.",en:"Wisdom."},
+  {id:529,h:"勤",p:"qín",m:"diligent; hardworking",zh:"勤奋。",py:"Qínfèn.",en:"Diligent."},
+  {id:530,h:"奋",p:"fèn",m:"to exert; to strive",zh:"努力奋斗。",py:"Nǔlì fèndòu.",en:"Work hard and strive."},
+  {id:531,h:"努",p:"nǔ",m:"to exert; to strive",zh:"努力！",py:"Nǔlì!",en:"Work hard!"},
+  {id:532,h:"志",p:"zhì",m:"aspiration; will; record",zh:"志愿者。",py:"Zhìyuànzhě.",en:"Volunteer."},
+  {id:533,h:"望",p:"wàng",m:"to hope; to look towards",zh:"希望。",py:"Xīwàng.",en:"Hope."},
+  {id:534,h:"希",p:"xī",m:"to hope; rare",zh:"希望有一天。",py:"Xīwàng yǒu yītiān.",en:"Hope one day."},
+  {id:535,h:"梦",p:"mèng",m:"dream; to dream",zh:"做梦。",py:"Zuò mèng.",en:"Have a dream."},
+  {id:536,h:"思",p:"sī",m:"to think; to miss; thought",zh:"思念。",py:"Sīniàn.",en:"To miss someone."},
+  {id:537,h:"感",p:"gǎn",m:"to feel; to sense; gratitude",zh:"感谢！",py:"Gǎnxiè!",en:"Thank you! (grateful)"},
+  {id:538,h:"觉",p:"jué",m:"to feel; to think; to wake up",zh:"感觉很好。",py:"Gǎnjué hěn hǎo.",en:"Feels great."},
+  {id:539,h:"悲",p:"bēi",m:"sad; grief; compassion",zh:"悲伤。",py:"Bēishāng.",en:"Sad; sorrowful."},
+  {id:540,h:"伤",p:"shāng",m:"to injure; wound; grief",zh:"受伤了。",py:"Shòushāng le.",en:"Got injured."},
+  {id:541,h:"激",p:"jī",m:"to excite; to arouse; fierce",zh:"激动！",py:"Jīdòng!",en:"Excited!"},
+  {id:542,h:"兴",p:"xīng",m:"prosperous; interest; (xìng: feeling)",zh:"高兴！",py:"Gāoxìng!",en:"Happy; glad!"},
+  {id:543,h:"趣",p:"qù",m:"interest; interesting",zh:"有趣。",py:"Yǒuqù.",en:"Interesting."},
+  {id:544,h:"奇",p:"qí",m:"strange; odd; wonderful",zh:"好奇。",py:"Hàoqí.",en:"Curious."},
+  {id:545,h:"怪",p:"guài",m:"strange; to blame; monster",zh:"好怪啊！",py:"Hǎo guài a!",en:"How strange!"},
+  {id:546,h:"惊",p:"jīng",m:"to startle; to be frightened",zh:"惊喜！",py:"Jīngxǐ!",en:"Surprised and happy!"},
+  {id:547,h:"紧",p:"jǐn",m:"tight; tense; urgent",zh:"放松，不要紧张。",py:"Fàngsōng, bù yào jǐnzhāng.",en:"Relax, don't be nervous."},
+  {id:548,h:"张",p:"zhāng",m:"to open; (measure for flat things)",zh:"一张纸。",py:"Yī zhāng zhǐ.",en:"A piece of paper."},
+  {id:549,h:"松",p:"sōng",m:"loose; to relax; pine tree",zh:"放松。",py:"Fàngsōng.",en:"Relax."},
+  {id:550,h:"静",p:"jìng",m:"quiet; still; calm",zh:"安静！",py:"Ānjìng!",en:"Quiet!"},
+  {id:551,h:"乱",p:"luàn",m:"chaotic; disorderly; confused",zh:"乱了！",py:"Luàn le!",en:"It's a mess!"},
+  {id:552,h:"整",p:"zhěng",m:"whole; complete; to put in order",zh:"整理。",py:"Zhěnglǐ.",en:"Organize; tidy up."},
+  {id:553,h:"律",p:"lǜ",m:"law; rule; discipline; rhythm",zh:"纪律。",py:"Jìlǜ.",en:"Discipline; rules."},
+  {id:554,h:"规",p:"guī",m:"rule; regulation; to plan",zh:"规则。",py:"Guīzé.",en:"Rules; regulations."},
+  {id:555,h:"守",p:"shǒu",m:"to guard; to keep; to observe",zh:"遵守规则。",py:"Zūnshǒu guīzé.",en:"Follow the rules."},
+  {id:556,h:"创",p:"chuàng",m:"to create; to achieve",zh:"创造力。",py:"Chuàngzào lì.",en:"Creativity."},
+  {id:557,h:"造",p:"zào",m:"to make; to build; to invent",zh:"制造。",py:"Zhìzào.",en:"Manufacture."},
+  {id:558,h:"制",p:"zhì",m:"to make; system; to control",zh:"制作。",py:"Zhìzuò.",en:"Make; produce."},
+  {id:559,h:"建",p:"jiàn",m:"to build; to establish",zh:"建设。",py:"Jiànshè.",en:"Construction; build up."},
+  {id:560,h:"设",p:"shè",m:"to set up; to plan; to hypothesize",zh:"设计。",py:"Shèjì.",en:"Design."},
+  {id:561,h:"管",p:"guǎn",m:"to manage; to be in charge; pipe",zh:"不管怎样。",py:"Bùguǎn zěnyàng.",en:"No matter what."},
+  {id:562,h:"握",p:"wò",m:"to hold; to grasp; to shake hands",zh:"握手。",py:"Wò shǒu.",en:"Shake hands."},
+  {id:563,h:"折",p:"zhé",m:"to fold; to break; to turn",zh:"折纸。",py:"Zhé zhǐ.",en:"Origami (paper folding)."},
+  {id:564,h:"裁",p:"cái",m:"to cut; to judge; to reduce",zh:"裁判。",py:"Cáipàn.",en:"Referee; judge."},
+  {id:565,h:"剪",p:"jiǎn",m:"scissors; to cut with scissors",zh:"剪纸。",py:"Jiǎn zhǐ.",en:"Paper cutting (folk art)."},
+  {id:566,h:"切",p:"qiē",m:"to cut; to slice",zh:"切蛋糕。",py:"Qiē dàngāo.",en:"Cut the cake."},
+  {id:567,h:"煮",p:"zhǔ",m:"to boil; to cook",zh:"煮饺子。",py:"Zhǔ jiǎozi.",en:"Boil dumplings."},
+  {id:568,h:"炒",p:"chǎo",m:"to stir-fry; to sauté",zh:"炒菜。",py:"Chǎo cài.",en:"Stir-fry vegetables."},
+  {id:569,h:"烤",p:"kǎo",m:"to bake; to roast",zh:"烤面包。",py:"Kǎo miànbāo.",en:"Toast bread."},
+  {id:570,h:"蒸",p:"zhēng",m:"to steam; to evaporate",zh:"蒸饺子。",py:"Zhēng jiǎozi.",en:"Steam dumplings."},
+  {id:571,h:"锅",p:"guō",m:"pot; pan; wok",zh:"火锅。",py:"Huǒguō.",en:"Hot pot."},
+  {id:572,h:"碗",p:"wǎn",m:"bowl; (measure for bowls)",zh:"一碗饭。",py:"Yī wǎn fàn.",en:"A bowl of rice."},
+  {id:573,h:"盘",p:"pán",m:"plate; dish; (measure for plates)",zh:"一盘菜。",py:"Yī pán cài.",en:"A plate of vegetables."},
+  {id:574,h:"筷",p:"kuài",m:"chopsticks",zh:"用筷子。",py:"Yòng kuàizi.",en:"Use chopsticks."},
+  {id:575,h:"汤",p:"tāng",m:"soup; broth; hot water",zh:"喝汤。",py:"Hē tāng.",en:"Drink soup."},
+  {id:576,h:"饺",p:"jiǎo",m:"dumpling",zh:"包饺子。",py:"Bāo jiǎozi.",en:"Wrap dumplings."},
+  {id:577,h:"包",p:"bāo",m:"to wrap; package; bun",zh:"面包。",py:"Miànbāo.",en:"Bread."},
+  {id:578,h:"粥",p:"zhōu",m:"porridge; congee",zh:"喝粥。",py:"Hē zhōu.",en:"Eat porridge."},
+  {id:579,h:"米",p:"mǐ",m:"rice (uncooked); meter",zh:"大米。",py:"Dàmǐ.",en:"Rice."},
+  {id:580,h:"糖",p:"táng",m:"sugar; candy; sweets",zh:"糖果。",py:"Tángguǒ.",en:"Candy."},
+  {id:581,h:"盐",p:"yán",m:"salt",zh:"加盐。",py:"Jiā yán.",en:"Add salt."},
+  {id:582,h:"油",p:"yóu",m:"oil; fuel; glossy",zh:"加油！",py:"Jiāyóu!",en:"Come on! (lit. add oil)"},
+  {id:583,h:"苹",p:"píng",m:"apple (in 苹果)",zh:"苹果。",py:"Píngguǒ.",en:"Apple."},
+  {id:584,h:"果",p:"guǒ",m:"fruit; result; truly",zh:"水果。",py:"Shuǐguǒ.",en:"Fruit."},
+  {id:585,h:"橙",p:"chéng",m:"orange (color/fruit)",zh:"橙子。",py:"Chéngzi.",en:"Orange."},
+  {id:586,h:"桃",p:"táo",m:"peach",zh:"桃子。",py:"Táozi.",en:"Peach."},
+  {id:587,h:"梨",p:"lí",m:"pear",zh:"梨子。",py:"Lízi.",en:"Pear."},
+  {id:588,h:"瓜",p:"guā",m:"melon; gourd",zh:"西瓜。",py:"Xīguā.",en:"Watermelon."},
+  {id:589,h:"莓",p:"méi",m:"berry; strawberry",zh:"草莓。",py:"Cǎoméi.",en:"Strawberry."},
+  {id:590,h:"蛋",p:"dàn",m:"egg",zh:"蛋糕。",py:"Dàngāo.",en:"Cake."},
+  {id:591,h:"糕",p:"gāo",m:"cake",zh:"生日蛋糕。",py:"Shēngrì dàngāo.",en:"Birthday cake."},
+  {id:592,h:"奶",p:"nǎi",m:"milk; grandmother",zh:"喝牛奶。",py:"Hē niúnǎi.",en:"Drink milk."},
+  {id:593,h:"咖",p:"kā",m:"coffee (transliteration)",zh:"咖啡。",py:"Kāfēi.",en:"Coffee."},
+  {id:594,h:"汁",p:"zhī",m:"juice; liquid",zh:"橙汁。",py:"Chéngzhī.",en:"Orange juice."},
+  {id:595,h:"购",p:"gòu",m:"to buy; to purchase",zh:"购物。",py:"Gòuwù.",en:"Shopping."},
+  {id:596,h:"超",p:"chāo",m:"to exceed; super; ultra",zh:"超市。",py:"Chāoshì.",en:"Supermarket."},
+  {id:597,h:"店",p:"diàn",m:"shop; store; inn",zh:"书店。",py:"Shūdiàn.",en:"Bookstore."},
+  {id:598,h:"餐",p:"cān",m:"meal; to eat; food",zh:"餐厅。",py:"Cāntīng.",en:"Restaurant."},
+  {id:599,h:"银",p:"yín",m:"silver",zh:"银行。",py:"Yínháng.",en:"Bank."},
+  {id:600,h:"邮",p:"yóu",m:"post; mail; stamp",zh:"邮局。",py:"Yóujú.",en:"Post office."},
+  {id:601,h:"警",p:"jǐng",m:"to warn; police; alert",zh:"警察。",py:"Jǐngchá.",en:"Police."},
+  {id:602,h:"消",p:"xiāo",m:"to disappear; to eliminate",zh:"消防车。",py:"Xiāofáng chē.",en:"Fire truck."},
+  {id:603,h:"护",p:"hù",m:"to protect; to nurse",zh:"护士。",py:"Hùshi.",en:"Nurse."},
+  {id:604,h:"图",p:"tú",m:"picture; map; diagram",zh:"地图。",py:"Dìtú.",en:"Map."},
+  {id:605,h:"馆",p:"guǎn",m:"hall; museum; embassy",zh:"图书馆。",py:"Túshūguǎn.",en:"Library."},
+  {id:606,h:"博",p:"bó",m:"abundant; extensive; broad",zh:"博物馆。",py:"Bówùguǎn.",en:"Museum."},
+  {id:607,h:"园",p:"yuán",m:"garden; park; yard",zh:"公园。",py:"Gōngyuán.",en:"Park."},
+  {id:608,h:"广",p:"guǎng",m:"wide; vast; to spread",zh:"广场。",py:"Guǎngchǎng.",en:"Plaza; square."},
+  {id:609,h:"街",p:"jiē",m:"street; block",zh:"街道。",py:"Jiēdào.",en:"Street."},
+  {id:610,h:"铁",p:"tiě",m:"iron; hard; rail",zh:"地铁。",py:"Dìtiě.",en:"Subway."},
+  {id:611,h:"汽",p:"qì",m:"steam; vapor; (short for car)",zh:"汽车。",py:"Qìchē.",en:"Car."},
+  {id:612,h:"摩",p:"mó",m:"to rub; motorcycle",zh:"摩托车。",py:"Mótuō chē.",en:"Motorcycle."},
+  {id:613,h:"海",p:"hǎi",m:"sea; ocean",zh:"大海。",py:"Dàhǎi.",en:"The sea; ocean."},
+  {id:614,h:"洋",p:"yáng",m:"ocean; foreign; vast",zh:"太平洋。",py:"Tàipíngyáng.",en:"Pacific Ocean."},
+  {id:615,h:"河",p:"hé",m:"river",zh:"黄河。",py:"Huáng Hé.",en:"Yellow River."},
+  {id:616,h:"江",p:"jiāng",m:"river (large)",zh:"长江。",py:"Cháng Jiāng.",en:"Yangtze River."},
+  {id:617,h:"湖",p:"hú",m:"lake",zh:"西湖。",py:"Xī Hú.",en:"West Lake."},
+  {id:618,h:"池",p:"chí",m:"pool; pond",zh:"游泳池。",py:"Yóuyǒng chí.",en:"Swimming pool."},
+  {id:619,h:"岛",p:"dǎo",m:"island",zh:"海岛。",py:"Hǎidǎo.",en:"Island."},
+  {id:620,h:"山",p:"shān",m:"mountain; hill",zh:"爬山。",py:"Pá shān.",en:"Climb a mountain."},
+  {id:621,h:"林",p:"lín",m:"forest; grove",zh:"森林。",py:"Sēnlín.",en:"Forest."},
+  {id:622,h:"野",p:"yě",m:"wild; field; civilian",zh:"野外。",py:"Yěwài.",en:"Outdoors; wilderness."},
+  {id:623,h:"沙",p:"shā",m:"sand; gravel",zh:"沙滩。",py:"Shātān.",en:"Beach."},
+  {id:624,h:"极",p:"jí",m:"extreme; pole; extremely",zh:"南极。",py:"Nánjí.",en:"South Pole."},
+  {id:625,h:"宇",p:"yǔ",m:"universe; space",zh:"宇宙。",py:"Yǔzhòu.",en:"Universe."},
+  {id:626,h:"航",p:"háng",m:"to navigate; to fly",zh:"航班。",py:"Hángbān.",en:"Flight."},
+  {id:627,h:"旅",p:"lǚ",m:"to travel; trip",zh:"旅行。",py:"Lǚxíng.",en:"Travel."},
+  {id:628,h:"景",p:"jǐng",m:"scenery; situation",zh:"风景。",py:"Fēngjǐng.",en:"Scenery."},
+  {id:629,h:"观",p:"guān",m:"to observe; view; concept",zh:"参观。",py:"Cānguān.",en:"Visit; tour."},
+  {id:630,h:"参",p:"cān",m:"to participate",zh:"参加。",py:"Cānjiā.",en:"Participate; join."},
+  {id:631,h:"展",p:"zhǎn",m:"to develop; to expand; exhibition",zh:"展览。",py:"Zhǎnlǎn.",en:"Exhibition."},
+  {id:632,h:"演",p:"yǎn",m:"to perform; to act",zh:"表演。",py:"Biǎoyǎn.",en:"Perform; act."},
+  {id:633,h:"摄",p:"shè",m:"to take (photo); to absorb",zh:"摄影。",py:"Shèyǐng.",en:"Photography."},
+  {id:634,h:"影",p:"yǐng",m:"shadow; image; film",zh:"电影。",py:"Diànyǐng.",en:"Movie."},
+  {id:635,h:"照",p:"zhào",m:"to shine; to take photo",zh:"照相。",py:"Zhào xiàng.",en:"Take a photo."},
+  {id:636,h:"视",p:"shì",m:"to look at; to regard; television",zh:"电视。",py:"Diànshì.",en:"Television."},
+  {id:637,h:"频",p:"pín",m:"frequency; repeatedly; video",zh:"视频。",py:"Shìpín.",en:"Video."},
+  {id:638,h:"屏",p:"píng",m:"screen; to hold breath",zh:"屏幕。",py:"Píngmù.",en:"Screen."},
+  {id:639,h:"键",p:"jiàn",m:"key (on keyboard); crucial",zh:"键盘。",py:"Jiànpán.",en:"Keyboard."},
+  {id:640,h:"鼠",p:"shǔ",m:"rat; mouse",zh:"鼠标。",py:"Shǔbiāo.",en:"Computer mouse."},
+  {id:641,h:"搜",p:"sōu",m:"to search; to hunt for",zh:"搜索。",py:"Sōusuǒ.",en:"Search."},
+  {id:642,h:"传",p:"chuán",m:"to pass; to spread",zh:"传递。",py:"Chuándì.",en:"Pass on; transmit."},
+  {id:643,h:"递",p:"dì",m:"to pass; to hand over",zh:"快递。",py:"Kuàidì.",en:"Express delivery."},
+  {id:644,h:"息",p:"xī",m:"to rest; to breathe; news",zh:"消息。",py:"Xiāoxi.",en:"News; message."},
+  {id:645,h:"休",p:"xiū",m:"to rest",zh:"休息。",py:"Xiūxi.",en:"Rest."},
+  {id:646,h:"假",p:"jià",m:"vacation; holiday",zh:"假期。",py:"Jiàqī.",en:"Holiday; vacation."},
+  {id:647,h:"唐",p:"táng",m:"Tang dynasty; (surname Tang)",zh:"唐朝。",py:"Táng cháo.",en:"Tang Dynasty."},
+  {id:648,h:"汉",p:"hàn",m:"Han (ethnic group); Chinese",zh:"汉字。",py:"Hànzì.",en:"Chinese characters."},
+  {id:649,h:"诗",p:"shī",m:"poem; poetry",zh:"写一首诗。",py:"Xiě yī shǒu shī.",en:"Write a poem."},
+  {id:650,h:"史",p:"shǐ",m:"history; chronicle",zh:"历史。",py:"Lìshǐ.",en:"History."},
+  {id:651,h:"历",p:"lì",m:"calendar; to experience",zh:"经历。",py:"Jīnglì.",en:"Experience."},
+  {id:652,h:"古",p:"gǔ",m:"ancient; old; classic",zh:"古老。",py:"Gǔlǎo.",en:"Ancient; age-old."},
+  {id:653,h:"典",p:"diǎn",m:"classic; standard; ceremony",zh:"字典。",py:"Zìdiǎn.",en:"Dictionary."},
+  {id:654,h:"统",p:"tǒng",m:"to unite; system; all",zh:"传统。",py:"Chuántǒng.",en:"Tradition."},
+  {id:655,h:"俗",p:"sú",m:"custom; common; vulgar",zh:"风俗。",py:"Fēngsú.",en:"Custom; tradition."},
+  {id:656,h:"礼",p:"lǐ",m:"gift; courtesy; ceremony",zh:"礼貌。",py:"Lǐmào.",en:"Courtesy; manners."},
+  {id:657,h:"貌",p:"mào",m:"appearance; looks; manner",zh:"礼貌很重要。",py:"Lǐmào hěn zhòngyào.",en:"Manners are important."},
+  {id:658,h:"尊",p:"zūn",m:"to respect; (measure for statues)",zh:"尊重。",py:"Zūnzhòng.",en:"Respect."},
+  {id:659,h:"敬",p:"jìng",m:"to respect; to offer",zh:"敬礼！",py:"Jìnglǐ!",en:"Salute!"},
+  {id:660,h:"谦",p:"qiān",m:"modest; humble",zh:"谦虚。",py:"Qiānxū.",en:"Humble; modest."},
+  {id:661,h:"诚",p:"chéng",m:"sincere; honest",zh:"诚实。",py:"Chéngshí.",en:"Honest."},
+  {id:662,h:"善",p:"shàn",m:"good; kind; to be good at",zh:"善良。",py:"Shànliáng.",en:"Kind-hearted."},
+  {id:663,h:"良",p:"liáng",m:"good; fine; very",zh:"善良的人。",py:"Shànliáng de rén.",en:"A kind-hearted person."},
+  {id:664,h:"德",p:"dé",m:"virtue; morality; Germany",zh:"品德。",py:"Pǐndé.",en:"Moral character."},
+  {id:665,h:"品",p:"pǐn",m:"article; product; quality",zh:"品格。",py:"Pǐngé.",en:"Character; moral quality."},
+  {id:666,h:"格",p:"gé",m:"standard; grid; character",zh:"性格。",py:"Xìnggé.",en:"Personality; character."},
+  {id:667,h:"优",p:"yōu",m:"excellent; superior",zh:"优秀。",py:"Yōuxiù.",en:"Excellent; outstanding."},
+  {id:668,h:"秀",p:"xiù",m:"excellent; outstanding; pretty",zh:"优秀学生。",py:"Yōuxiù xuésheng.",en:"Excellent student."},
+  {id:669,h:"棒",p:"bàng",m:"stick; rod; excellent",zh:"真棒！",py:"Zhēn bàng!",en:"Excellent! Great!"},
+  {id:670,h:"厉",p:"lì",m:"strict; severe; fierce",zh:"厉害！",py:"Lìhai!",en:"Awesome! (lit. fierce)"},
+  {id:671,h:"勇",p:"yǒng",m:"brave; courageous",zh:"勇敢！",py:"Yǒnggǎn!",en:"Brave!"},
+  {id:672,h:"敢",p:"gǎn",m:"to dare; to venture",zh:"勇敢。",py:"Yǒnggǎn.",en:"Brave; daring."},
+  {id:673,h:"强",p:"qiáng",m:"strong; powerful; better",zh:"加油，要强！",py:"Jiāyóu, yào qiáng!",en:"Keep going, be strong!"},
+  {id:674,h:"胆",p:"dǎn",m:"gallbladder; courage",zh:"大胆！",py:"Dà dǎn!",en:"Bold! Brave!"},
+  {id:675,h:"精",p:"jīng",m:"essence; spirit; refined; ghost",zh:"精神。",py:"Jīngshén.",en:"Spirit; energy."},
+  {id:676,h:"神",p:"shén",m:"god; spirit; mind",zh:"精神好。",py:"Jīngshén hǎo.",en:"In good spirits."},
+  {id:677,h:"灵",p:"líng",m:"spirit; clever; effective",zh:"心灵。",py:"Xīnlíng.",en:"Mind; heart; soul."},
+  {id:678,h:"信",p:"xìn",m:"to believe; letter; trust; faithful",zh:"相信。",py:"Xiāngxìn.",en:"To believe; trust."},
+  {id:679,h:"任",p:"rèn",m:"to appoint; to trust; no matter",zh:"任何。",py:"Rènhé.",en:"Any; whatever."},
+  {id:680,h:"责",p:"zé",m:"duty; responsibility; to blame",zh:"责任。",py:"Zérèn.",en:"Responsibility."},
+  {id:681,h:"诺",p:"nuò",m:"to promise; to agree",zh:"承诺。",py:"Chéngnuò.",en:"Promise; commitment."},
+  {id:682,h:"承",p:"chéng",m:"to bear; to undertake; to inherit",zh:"承担。",py:"Chéngdān.",en:"Bear (responsibility); undertake."},
+  {id:683,h:"担",p:"dān",m:"to carry; to bear; burden",zh:"担心。",py:"Dānxīn.",en:"Worry; be concerned."},
+  {id:684,h:"烦",p:"fán",m:"to be vexed; troublesome",zh:"烦恼。",py:"Fánnǎo.",en:"Worries; annoyances."},
+  {id:685,h:"怒",p:"nù",m:"anger; rage; to be angry",zh:"愤怒。",py:"Fènnù.",en:"Angry; furious."},
+  {id:686,h:"龙",p:"lóng",m:"dragon; (surname Long)",zh:"龙年快乐！",py:"Lóngnián kuàilè!",en:"Happy Year of the Dragon!"},
+  {id:687,h:"虎",p:"hǔ",m:"tiger; fierce",zh:"老虎。",py:"Lǎohǔ.",en:"Tiger."},
+  {id:688,h:"狼",p:"láng",m:"wolf",zh:"狼来了！",py:"Láng lái le!",en:"The wolf is coming!"},
+  {id:689,h:"狐",p:"hú",m:"fox",zh:"狐狸。",py:"Húli.",en:"Fox."},
+  {id:690,h:"蛇",p:"shé",m:"snake",zh:"一条蛇。",py:"Yī tiáo shé.",en:"A snake."},
+  {id:691,h:"龟",p:"guī",m:"tortoise; turtle",zh:"乌龟。",py:"Wūguī.",en:"Tortoise; turtle."},
+  {id:692,h:"鲸",p:"jīng",m:"whale",zh:"鲸鱼。",py:"Jīngyú.",en:"Whale."},
+  {id:693,h:"豚",p:"tún",m:"dolphin; young pig",zh:"海豚。",py:"Hǎitún.",en:"Dolphin."},
+  {id:694,h:"猴",p:"hóu",m:"monkey",zh:"猴子。",py:"Hóuzi.",en:"Monkey."},
+  {id:695,h:"鹿",p:"lù",m:"deer",zh:"小鹿。",py:"Xiǎo lù.",en:"Little deer."},
+  {id:696,h:"狮",p:"shī",m:"lion",zh:"狮子。",py:"Shīzi.",en:"Lion."},
+  {id:697,h:"鹰",p:"yīng",m:"eagle; hawk",zh:"老鹰。",py:"Lǎoyīng.",en:"Eagle."},
+  {id:698,h:"鹦",p:"yīng",m:"parrot (in 鹦鹉)",zh:"鹦鹉。",py:"Yīngwǔ.",en:"Parrot."},
+  {id:699,h:"蝴",p:"hú",m:"butterfly (in 蝴蝶)",zh:"蝴蝶。",py:"Húdié.",en:"Butterfly."},
+  {id:700,h:"蜂",p:"fēng",m:"bee; wasp",zh:"小蜜蜂。",py:"Xiǎo mìfēng.",en:"Little bee."},
+  {id:701,h:"蚂",p:"mǎ",m:"ant (in 蚂蚁)",zh:"蚂蚁。",py:"Mǎyǐ.",en:"Ant."},
+  {id:702,h:"青",p:"qīng",m:"young; green; blue-green",zh:"青蛙。",py:"Qīngwā.",en:"Frog."},
+  {id:703,h:"竹",p:"zhú",m:"bamboo",zh:"竹子。",py:"Zhúzi.",en:"Bamboo."},
+  {id:704,h:"梅",p:"méi",m:"plum; (surname Mei)",zh:"梅花。",py:"Méihuā.",en:"Plum blossom."},
+  {id:705,h:"兰",p:"lán",m:"orchid; (surname Lan)",zh:"兰花。",py:"Lánhuā.",en:"Orchid."},
+  {id:706,h:"菊",p:"jú",m:"chrysanthemum",zh:"菊花。",py:"Júhuā.",en:"Chrysanthemum."},
+  {id:707,h:"玫",p:"méi",m:"rose (in 玫瑰)",zh:"玫瑰。",py:"Méiguī.",en:"Rose."},
+  {id:708,h:"叶",p:"yè",m:"leaf; page",zh:"叶子。",py:"Yèzi.",en:"Leaf."},
+  {id:709,h:"根",p:"gēn",m:"root; origin",zh:"树根。",py:"Shùgēn.",en:"Tree root."},
+  {id:710,h:"枝",p:"zhī",m:"branch; (measure for flowers)",zh:"树枝。",py:"Shùzhī.",en:"Branch."},
+  {id:711,h:"收",p:"shōu",m:"to receive; to collect; to harvest",zh:"收获。",py:"Shōuhuò.",en:"Harvest; gain."},
+  {id:712,h:"获",p:"huò",m:"to obtain; to capture; harvest",zh:"获得。",py:"Huòdé.",en:"Obtain; receive."},
+  {id:713,h:"农",p:"nóng",m:"agriculture; farmer",zh:"农民。",py:"Nóngmín.",en:"Farmer."},
+  {id:714,h:"渔",p:"yú",m:"fishing; fisherman",zh:"渔船。",py:"Yúchuán.",en:"Fishing boat."},
+  {id:715,h:"矿",p:"kuàng",m:"mine; ore; mineral",zh:"矿山。",py:"Kuàngshān.",en:"Mine."},
+  {id:716,h:"钢",p:"gāng",m:"steel",zh:"钢铁。",py:"Gāngtiě.",en:"Steel."},
+  {id:717,h:"能",p:"néng",m:"can; energy; (see #34)",zh:"能源。",py:"Néngyuán.",en:"Energy source."},
+  {id:718,h:"环",p:"huán",m:"ring; to surround; environment",zh:"环境。",py:"Huánjìng.",en:"Environment."},
+  {id:719,h:"境",p:"jìng",m:"boundary; situation; territory",zh:"环境保护。",py:"Huánjìng bǎohù.",en:"Environmental protection."},
+  {id:720,h:"保",p:"bǎo",m:"to protect; to defend; to keep",zh:"保护。",py:"Bǎohù.",en:"Protect."},
+  {id:721,h:"污",p:"wū",m:"dirty; to pollute",zh:"污染。",py:"Wūrǎn.",en:"Pollution."},
+  {id:722,h:"染",p:"rǎn",m:"to dye; to contaminate",zh:"污染严重。",py:"Wūrǎn yánzhòng.",en:"Serious pollution."},
+  {id:723,h:"废",p:"fèi",m:"waste; to abandon; disabled",zh:"废物。",py:"Fèiwù.",en:"Waste; trash."},
+  {id:724,h:"垃",p:"lā",m:"garbage; trash",zh:"垃圾。",py:"Lājī.",en:"Garbage; trash."},
+  {id:725,h:"桶",p:"tǒng",m:"barrel; bucket; tub",zh:"水桶。",py:"Shuǐtǒng.",en:"Water bucket."},
+  {id:726,h:"袋",p:"dài",m:"bag; pocket; sack",zh:"塑料袋。",py:"Sùliào dài.",en:"Plastic bag."},
+  {id:727,h:"塑",p:"sù",m:"to mold; plastic",zh:"塑料。",py:"Sùliào.",en:"Plastic."},
+  {id:728,h:"资",p:"zī",m:"resources; capital; to provide",zh:"资源。",py:"Zīyuán.",en:"Resources."},
+  {id:729,h:"节",p:"jié",m:"(see #457)",zh:"节约。",py:"Jiéyuē.",en:"Save; be economical."},
+  {id:730,h:"惜",p:"xī",m:"to cherish; to treasure; to regret",zh:"珍惜。",py:"Zhēnxī.",en:"Cherish; treasure."},
+  {id:731,h:"珍",p:"zhēn",m:"precious; treasure; to value",zh:"珍惜时间。",py:"Zhēnxī shíjiān.",en:"Cherish time."},
+  {id:732,h:"绿",p:"lǜ",m:"(see #225)",zh:"绿化。",py:"Lǜhuà.",en:"Greening; afforestation."},
+  {id:733,h:"植",p:"zhí",m:"to plant; to cultivate",zh:"植树。",py:"Zhí shù.",en:"Plant trees."},
+  {id:734,h:"科",p:"kē",m:"branch of study; science",zh:"科学。",py:"Kēxué.",en:"Science."},
+  {id:735,h:"研",p:"yán",m:"to grind; to study; research",zh:"研究。",py:"Yánjiū.",en:"Research; study."},
+  {id:736,h:"探",p:"tàn",m:"to explore; to visit; to detect",zh:"探索。",py:"Tànsuǒ.",en:"Explore; investigate."},
+  {id:737,h:"发",p:"fā",m:"(see #46)",zh:"发明。",py:"Fāmíng.",en:"Invent; invention."},
+  {id:738,h:"码",p:"mǎ",m:"code; number; yard",zh:"密码。",py:"Mìmǎ.",en:"Password."},
+  {id:739,h:"密",p:"mì",m:"secret; close; dense",zh:"秘密。",py:"Mìmì.",en:"Secret."},
+  {id:740,h:"络",p:"luò",m:"net; to wind; involved",zh:"网络。",py:"Wǎngluò.",en:"Network."},
+  {id:741,h:"互",p:"hù",m:"mutual; each other",zh:"互相。",py:"Hùxiāng.",en:"Mutually; each other."},
+  {id:742,h:"交",p:"jiāo",m:"to hand over; to cross; to make (friends)",zh:"交朋友。",py:"Jiāo péngyou.",en:"Make friends."},
+  {id:743,h:"朋",p:"péng",m:"friend",zh:"朋友。",py:"Péngyou.",en:"Friend."},
+  {id:744,h:"谊",p:"yì",m:"friendship; relationship",zh:"友谊。",py:"Yǒuyì.",en:"Friendship."},
+  {id:745,h:"陌",p:"mò",m:"unfamiliar; stranger",zh:"陌生。",py:"Mòshēng.",en:"Unfamiliar; strange."},
+  {id:746,h:"伴",p:"bàn",m:"companion; to accompany",zh:"伙伴。",py:"Huǒbàn.",en:"Partner; companion."},
+  {id:747,h:"合",p:"hé",m:"(see #382)",zh:"合作。",py:"Hézuò.",en:"Cooperate."},
+  {id:748,h:"团",p:"tuán",m:"group; organization; round",zh:"团队。",py:"Tuánduì.",en:"Team."},
+  {id:749,h:"队",p:"duì",m:"team; group; (measure for groups)",zh:"队伍。",py:"Duìwu.",en:"Team; troops."},
+  {id:750,h:"集",p:"jí",m:"to gather; to collect; market",zh:"集合！",py:"Jíhé!",en:"Assemble! Fall in!"},
+  {id:751,h:"离",p:"lí",m:"to leave; to be away from",zh:"离开。",py:"Líkāi.",en:"Leave; depart."},
+  {id:752,h:"别",p:"bié",m:"to separate; other; don't",zh:"告别。",py:"Gàobié.",en:"Say goodbye."},
+  {id:753,h:"迎",p:"yíng",m:"to welcome; to meet",zh:"迎接。",py:"Yíngjie.",en:"Welcome; receive."},
+  {id:754,h:"待",p:"dài",m:"to treat; to wait; to stay",zh:"招待。",py:"Zhāodài.",en:"Entertain (guests)."},
+  {id:755,h:"招",p:"zhāo",m:"to recruit; to beckon; to confess",zh:"招手。",py:"Zhāo shǒu.",en:"Wave (hand)."},
+  {id:756,h:"应",p:"yīng",m:"should; (yìng: to respond)",zh:"回应。",py:"Huíyìng.",en:"Respond; reply."},
+  {id:757,h:"复",p:"fù",m:"to return; to repeat; to reply",zh:"复习。",py:"Fùxí.",en:"Review; revise."},
+  {id:758,h:"预",p:"yù",m:"to prepare; in advance; to predict",zh:"预习。",py:"Yùxí.",en:"Preview; prepare in advance."},
+  {id:759,h:"粘",p:"zhān",m:"to stick; to glue",zh:"粘贴。",py:"Zhāntiē.",en:"Paste; stick."},
+  {id:760,h:"涂",p:"tú",m:"to paint; to smear; to spread",zh:"涂色。",py:"Tú sè.",en:"Color in; paint."},
+  {id:761,h:"描",p:"miáo",m:"to trace; to describe; to sketch",zh:"描述。",py:"Miáoshù.",en:"Describe."},
+  {id:762,h:"评",p:"píng",m:"to comment; to judge; to discuss",zh:"评价。",py:"Píngjià.",en:"Evaluate; appraise."},
+  {id:763,h:"论",p:"lùn",m:"to discuss; essay; theory",zh:"讨论。",py:"Tǎolùn.",en:"Discuss."},
+  {id:764,h:"议",p:"yì",m:"to discuss; to deliberate",zh:"会议。",py:"Huìyì.",en:"Meeting; conference."},
+  {id:765,h:"报",p:"bào",m:"to report; newspaper; to repay",zh:"报告。",py:"Bàogào.",en:"Report."},
+  {id:766,h:"汇",p:"huì",m:"to converge; foreign exchange",zh:"汇报。",py:"Huìbào.",en:"Report; brief."},
+  {id:767,h:"总",p:"zǒng",m:"(see #114)",zh:"总结。",py:"Zǒngjié.",en:"Summarize; conclude."},
+  {id:768,h:"验",p:"yàn",m:"to examine; experience; effective",zh:"经验。",py:"Jīngyàn.",en:"Experience."},
+  {id:769,h:"积",p:"jī",m:"to accumulate; (jī: area)",zh:"积累。",py:"Jīlěi.",en:"Accumulate."},
+  {id:770,h:"识",p:"shí",m:"to know; to recognize; knowledge",zh:"认识。",py:"Rènshí.",en:"Know; recognize."},
+  {id:771,h:"认",p:"rèn",m:"to recognize; to admit",zh:"认识你很高兴。",py:"Rènshí nǐ hěn gāoxìng.",en:"Nice to meet you."},
+  {id:772,h:"遇",p:"yù",m:"to meet; to encounter",zh:"遇见。",py:"Yùjiàn.",en:"Meet; encounter."},
+  {id:773,h:"缘",p:"yuán",m:"fate; edge; reason; to climb",zh:"缘分。",py:"Yuánfèn.",en:"Fate; destiny."},
+  {id:774,h:"命",p:"mìng",m:"life; fate; order; to name",zh:"命运。",py:"Mìngyùn.",en:"Fate; destiny."},
+  {id:775,h:"幸",p:"xìng",m:"lucky; fortunate",zh:"幸运。",py:"Xìngyùn.",en:"Lucky; fortunate."},
+  {id:776,h:"福",p:"fú",m:"good fortune; happiness; blessing",zh:"幸福。",py:"Xìngfú.",en:"Happy; happiness."},
+  {id:777,h:"庆",p:"qìng",m:"to celebrate; to congratulate",zh:"庆祝。",py:"Qìngzhù.",en:"Celebrate."},
+  {id:778,h:"祝",p:"zhù",m:"to wish; to pray; to celebrate",zh:"祝你生日快乐！",py:"Zhù nǐ shēngrì kuàilè!",en:"Happy birthday!"},
+  {id:779,h:"愿",p:"yuàn",m:"to wish; willing; vow; hope",zh:"愿望。",py:"Yuànwàng.",en:"Wish; desire."},
+  {id:780,h:"求",p:"qiú",m:"to request; to pursue; to seek",zh:"请求。",py:"Qǐngqiú.",en:"Request; plea."},
+  {id:781,h:"援",p:"yuán",m:"to help; to assist",zh:"支援。",py:"Zhīyuán.",en:"Support; aid."},
+  {id:782,h:"持",p:"chí",m:"to hold; to maintain; to manage",zh:"坚持！",py:"Jiānchí!",en:"Persist! Keep going!"},
+  {id:783,h:"坚",p:"jiān",m:"firm; hard; solid; to persist",zh:"坚强！",py:"Jiānqiáng!",en:"Be strong!"},
+  {id:784,h:"毅",p:"yì",m:"resolute; firm",zh:"毅力。",py:"Yìlì.",en:"Perseverance; willpower."},
+  {id:785,h:"恒",p:"héng",m:"constant; persevering",zh:"恒心。",py:"Héngxīn.",en:"Perseverance; constancy."},
+  {id:786,h:"忍",p:"rěn",m:"to endure; to tolerate",zh:"忍耐。",py:"Rěnnài.",en:"Endure; be patient."},
+  {id:787,h:"耐",p:"nài",m:"to endure; to be patient; durable",zh:"耐心。",py:"Nàixīn.",en:"Patient; patience."},
+  {id:788,h:"险",p:"xiǎn",m:"danger; steep;险恶 (sinister)",zh:"冒险。",py:"Màoxiǎn.",en:"Take risks; adventure."},
+  {id:789,h:"战",p:"zhàn",m:"war; battle; to fight; to shiver",zh:"战胜。",py:"Zhànshèng.",en:"Overcome; defeat."},
+  {id:790,h:"胜",p:"shèng",m:"to win; victory; superior",zh:"胜利。",py:"Shènglì.",en:"Victory."},
+  {id:791,h:"认",p:"rèn",m:"(see #771)",zh:"认真。",py:"Rènzhēn.",en:"Serious; earnest."},
+  {id:792,h:"仔",p:"zǎi",m:"careful; (Cantonese: boy)",zh:"仔细。",py:"Zǎixì.",en:"Careful; meticulous."},
+  {id:793,h:"慎",p:"shèn",m:"cautious; careful",zh:"谨慎。",py:"Jǐnshèn.",en:"Cautious; prudent."},
+  {id:794,h:"注",p:"zhù",m:"to pour; to concentrate; to annotate",zh:"注意！",py:"Zhùyì!",en:"Pay attention!"},
+  {id:795,h:"幻",p:"huàn",m:"fantasy; illusion",zh:"幻想。",py:"Huànxiǎng.",en:"Fantasy; daydream."},
+  {id:796,h:"辨",p:"biàn",m:"to distinguish; to differentiate",zh:"辨别。",py:"Biànbié.",en:"Distinguish; differentiate."},
+  {id:797,h:"异",p:"yì",m:"different; strange; foreign",zh:"差异。",py:"Chāyì.",en:"Difference; disparity."},
+  {id:798,h:"类",p:"lèi",m:"kind; type; category; to resemble",zh:"种类。",py:"Zhǒnglèi.",en:"Type; category."},
+  {id:799,h:"族",p:"zú",m:"clan; ethnic group; family",zh:"民族。",py:"Mínzú.",en:"Ethnic group; nationality."},
+  {id:800,h:"众",p:"zhòng",m:"many; crowd; all",zh:"大众。",py:"Dàzhòng.",en:"The masses; the public."},
+  {id:801,h:"社",p:"shè",m:"society; organization",zh:"社会。",py:"Shèhuì.",en:"Society."},
+  {id:802,h:"律",p:"lǜ",m:"(see #553)",zh:"法律。",py:"Fǎlǜ.",en:"Law."},
+  {id:803,h:"权",p:"quán",m:"power; right; authority",zh:"权利。",py:"Quánlì.",en:"Rights."},
+  {id:804,h:"由",p:"yóu",m:"from; by; reason; to follow",zh:"自由。",py:"Zìyóu.",en:"Freedom."},
+  {id:805,h:"旗",p:"qí",m:"flag; banner",zh:"国旗。",py:"Guóqí.",en:"National flag."},
+  {id:806,h:"都",p:"dōu",m:"(see #67)",zh:"首都。",py:"Shǒudū.",en:"Capital city."},
+  {id:807,h:"首",p:"shǒu",m:"head; first; (measure for songs/poems)",zh:"首都。",py:"Shǒudū.",en:"Capital city."},
+  {id:808,h:"京",p:"jīng",m:"capital city; (surname Jing)",zh:"北京。",py:"Běijīng.",en:"Beijing."},
+  {id:809,h:"沪",p:"hù",m:"Shanghai (abbreviation)",zh:"上海。",py:"Shànghǎi.",en:"Shanghai."},
+  {id:810,h:"川",p:"chuān",m:"river; Sichuan",zh:"四川火锅。",py:"Sìchuān huǒguō.",en:"Sichuan hot pot."},
+  {id:811,h:"鲜",p:"xiān",m:"fresh; (Xiǎn: Korea)",zh:"新鲜。",py:"Xīnxiān.",en:"Fresh."},
+  {id:812,h:"数",p:"shù",m:"(see #127)",zh:"数量。",py:"Shùliàng.",en:"Quantity; amount."},
+  {id:813,h:"质",p:"zhì",m:"quality; matter; to pawn",zh:"质量。",py:"Zhìliàng.",en:"Quality."},
+  {id:814,h:"效",p:"xiào",m:"effect; result; to imitate",zh:"效果。",py:"Xiàoguǒ.",en:"Effect; result."},
+  {id:815,h:"益",p:"yì",m:"benefit; profit; to increase",zh:"利益。",py:"Lìyì.",en:"Benefit; profit."},
+  {id:816,h:"优",p:"yōu",m:"(see #667)",zh:"优点。",py:"Yōudiǎn.",en:"Advantage; strong point."},
+  {id:817,h:"缺",p:"quē",m:"to lack; deficiency",zh:"缺点。",py:"Quēdiǎn.",en:"Disadvantage; weakness."},
+  {id:818,h:"感",p:"gǎn",m:"(see #537)",zh:"感受。",py:"Gǎnshòu.",en:"Feel; experience."},
+  {id:819,h:"印",p:"yìn",m:"to print; stamp; to tally",zh:"印象。",py:"Yìnxiàng.",en:"Impression."},
+  {id:820,h:"影",p:"yǐng",m:"(see #634)",zh:"影响。",py:"Yǐngxiǎng.",en:"Influence; affect."},
+  {id:821,h:"变",p:"biàn",m:"to change; to transform",zh:"改变。",py:"Gǎibiàn.",en:"Change."},
+  {id:822,h:"改",p:"gǎi",m:"to change; to correct; to reform",zh:"改革。",py:"Gǎigé.",en:"Reform."},
+  {id:823,h:"展",p:"zhǎn",m:"(see #631)",zh:"发展。",py:"Fāzhǎn.",en:"Develop; development."},
+  {id:824,h:"提",p:"tí",m:"to carry; to raise; to mention",zh:"提高。",py:"Tígāo.",en:"Improve; raise."},
+  {id:825,h:"升",p:"shēng",m:"to rise; liter; to promote",zh:"升级。",py:"Shēngjí.",en:"Upgrade; level up."},
+  {id:826,h:"级",p:"jí",m:"level; grade; (measure for steps)",zh:"等级。",py:"Děngjí.",en:"Grade; level; rank."},
+  {id:827,h:"阶",p:"jiē",m:"step; stage; rank",zh:"阶段。",py:"Jiēduàn.",en:"Stage; phase."},
+  {id:828,h:"层",p:"céng",m:"layer; floor; (measure for layers)",zh:"多层楼。",py:"Duō céng lóu.",en:"Multi-story building."},
+  {id:829,h:"减",p:"jiǎn",m:"to reduce; to subtract",zh:"减少。",py:"Jiǎnshǎo.",en:"Reduce; decrease."},
+  {id:830,h:"增",p:"zēng",m:"to increase; to add",zh:"增加。",py:"Zēngjiā.",en:"Increase; add."},
+  {id:831,h:"扩",p:"kuò",m:"to expand; to enlarge",zh:"扩大。",py:"Kuòdà.",en:"Expand; enlarge."},
+  {id:832,h:"缩",p:"suō",m:"to shrink; to reduce",zh:"缩小。",py:"Suōxiǎo.",en:"Shrink; reduce."},
+  {id:833,h:"局",p:"jú",m:"office; bureau; game; situation",zh:"局势。",py:"Júshì.",en:"Situation."},
+  {id:834,h:"势",p:"shì",m:"power; force; tendency",zh:"形势。",py:"Xíngshì.",en:"Situation; circumstances."},
+  {id:835,h:"形",p:"xíng",m:"shape; form; to appear",zh:"形状。",py:"Xíngzhuàng.",en:"Shape."},
+  {id:836,h:"状",p:"zhuàng",m:"form; condition; description",zh:"状态。",py:"Zhuàngtài.",en:"State; condition."},
+  {id:837,h:"态",p:"tài",m:"attitude; appearance; state",zh:"态度。",py:"Tàidu.",en:"Attitude."},
+  {id:838,h:"度",p:"dù",m:"degree; extent; measure",zh:"温度。",py:"Wēndù.",en:"Temperature."},
+  {id:839,h:"温",p:"wēn",m:"warm; to warm; temperature",zh:"温暖。",py:"Wēnnuǎn.",en:"Warm."},
+  {id:840,h:"判",p:"pàn",m:"to judge; to sentence; to differentiate",zh:"判断。",py:"Pànduàn.",en:"Judge; determine."},
+  {id:841,h:"析",p:"xī",m:"to analyze; to separate",zh:"分析。",py:"Fēnxī.",en:"Analyze."},
+  {id:842,h:"综",p:"zōng",m:"to summarize; complex; general",zh:"综合。",py:"Zōnghé.",en:"Comprehensive; synthesize."},
+  {id:843,h:"素",p:"sù",m:"element; nature; plain; usually",zh:"素质。",py:"Sùzhì.",en:"Quality; character."},
+  {id:844,h:"潜",p:"qián",m:"hidden; latent; to dive",zh:"潜力。",py:"Qiánlì.",en:"Potential."},
+  {id:845,h:"巨",p:"jù",m:"huge; tremendous",zh:"巨大。",py:"Jùdà.",en:"Huge; enormous."},
+  {id:846,h:"微",p:"wēi",m:"tiny; minute; micro-",zh:"微小。",py:"Wēixiǎo.",en:"Tiny; minute."},
+  {id:847,h:"服",p:"fú",m:"clothes; to obey; to serve; dose",zh:"服务。",py:"Fúwù.",en:"Service."},
+  {id:848,h:"务",p:"wù",m:"affair; business; must",zh:"任务。",py:"Rènwu.",en:"Task; mission."},
+  {id:849,h:"完",p:"wán",m:"to finish; complete; intact",zh:"完成。",py:"Wánchéng.",en:"Complete; finish."},
+  {id:850,h:"达",p:"dá",m:"to reach; to attain; to express",zh:"达到。",py:"Dádào.",en:"Reach; achieve."},
+  {id:851,h:"兑",p:"duì",m:"to exchange; to fulfill",zh:"兑现承诺。",py:"Duìxiàn chéngnuò.",en:"Fulfill a promise."},
+  {id:852,h:"限",p:"xiàn",m:"to limit; boundary; deadline",zh:"限制。",py:"Xiànzhì.",en:"Limit; restrict."},
+  {id:853,h:"条",p:"tiáo",m:"strip; (measure for long thin objects); clause",zh:"条件。",py:"Tiáojiàn.",en:"Condition; requirement."},
+  {id:854,h:"标",p:"biāo",m:"mark; target; sign; tender",zh:"标准。",py:"Biāozhǔn.",en:"Standard."},
+  {id:855,h:"准",p:"zhǔn",m:"accurate; standard; to allow",zh:"准确。",py:"Zhǔnquè.",en:"Accurate; precise."},
+  {id:856,h:"确",p:"què",m:"accurate; definite; solid",zh:"确认。",py:"Quèrèn.",en:"Confirm; verify."},
+  {id:857,h:"信",p:"xìn",m:"(see #678)",zh:"信息。",py:"Xìnxī.",en:"Information; news."},
+  {id:858,h:"新",p:"xīn",m:"(see #110)",zh:"新闻。",py:"Xīnwén.",en:"News."},
+  {id:859,h:"闻",p:"wén",m:"to smell; to hear; news",zh:"新闻联播。",py:"Xīnwén liánbō.",en:"CCTV News Broadcast."},
+  {id:860,h:"播",p:"bō",m:"to broadcast; to sow",zh:"广播。",py:"Guǎngbō.",en:"Broadcast; radio."},
+  {id:861,h:"媒",p:"méi",m:"media; matchmaker",zh:"媒体。",py:"Méitǐ.",en:"Media."},
+  {id:862,h:"平",p:"píng",m:"(see #432)",zh:"平台。",py:"Píngtái.",en:"Platform."},
+  {id:863,h:"台",p:"tái",m:"platform; stage; (measure for machines)",zh:"舞台。",py:"Wǔtái.",en:"Stage."},
+  {id:864,h:"剧",p:"jù",m:"drama; play; severe",zh:"电视剧。",py:"Diànshìjù.",en:"TV drama."},
+  {id:865,h:"角",p:"jiǎo",m:"angle; corner; role",zh:"角色。",py:"Juésè.",en:"Role; character."},
+  {id:866,h:"扮",p:"bàn",m:"to dress up; to play the role of",zh:"打扮。",py:"Dǎban.",en:"Dress up; make up."},
+  {id:867,h:"装",p:"zhuāng",m:"costume; to dress; to pretend",zh:"装扮。",py:"Zhuāngbàn.",en:"Dress up; disguise."},
+  {id:868,h:"布",p:"bù",m:"cloth; to spread; to announce",zh:"布置。",py:"Bùzhì.",en:"Arrange; decorate; assign."},
+  {id:869,h:"配",p:"pèi",m:"to match; to mix; to deserve",zh:"配合。",py:"Pèihé.",en:"Cooperate; match."},
+  {id:870,h:"默",p:"mò",m:"silent; tacit; to write from memory",zh:"默默地。",py:"Mòmò de.",en:"Silently; quietly."},
+  {id:871,h:"谅",p:"liàng",m:"to forgive; to understand",zh:"原谅。",py:"Yuánliàng.",en:"Forgive."},
+  {id:872,h:"歉",p:"qiàn",m:"to feel sorry; apology",zh:"道歉。",py:"Dàoqiàn.",en:"Apologize."},
+  {id:873,h:"悔",p:"huǐ",m:"to regret; to repent",zh:"后悔。",py:"Hòuhuǐ.",en:"Regret."},
+  {id:874,h:"弥",p:"mí",m:"to fill; to cover; (Buddhist: amida)",zh:"弥补。",py:"Míbǔ.",en:"Make up for; compensate."},
+  {id:875,h:"补",p:"bǔ",m:"to mend; to supplement; to nourish",zh:"补充。",py:"Bǔchōng.",en:"Supplement; complement."},
+  {id:876,h:"充",p:"chōng",m:"to fill; to serve as; full",zh:"充满。",py:"Chōngmǎn.",en:"Full of; filled with."},
+  {id:877,h:"收",p:"shōu",m:"to receive; to collect",zh:"收入。",py:"Shōurù.",en:"Income."},
+  {id:878,h:"入",p:"rù",m:"to enter; to join",zh:"收入。",py:"Shōurù.",en:"Income."},
+  {id:879,h:"花",p:"huā",m:"(see #212)",zh:"花费。",py:"Huāfèi.",en:"Spend; expenditure."},
+  {id:880,h:"费",p:"fèi",m:"to spend; fee; wasteful",zh:"学费。",py:"Xuéfèi.",en:"Tuition fee."},
+  {id:881,h:"免",p:"miǎn",m:"to exempt; to avoid; to remove",zh:"免费。",py:"Miǎnfèi.",en:"Free (of charge)."},
+  {id:882,h:"贵",p:"guì",m:"expensive; precious; noble",zh:"太贵了！",py:"Tài guì le!",en:"Too expensive!"},
+  {id:883,h:"廉",p:"lián",m:"cheap; honest (official)",zh:"廉价。",py:"Liánjià.",en:"Cheap; inexpensive."},
+  {id:884,h:"便",p:"biàn",m:"convenient; (pián: cheap)",zh:"便宜。",py:"Piányí.",en:"Cheap; inexpensive."},
+  {id:885,h:"值",p:"zhí",m:"value; to be worth",zh:"值得。",py:"Zhídé.",en:"Worth it."},
+  {id:886,h:"妨",p:"fáng",m:"to hinder; to harm; not mind",zh:"无妨。",py:"Wú fáng.",en:"It doesn't matter; no harm."},
+  {id:887,h:"紧",p:"jǐn",m:"(see #547)",zh:"紧急。",py:"Jǐnjí.",en:"Urgent; emergency."},
+  {id:888,h:"况",p:"kuàng",m:"situation; condition; moreover",zh:"情况。",py:"Qíngkuàng.",en:"Situation; condition."},
+  {id:889,h:"转",p:"zhuǎn",m:"to turn; to transfer; to revolve",zh:"好转。",py:"Hǎozhuǎn.",en:"Improve; turn for the better."},
+  {id:890,h:"愈",p:"yù",m:"to recover; to heal; increasingly",zh:"愈来愈好。",py:"Yù lái yù hǎo.",en:"Better and better."},
+  {id:891,h:"越",p:"yuè",m:"to cross; to exceed; (surname Yue)",zh:"越来越好！",py:"Yuè lái yuè hǎo!",en:"Better and better!"},
+  {id:892,h:"渐",p:"jiàn",m:"gradually; little by little",zh:"渐渐地。",py:"Jiàn jiàn de.",en:"Gradually."},
+  {id:893,h:"突",p:"tū",m:"sudden; to charge; chimney",zh:"突然！",py:"Tūrán!",en:"Suddenly!"},
+  {id:894,h:"忽",p:"hū",m:"suddenly; to neglect",zh:"忽然。",py:"Hūrán.",en:"Suddenly."},
+  {id:895,h:"虽",p:"suī",m:"although; even though",zh:"虽然。",py:"Suīrán.",en:"Although."},
+  {id:896,h:"既",p:"jì",m:"since; both...and; already",zh:"既然。",py:"Jìrán.",en:"Since; given that."},
+  {id:897,h:"忧",p:"yōu",m:"worried; anxiety",zh:"忧虑。",py:"Yōulǜ.",en:"Worry; anxiety."},
+  {id:898,h:"欣",p:"xīn",m:"happy; joyful; to admire",zh:"欣慰。",py:"Xīnwèi.",en:"Gratified; relieved."},
+  {id:899,h:"慰",p:"wèi",m:"to comfort; to console",zh:"安慰。",py:"Ānwèi.",en:"Comfort; console."},
+  {id:900,h:"鼓",p:"gǔ",m:"drum; to beat; to encourage",zh:"鼓励！",py:"Gǔlì!",en:"Encourage!"},
+  {id:901,h:"励",p:"lì",m:"to encourage; to exert",zh:"激励。",py:"Jīlì.",en:"Inspire; motivate."},
+  {id:902,h:"触",p:"chù",m:"to touch; to contact; to feel",zh:"触动。",py:"Chùdòng.",en:"Touch; move emotionally."},
+  {id:903,h:"拍",p:"pāi",m:"to clap; to pat; to take (photo)",zh:"拍照。",py:"Pāizhào.",en:"Take a photo."},
+  {id:904,h:"顾",p:"gù",m:"to attend to; to look after",zh:"关顾。",py:"Guāngù.",en:"Care for; look after."},
+  {id:905,h:"怀",p:"huái",m:"bosom; to cherish; to think of",zh:"思念怀念。",py:"Sīniàn huáiniàn.",en:"Miss; yearn for."},
+  {id:906,h:"忆",p:"yì",m:"to recall; to remember; memory",zh:"回忆。",py:"Huíyì.",en:"Recall; memory."},
+  {id:907,h:"往",p:"wǎng",m:"towards; to go; past",zh:"以往。",py:"Yǐwǎng.",en:"In the past; formerly."},
+  {id:908,h:"鲜",p:"xiān",m:"(see #811)",zh:"鲜明。",py:"Xiānmíng.",en:"Vivid; distinct."},
+  {id:909,h:"晰",p:"xī",m:"clear; distinct",zh:"清晰。",py:"Qīngxī.",en:"Clear; distinct."},
+  {id:910,h:"迷",p:"mí",m:"to lose one's way; fan; mystery",zh:"迷惑。",py:"Míhuò.",en:"Confused; puzzled."},
+  {id:911,h:"疑",p:"yí",m:"to doubt; to suspect",zh:"疑问。",py:"Yíwèn.",en:"Question; doubt."},
+  {id:912,h:"明",p:"míng",m:"(see #131)",zh:"明白。",py:"Míngbai.",en:"Understand; clear."},
+  {id:913,h:"通",p:"tōng",m:"(see #172)",zh:"沟通。",py:"Gōutōng.",en:"Communicate."},
+  {id:914,h:"沟",p:"gōu",m:"ditch; channel; to communicate",zh:"沟通很重要。",py:"Gōutōng hěn zhòngyào.",en:"Communication is very important."},
+  {id:915,h:"流",p:"liú",m:"to flow; style; stream; to spread",zh:"流动。",py:"Liúdòng.",en:"Flow; mobile."},
+  {id:916,h:"播",p:"bō",m:"(see #860)",zh:"传播。",py:"Chuánbō.",en:"Spread; disseminate."},
+  {id:917,h:"享",p:"xiǎng",m:"to enjoy; to share",zh:"分享快乐。",py:"Fēnxiǎng kuàilè.",en:"Share happiness."},
+  {id:918,h:"参",p:"cān",m:"(see #630)",zh:"参与。",py:"Cānyù.",en:"Participate; take part."},
+  {id:919,h:"极",p:"jí",m:"(see #624)",zh:"积极。",py:"Jījí.",en:"Active; positive."},
+  {id:920,h:"包",p:"bāo",m:"(see #577)",zh:"包括。",py:"Bāokuò.",en:"Include; consist of."},
+  {id:921,h:"含",p:"hán",m:"to contain; to hold in mouth",zh:"含义。",py:"Hányì.",en:"Meaning; implication."},
+  {id:922,h:"象",p:"xiàng",m:"(see #290)",zh:"象征。",py:"Xiàngzhēng.",en:"Symbol; represent."},
+  {id:923,h:"征",p:"zhēng",m:"to levy; evidence; to go on expedition",zh:"象征和平。",py:"Xiàngzhēng hépíng.",en:"Symbolize peace."},
+  {id:924,h:"团",p:"tuán",m:"(see #748)",zh:"团结。",py:"Tuánjié.",en:"Unity; solidarity."},
+  {id:925,h:"致",p:"zhì",m:"to send; to cause; to devote",zh:"一致。",py:"Yīzhì.",en:"Consistent; unanimous."},
+  {id:926,h:"统",p:"tǒng",m:"(see #654)",zh:"统一。",py:"Tǒngyī.",en:"Unify; unity."},
+  {id:927,h:"原",p:"yuán",m:"(see #211)",zh:"根本原则。",py:"Gēnběn yuánzé.",en:"Fundamental principle."},
+  {id:928,h:"则",p:"zé",m:"rule; then; (used in contrasts)",zh:"原则。",py:"Yuánzé.",en:"Principle."},
+  {id:929,h:"核",p:"hé",m:"nucleus; nuclear; to examine",zh:"核心。",py:"Héxīn.",en:"Core; nucleus."},
+  {id:930,h:"值",p:"zhí",m:"(see #885)",zh:"价值观。",py:"Jiàzhíguān.",en:"Values (worldview)."},
+  {id:931,h:"精",p:"jīng",m:"(see #675)",zh:"精神文明。",py:"Jīngshén wénmíng.",en:"Spiritual civilization."},
+  {id:932,h:"文",p:"wén",m:"(see #160)",zh:"文明。",py:"Wénmíng.",en:"Civilization; civilized."},
+  {id:933,h:"代",p:"dài",m:"(see #154)",zh:"时代精神。",py:"Shídài jīngshén.",en:"Spirit of the times."},
+  {id:934,h:"华",p:"huá",m:"(see #159)",zh:"精华所在。",py:"Jīnghuá suǒzài.",en:"Where the essence lies."},
+  {id:935,h:"传",p:"chuán",m:"(see #642)",zh:"传承。",py:"Chuánchéng.",en:"Inherit and carry on."},
+  {id:936,h:"遗",p:"yí",m:"to leave behind; legacy",zh:"遗产。",py:"Yíchǎn.",en:"Heritage; legacy."},
+  {id:937,h:"宝",p:"bǎo",m:"treasure; precious; (surname Bao)",zh:"国宝。",py:"Guóbǎo.",en:"National treasure."},
+  {id:938,h:"贵",p:"guì",m:"(see #882)",zh:"珍贵。",py:"Zhēnguì.",en:"Precious; valuable."},
+  {id:939,h:"古",p:"gǔ",m:"(see #652)",zh:"古迹。",py:"Gǔjì.",en:"Historic site."},
+  {id:940,h:"迹",p:"jì",m:"trace; mark; remains; footprint",zh:"遗迹。",py:"Yíjì.",en:"Ruins; remains."},
+  {id:941,h:"考",p:"kǎo",m:"(see #391)",zh:"考古。",py:"Kǎogǔ.",en:"Archaeology."},
+  {id:942,h:"挖",p:"wā",m:"to dig; to excavate",zh:"挖掘。",py:"Wājué.",en:"Excavate; dig up."},
+  {id:943,h:"发",p:"fā",m:"(see #46)",zh:"发现。",py:"Fāxiàn.",en:"Discover; find."},
+  {id:944,h:"促",p:"cù",m:"to urge; to promote; close",zh:"促进。",py:"Cùjìn.",en:"Promote; facilitate."},
+  {id:945,h:"推",p:"tuī",m:"(see #336)",zh:"推动。",py:"Tuīdòng.",en:"Promote; drive forward."},
+  {id:946,h:"领",p:"lǐng",m:"to lead; neck; collar",zh:"领导。",py:"Lǐngdǎo.",en:"Lead; leadership."},
+  {id:947,h:"导",p:"dǎo",m:"to lead; to guide",zh:"向导。",py:"Xiàngdǎo.",en:"Guide."},
+  {id:948,h:"引",p:"yǐn",m:"to pull; to guide; to quote",zh:"引导。",py:"Yǐndǎo.",en:"Guide; direct."},
+  {id:949,h:"指",p:"zhǐ",m:"finger; to point; to indicate",zh:"指导。",py:"Zhǐdǎo.",en:"Guide; instruct."},
+  {id:950,h:"训",p:"xùn",m:"to teach; to train; lesson",zh:"训练。",py:"Xùnliàn.",en:"Train."},
+  {id:951,h:"熟",p:"shú",m:"(see #403)",zh:"熟练。",py:"Shúliàn.",en:"Skilled; proficient."},
+  {id:952,h:"操",p:"cāo",m:"to operate; to manage; exercise",zh:"操作系统。",py:"Cāozuò xìtǒng.",en:"Operating system."},
+  {id:953,h:"格",p:"gé",m:"(see #666)",zh:"规格。",py:"Guīgé.",en:"Specification; standard."},
+  {id:954,h:"式",p:"shì",m:"type; style; formula",zh:"方式。",py:"Fāngshì.",en:"Method; way."},
+  {id:955,h:"途",p:"tú",m:"road; way; purpose",zh:"用途。",py:"Yòngtú.",en:"Use; purpose."},
+  {id:956,h:"径",p:"jìng",m:"path; diameter",zh:"路径。",py:"Lùjìng.",en:"Path; route."},
+  {id:957,h:"捷",p:"jié",m:"fast; nimble; victory",zh:"捷径。",py:"Jiéjìng.",en:"Shortcut."},
+  {id:958,h:"取",p:"qǔ",m:"to take; to get; to choose",zh:"取得。",py:"Qǔdé.",en:"Obtain; achieve."},
+  {id:959,h:"享",p:"xiǎng",m:"(see #917)",zh:"享受。",py:"Xiǎngshòu.",en:"Enjoy."},
+  {id:960,h:"幸",p:"xìng",m:"(see #775)",zh:"幸福美满。",py:"Xìngfú měimǎn.",en:"Happy and complete."},
+  {id:961,h:"非",p:"fēi",m:"not; wrong; Africa; non-",zh:"非常。",py:"Fēicháng.",en:"Very; extremely."},
+  {id:962,h:"常",p:"cháng",m:"often; common; ordinary",zh:"经常。",py:"Jīngcháng.",en:"Often; frequently."},
+  {id:963,h:"锻",p:"duàn",m:"to forge; to temper",zh:"锻炼身体。",py:"Duànliàn shēntǐ.",en:"Exercise the body."},
+  {id:964,h:"炼",p:"liàn",m:"to smelt; to refine",zh:"锻炼。",py:"Duànliàn.",en:"Exercise; train."},
+  {id:965,h:"健",p:"jiàn",m:"(see #374)",zh:"健身。",py:"Jiànshēn.",en:"Keep fit; work out."},
+  {id:966,h:"身",p:"shēn",m:"body; oneself; (measure for outfits)",zh:"身体好。",py:"Shēntǐ hǎo.",en:"Good health."},
+  {id:967,h:"材",p:"cái",m:"material; timber; talent",zh:"身材。",py:"Shēncái.",en:"Figure; build."},
+  {id:968,h:"苗",p:"miáo",m:"seedling; Miao ethnic group",zh:"苗条。",py:"Miáotiáo.",en:"Slim; slender."},
+  {id:969,h:"备",p:"bèi",m:"to prepare; to be equipped",zh:"准备好了。",py:"Zhǔnbèi hǎo le.",en:"All prepared."},
+  {id:970,h:"充",p:"chōng",m:"(see #876)",zh:"充分发挥。",py:"Chōngfèn fāhuī.",en:"Give full play to."},
+  {id:971,h:"挥",p:"huī",m:"to wave; to wipe; to command",zh:"指挥。",py:"Zhǐhuī.",en:"Command; conduct."},
+  {id:972,h:"率",p:"lǜ",m:"rate; efficiency; to lead",zh:"效率。",py:"Xiàolǜ.",en:"Efficiency."},
+  {id:973,h:"速",p:"sù",m:"speed; fast; to invite",zh:"速度。",py:"Sùdù.",en:"Speed."},
+  {id:974,h:"尽",p:"jìn",m:"to use up; exhausted; to the utmost",zh:"尽力。",py:"Jìnlì.",en:"Try one's best."},
+  {id:975,h:"赴",p:"fù",m:"to go to; to attend; to face",zh:"赴约。",py:"Fù yuē.",en:"Keep an appointment."},
+  {id:976,h:"守",p:"shǒu",m:"(see #555)",zh:"守时。",py:"Shǒushí.",en:"Punctual; keep to the time."},
+  {id:977,h:"誉",p:"yù",m:"reputation; to praise",zh:"名誉。",py:"Míngyù.",en:"Reputation; honor."},
+  {id:978,h:"威",p:"wēi",m:"power; prestige; authority",zh:"威信。",py:"Wēixìn.",en:"Prestige and credibility."},
+  {id:979,h:"号",p:"hào",m:"(see #162)",zh:"号召力。",py:"Hàozhàolì.",en:"Power of appeal."},
+  {id:980,h:"召",p:"zhào",m:"to summon; to call",zh:"号召。",py:"Hàozhào.",en:"Call; appeal to."},
+  {id:981,h:"向",p:"xiàng",m:"(see #164)",zh:"走向成功。",py:"Zǒu xiàng chénggōng.",en:"Walk toward success."},
+  {id:982,h:"迈",p:"mài",m:"to step; to stride; old",zh:"迈步向前。",py:"Mài bù xiàng qián.",en:"Step forward."},
+  {id:983,h:"峰",p:"fēng",m:"peak; summit",zh:"顶峰。",py:"Dǐngfēng.",en:"Pinnacle; summit."},
+  {id:984,h:"超",p:"chāo",m:"(see #596)",zh:"超越极限。",py:"Chāoyuè jíxiàn.",en:"Surpass the limit."},
+  {id:985,h:"突",p:"tū",m:"(see #893)",zh:"突破。",py:"Tūpò.",en:"Break through."},
+  {id:986,h:"破",p:"pò",m:"to break; to destroy; to expose",zh:"突破难关。",py:"Tūpò nánguān.",en:"Break through difficulties."},
+  {id:987,h:"克",p:"kè",m:"to overcome; to restrain; gram",zh:"克服。",py:"Kèfú.",en:"Overcome."},
+  {id:988,h:"战",p:"zhàn",m:"(see #789)",zh:"战胜困难。",py:"Zhànshèng kùnnán.",en:"Overcome difficulties."},
+  {id:989,h:"凯",p:"kǎi",m:"triumphant; (music: triumphal)",zh:"凯旋。",py:"Kǎixuán.",en:"Triumphant return."},
+  {id:990,h:"旋",p:"xuán",m:"to revolve; to return victorious",zh:"旋转。",py:"Xuánzhuǎn.",en:"Rotate; spin."},
+  {id:991,h:"圈",p:"quān",m:"circle; ring; pen (for animals)",zh:"打圈圈。",py:"Dǎ quānquān.",en:"Go in circles."},
+  {id:992,h:"绕",p:"rào",m:"to wind around; to bypass",zh:"围绕。",py:"Wéirào.",en:"Surround; revolve around."},
+  {id:993,h:"围",p:"wéi",m:"to surround; to encircle",zh:"包围。",py:"Bāowéi.",en:"Surround; encircle."},
+  {id:994,h:"脱",p:"tuō",m:"to escape; to shed; to take off",zh:"脱险。",py:"Tuōxiǎn.",en:"Escape danger."},
+  {id:995,h:"把",p:"bǎ",m:"to hold; handle; (measure for bunches)",zh:"把握机会。",py:"Bǎwò jīhuì.",en:"Seize the opportunity."},
+  {id:996,h:"握",p:"wò",m:"(see #562)",zh:"把握。",py:"Bǎwò.",en:"Grasp; seize."},
+  {id:997,h:"珍",p:"zhēn",m:"(see #731)",zh:"珍惜机会。",py:"Zhēnxī jīhuì.",en:"Cherish the opportunity."},
+  {id:998,h:"永",p:"yǒng",m:"eternal; forever; (surname Yong)",zh:"永远。",py:"Yǒngyuǎn.",en:"Forever; always."},
+  {id:999,h:"此",p:"cǐ",m:"this; these; here",zh:"此时此刻。",py:"Cǐ shí cǐ kè.",en:"This very moment."},
+  {id:1000,h:"刹",p:"chà",m:"instant; to stop; brake",zh:"刹那间。",py:"Chànàjiān.",en:"In an instant."},
+  {id:1001,h:"瞬",p:"shùn",m:"to wink; instant; flash",zh:"瞬间。",py:"Shùnjiān.",en:"Instant; moment."},
+  {id:1002,h:"忽",p:"hū",m:"(see #894)",zh:"忽视。",py:"Hūshì.",en:"Ignore; overlook."},
+  {id:1003,h:"视",p:"shì",m:"(see #636)",zh:"忽视问题。",py:"Hūshì wèntí.",en:"Ignore the problem."},
+  {id:1004,h:"察",p:"chá",m:"to examine; to inspect",zh:"观察。",py:"Guānchá.",en:"Observe; examine."},
+  {id:1005,h:"审",p:"shěn",m:"to examine; to interrogate",zh:"审查。",py:"Shěnchá.",en:"Examine; check."},
+  {id:1006,h:"验",p:"yàn",m:"(see #768)",zh:"实验。",py:"Shíyàn.",en:"Experiment."},
+  {id:1007,h:"证",p:"zhèng",m:"to prove; certificate; evidence",zh:"证明。",py:"Zhèngmíng.",en:"Prove; certificate."},
+  {id:1008,h:"明",p:"míng",m:"(see #131)",zh:"证明文件。",py:"Zhèngmíng wénjiàn.",en:"Certificate; proof document."},
+  {id:1009,h:"据",p:"jù",m:"(see #118)",zh:"证据。",py:"Zhèngjù.",en:"Evidence; proof."},
+  {id:1010,h:"理",p:"lǐ",m:"(see #88)",zh:"理解。",py:"Lǐjiě.",en:"Understand; comprehend."},
+  {id:1011,h:"解",p:"jiě",m:"(see #385)",zh:"理解万岁！",py:"Lǐjiě wànsuì!",en:"Understanding is everything!"},
+  {id:1012,h:"释",p:"shì",m:"to explain; to release; Buddhist",zh:"解释。",py:"Jiěshì.",en:"Explain; interpret."},
+  {id:1013,h:"启",p:"qǐ",m:"to open; to start; to enlighten",zh:"启发。",py:"Qǐfā.",en:"Inspire; enlighten."},
+  {id:1014,h:"迪",p:"dí",m:"to enlighten; to guide",zh:"迪士尼。",py:"Díshìní.",en:"Disney."},
+  {id:1015,h:"示",p:"shì",m:"(see #761)",zh:"启示。",py:"Qǐshì.",en:"Revelation; inspiration."},
+  {id:1016,h:"感",p:"gǎn",m:"(see #537)",zh:"感悟。",py:"Gǎnwù.",en:"Realize; feel; comprehend."},
+  {id:1017,h:"悟",p:"wù",m:"to realize; to awaken to",zh:"顿悟。",py:"Dùnwù.",en:"Sudden enlightenment."},
+  {id:1018,h:"顿",p:"dùn",m:"to pause; a meal; suddenly",zh:"顿时。",py:"Dùnshí.",en:"Immediately; at once."},
+  {id:1019,h:"豁",p:"huō",m:"open; to break; generous",zh:"豁然开朗。",py:"Huòrán kāilǎng.",en:"Suddenly see the light."},
+  {id:1020,h:"朗",p:"lǎng",m:"clear; bright; to read aloud",zh:"开朗。",py:"Kāilǎng.",en:"Cheerful; open-minded."},
+  {id:1021,h:"明",p:"míng",m:"(see #131)",zh:"开明。",py:"Kāimíng.",en:"Enlightened; open-minded."},
+  {id:1022,h:"智",p:"zhì",m:"(see #528)",zh:"明智。",py:"Míngzhì.",en:"Wise; sensible."},
+  {id:1023,h:"谋",p:"móu",m:"to plan; to seek; stratagem",zh:"谋略。",py:"Móulüè.",en:"Strategy; tactics."},
+  {id:1024,h:"略",p:"lüè",m:"brief; strategy; to omit",zh:"策略。",py:"Cèlüè.",en:"Strategy; tactics."},
+  {id:1025,h:"策",p:"cè",m:"plan; strategy; policy",zh:"政策。",py:"Zhèngcè.",en:"Policy."},
+  {id:1026,h:"政",p:"zhèng",m:"politics; government; affairs",zh:"政策。",py:"Zhèngcè.",en:"Policy."},
+  {id:1027,h:"府",p:"fǔ",m:"government; prefecture; mansion",zh:"政府。",py:"Zhèngfǔ.",en:"Government."},
+  {id:1028,h:"官",p:"guān",m:"official; officer; organ (of body)",zh:"官员。",py:"Guānyuán.",en:"Official; officer."},
+  {id:1029,h:"员",p:"yuán",m:"member; personnel; (measure for officials)",zh:"成员。",py:"Chéngyuán.",en:"Member."},
+  {id:1030,h:"干",p:"gàn",m:"(see #359)",zh:"干部。",py:"Gànbù.",en:"Cadre; official."},
+  {id:1031,h:"职",p:"zhí",m:"duty; position; office",zh:"职业。",py:"Zhíyè.",en:"Profession; occupation."},
+  {id:1032,h:"岗",p:"gǎng",m:"post; sentry; hillock",zh:"岗位。",py:"Gǎngwèi.",en:"Post; position."},
+  {id:1033,h:"位",p:"wèi",m:"(see #150)",zh:"到岗。",py:"Dào gǎng.",en:"Report to one's post."},
+  {id:1034,h:"司",p:"sī",m:"to manage; department; (surname Si)",zh:"公司。",py:"Gōngsī.",en:"Company."},
+  {id:1035,h:"企",p:"qǐ",m:"to plan; enterprise; to stand on tiptoe",zh:"企业。",py:"Qǐyè.",en:"Enterprise; business."},
+  {id:1036,h:"商",p:"shāng",m:"business; to discuss; commerce",zh:"商场。",py:"Shāngchǎng.",en:"Shopping mall."},
+  {id:1037,h:"贸",p:"mào",m:"trade; commerce",zh:"贸易。",py:"Màoyì.",en:"Trade."},
+  {id:1038,h:"经",p:"jīng",m:"(see #61)",zh:"经济。",py:"Jīngjì.",en:"Economy."},
+  {id:1039,h:"济",p:"jì",m:"to help; to cross; neat; (surname Ji)",zh:"经济发展。",py:"Jīngjì fāzhǎn.",en:"Economic development."},
+  {id:1040,h:"财",p:"cái",m:"wealth; money; riches",zh:"财富。",py:"Cáifù.",en:"Wealth; riches."},
+  {id:1041,h:"产",p:"chǎn",m:"(see #185)",zh:"财产。",py:"Cáichǎn.",en:"Property; assets."},
+  {id:1042,h:"税",p:"shuì",m:"tax; duty",zh:"纳税。",py:"Nà shuì.",en:"Pay taxes."},
+  {id:1043,h:"市",p:"shì",m:"(see #187)",zh:"股市。",py:"Gǔshì.",en:"Stock market."},
+  {id:1044,h:"股",p:"gǔ",m:"share; thigh; (measure for streams)",zh:"股票。",py:"Gǔpiào.",en:"Stock; share."},
+  {id:1045,h:"票",p:"piào",m:"ticket; vote; paper money",zh:"买票。",py:"Mǎi piào.",en:"Buy a ticket."},
+  {id:1046,h:"证",p:"zhèng",m:"(see #1007)",zh:"身份证。",py:"Shēnfènzhèng.",en:"ID card."},
+  {id:1047,h:"份",p:"fèn",m:"portion; share; (measure for documents/meals)",zh:"身份。",py:"Shēnfèn.",en:"Identity."},
+  {id:1048,h:"卡",p:"kǎ",m:"card; to be stuck; checkpoint",zh:"信用卡。",py:"Xìnyòng kǎ.",en:"Credit card."},
+  {id:1049,h:"签",p:"qiān",m:"to sign; to sign in; lot (in drawing)",zh:"签名。",py:"Qiānmíng.",en:"Sign; signature."},
+  {id:1050,h:"约",p:"yuē",m:"(see #790)",zh:"签约。",py:"Qiān yuē.",en:"Sign a contract."},
+  {id:1051,h:"约",p:"yuē",m:"(see #790)",zh:"合约。",py:"Héyuē.",en:"Contract; agreement."},
+  {id:1052,h:"协",p:"xié",m:"to cooperate; to harmonize; association",zh:"协议。",py:"Xiéyì.",en:"Agreement; protocol."},
+  {id:1053,h:"谈",p:"tán",m:"to talk; to chat; to discuss",zh:"谈话。",py:"Tán huà.",en:"Have a talk; conversation."},
+  {id:1054,h:"判",p:"pàn",m:"(see #840)",zh:"谈判。",py:"Tánpàn.",en:"Negotiate."},
+  {id:1055,h:"商",p:"shāng",m:"(see #1036)",zh:"协商。",py:"Xiéshāng.",en:"Negotiate; consult."},
+  {id:1056,h:"议",p:"yì",m:"(see #764)",zh:"协议。",py:"Xiéyì.",en:"Agreement."},
+  {id:1057,h:"签",p:"qiān",m:"(see #1049)",zh:"签订。",py:"Qiāndìng.",en:"Sign (an agreement)."},
+  {id:1058,h:"订",p:"dìng",m:"to subscribe; to order; to fix",zh:"订购。",py:"Dìnggòu.",en:"Order; subscribe."},
+  {id:1059,h:"购",p:"gòu",m:"(see #595)",zh:"网购。",py:"Wǎng gòu.",en:"Online shopping."},
+  {id:1060,h:"物",p:"wù",m:"(see #213)",zh:"万物。",py:"Wànwù.",en:"All things."},
+  {id:1061,h:"供",p:"gōng",m:"to provide; to offer; confession",zh:"提供。",py:"Tígōng.",en:"Provide; supply."},
+  {id:1062,h:"应",p:"yìng",m:"to respond; to answer; (yīng: should)",zh:"供应。",py:"Gōngyìng.",en:"Supply."},
+  {id:1063,h:"需",p:"xū",m:"(see #198)",zh:"需求。",py:"Xūqiú.",en:"Demand; needs."},
+  {id:1064,h:"求",p:"qiú",m:"(see #780)",zh:"需求量大。",py:"Xūqiú liàng dà.",en:"High demand."},
+  {id:1065,h:"丰",p:"fēng",m:"abundant; plentiful; (surname Feng)",zh:"丰收。",py:"Fēngshōu.",en:"Bumper harvest."},
+  {id:1066,h:"盛",p:"shèng",m:"flourishing; abundant; grand",zh:"旺盛。",py:"Wàngshèng.",en:"Vigorous; thriving."},
+  {id:1067,h:"旺",p:"wàng",m:"prosperous; vigorous; blazing",zh:"兴旺。",py:"Xīngwàng.",en:"Prosperous; thriving."},
+  {id:1068,h:"兴",p:"xīng",m:"(see #542)",zh:"兴旺发达。",py:"Xīngwàng fādá.",en:"Prosperous and thriving."},
+  {id:1069,h:"达",p:"dá",m:"(see #850)",zh:"发达。",py:"Fādá.",en:"Developed; prosperous."},
+  {id:1070,h:"落",p:"luò",m:"to fall; to drop; to stay behind",zh:"落后。",py:"Luòhòu.",en:"Fall behind; backward."},
+  {id:1071,h:"伏",p:"fú",m:"to lie face down; to submit; ambush",zh:"起伏。",py:"Qǐfú.",en:"Ups and downs."},
+  {id:1072,h:"波",p:"bō",m:"wave; ripple; (surname Bo)",zh:"波浪。",py:"Bōlàng.",en:"Wave."},
+  {id:1073,h:"浪",p:"làng",m:"wave; to waste; sentimental",zh:"浪费。",py:"Làngfèi.",en:"Waste."},
+  {id:1074,h:"费",p:"fèi",m:"(see #880)",zh:"浪费时间。",py:"Làngfèi shíjiān.",en:"Waste time."},
+  {id:1075,h:"珍",p:"zhēn",m:"(see #731)",zh:"珍珠。",py:"Zhēnzhū.",en:"Pearl."},
+  {id:1076,h:"宝",p:"bǎo",m:"(see #937)",zh:"宝贝。",py:"Bǎobèi.",en:"Baby; treasure; darling."},
+  {id:1077,h:"贝",p:"bèi",m:"shell; cowrie; (surname Bei)",zh:"宝贝。",py:"Bǎobèi.",en:"Darling; treasure."},
+  {id:1078,h:"玉",p:"yù",m:"jade; (surname Yu)",zh:"玉石。",py:"Yùshí.",en:"Jade."},
+  {id:1079,h:"铜",p:"tóng",m:"copper; bronze",zh:"铜牌。",py:"Tóngpái.",en:"Bronze medal."},
+  {id:1080,h:"铁",p:"tiě",m:"(see #610)",zh:"铁路。",py:"Tiělù.",en:"Railway."},
+  {id:1081,h:"路",p:"lù",m:"(see #294)",zh:"铁路交通。",py:"Tiělù jiāotōng.",en:"Railway transportation."},
+  {id:1082,h:"港",p:"gǎng",m:"harbor; port; (short for Hong Kong)",zh:"香港。",py:"Xiānggǎng.",en:"Hong Kong."},
+  {id:1083,h:"澳",p:"ào",m:"bay; (short for Macao or Australia)",zh:"澳门。",py:"Àomén.",en:"Macao."},
+  {id:1084,h:"台",p:"tái",m:"(see #863)",zh:"台湾。",py:"Táiwān.",en:"Taiwan."},
+  {id:1085,h:"湾",p:"wān",m:"bay; gulf; (place name suffix)",zh:"台湾。",py:"Táiwān.",en:"Taiwan."},
+  {id:1086,h:"州",p:"zhōu",m:"state; province; continent",zh:"广州。",py:"Guǎngzhōu.",en:"Guangzhou."},
+  {id:1087,h:"疆",p:"jiāng",m:"border; boundary",zh:"边疆。",py:"Biānjiāng.",en:"Frontier; borderland."},
+  {id:1088,h:"藏",p:"zàng",m:"(see #1000)",zh:"西藏高原。",py:"Xīzàng gāoyuán.",en:"Tibetan Plateau."},
+  {id:1089,h:"原",p:"yuán",m:"(see #211)",zh:"高原。",py:"Gāoyuán.",en:"Plateau."},
+  {id:1090,h:"盆",p:"pén",m:"basin; pot; bowl",zh:"盆地。",py:"Péndì.",en:"Basin."},
+  {id:1091,h:"峡",p:"xiá",m:"gorge; strait",zh:"三峡。",py:"Sān Xiá.",en:"Three Gorges."},
+  {id:1092,h:"湾",p:"wān",m:"(see #1085)",zh:"海湾。",py:"Hǎiwān.",en:"Bay; gulf."},
+  {id:1093,h:"岸",p:"àn",m:"bank; shore; coast",zh:"海岸线。",py:"Hǎi'àn xiàn.",en:"Coastline."},
+  {id:1094,h:"岭",p:"lǐng",m:"mountain ridge; (place name)",zh:"山岭。",py:"Shān lǐng.",en:"Ridge."},
+  {id:1095,h:"峻",p:"jùn",m:"steep; lofty; strict",zh:"险峻。",py:"Xiǎnjùn.",en:"Steep; precipitous."},
+  {id:1096,h:"伟",p:"wěi",m:"big; great; (surname Wei)",zh:"伟大。",py:"Wěidà.",en:"Great; magnificent."},
+  {id:1097,h:"壮",p:"zhuàng",m:"(see #686)",zh:"壮丽。",py:"Zhuànglì.",en:"Magnificent; majestic."},
+  {id:1098,h:"丽",p:"lì",m:"beautiful; (surname Li)",zh:"美丽。",py:"Měilì.",en:"Beautiful."},
+  {id:1099,h:"奇",p:"qí",m:"(see #544)",zh:"奇妙。",py:"Qímiào.",en:"Wonderful; marvelous."},
+  {id:1100,h:"妙",p:"miào",m:"wonderful; subtle; ingenious",zh:"美妙。",py:"Měimiào.",en:"Beautiful and wonderful."},
+  {id:1101,h:"绚",p:"xuàn",m:"brilliant; gorgeous",zh:"绚丽。",py:"Xuànlì.",en:"Gorgeous; dazzling."},
+  {id:1102,h:"灿",p:"càn",m:"brilliant; radiant",zh:"灿烂。",py:"Cànlàn.",en:"Brilliant; splendid."},
+  {id:1103,h:"烂",p:"làn",m:"rotten; messy; brilliant",zh:"灿烂的笑。",py:"Cànlàn de xiào.",en:"A brilliant smile."},
+  {id:1104,h:"辉",p:"huī",m:"brightness; glory; to shine",zh:"辉煌。",py:"Huīhuáng.",en:"Glorious; brilliant."},
+  {id:1105,h:"煌",p:"huáng",m:"brilliant; bright",zh:"金碧辉煌。",py:"Jīn bì huīhuáng.",en:"Resplendent; magnificent."},
+  {id:1106,h:"华",p:"huá",m:"(see #159)",zh:"繁华。",py:"Fánhuá.",en:"Prosperous; flourishing."},
+  {id:1107,h:"繁",p:"fán",m:"numerous; complex; flourishing",zh:"繁荣。",py:"Fánróng.",en:"Prosperous; thriving."},
+  {id:1108,h:"荣",p:"róng",m:"honor; glory; (surname Rong)",zh:"光荣。",py:"Guāngróng.",en:"Glorious; honorable."},
+  {id:1109,h:"耀",p:"yào",m:"to shine; glory; dazzling",zh:"荣耀。",py:"Róngyào.",en:"Honor; glory."},
+  {id:1110,h:"骄",p:"jiāo",m:"proud; arrogant; fierce",zh:"骄傲。",py:"Jiāo'ào.",en:"Proud; arrogant."},
+  {id:1111,h:"傲",p:"ào",m:"proud; haughty; hard to approach",zh:"骄傲。",py:"Jiāo'ào.",en:"Proud (can be positive or negative)."},
+  {id:1112,h:"谦",p:"qiān",m:"(see #660)",zh:"谦虚谨慎。",py:"Qiānxū jǐnshèn.",en:"Humble and cautious."},
+  {id:1113,h:"逊",p:"xùn",m:"humble; to concede; inferior",zh:"谦逊。",py:"Qiānxùn.",en:"Humble; modest."},
+  {id:1114,h:"卑",p:"bēi",m:"humble; low; inferior",zh:"谦卑。",py:"Qiānbēi.",en:"Humble; modest."},
+  {id:1115,h:"慎",p:"shèn",m:"(see #793)",zh:"慎重。",py:"Shènzhòng.",en:"Careful; prudent."},
+  {id:1116,h:"虔",p:"qián",m:"devout; sincere; pious",zh:"虔诚。",py:"Qiánchéng.",en:"Devout; sincere."},
+  {id:1117,h:"诚",p:"chéng",m:"(see #661)",zh:"虔诚的心。",py:"Qiánchéng de xīn.",en:"A devout heart."},
+  {id:1118,h:"恳",p:"kěn",m:"earnest; sincere; to beseech",zh:"诚恳。",py:"Chéngkěn.",en:"Sincere; earnest."},
+  {id:1119,h:"挚",p:"zhì",m:"sincere; earnest",zh:"真挚。",py:"Zhēnzhì.",en:"Sincere; genuine."},
+  {id:1120,h:"纯",p:"chún",m:"pure; simple; unmixed",zh:"纯洁。",py:"Chúnjié.",en:"Pure; clean."},
+  {id:1121,h:"洁",p:"jié",m:"clean; to purify",zh:"清洁。",py:"Qīngjié.",en:"Clean; cleanly."},
+  {id:1122,h:"明",p:"míng",m:"(see #131)",zh:"明净。",py:"Míngjìng.",en:"Clear and clean."},
+  {id:1123,h:"朴",p:"pǔ",m:"simple; plain; unadorned",zh:"朴素。",py:"Pǔsù.",en:"Simple; plain."},
+  {id:1124,h:"素",p:"sù",m:"(see #843)",zh:"朴素的生活。",py:"Pǔsù de shēnghuó.",en:"A simple life."},
+  {id:1125,h:"真",p:"zhēn",m:"(see #246)",zh:"返璞归真。",py:"Fǎn pú guī zhēn.",en:"Return to simplicity."},
+  {id:1126,h:"归",p:"guī",m:"to return; to belong to",zh:"回归。",py:"Huíguī.",en:"Return; go back."},
+  {id:1127,h:"返",p:"fǎn",m:"to return; to go back",zh:"返回。",py:"Fǎnhuí.",en:"Return; come back."},
+  {id:1128,h:"往",p:"wǎng",m:"(see #907)",zh:"往返。",py:"Wǎngfǎn.",en:"Round trip."},
+  {id:1129,h:"来",p:"lái",m:"(see #14)",zh:"来往。",py:"Láiwǎng.",en:"Come and go; dealings."},
+  {id:1130,h:"频",p:"pín",m:"(see #637)",zh:"频繁。",py:"Pínfán.",en:"Frequent; repeated."},
+  {id:1131,h:"繁",p:"fán",m:"(see #1107)",zh:"频繁往来。",py:"Pínfán wǎnglái.",en:"Frequent contact."},
+  {id:1132,h:"密",p:"mì",m:"(see #739)",zh:"频密。",py:"Pínmì.",en:"Frequent; dense."},
+  {id:1133,h:"切",p:"qiē",m:"(see #566)",zh:"切实。",py:"Qièshí.",en:"Practical; realistic."},
+  {id:1134,h:"际",p:"jì",m:"(see #157)",zh:"实际。",py:"Shíjì.",en:"Practical; actual; in reality."},
+  {id:1135,h:"践",p:"jiàn",m:"to fulfill; to practice; to tread",zh:"实践。",py:"Shíjiàn.",en:"Practice; put into practice."},
+  {id:1136,h:"行",p:"xíng",m:"(see #52)",zh:"执行。",py:"Zhíxíng.",en:"Execute; carry out."},
+  {id:1137,h:"执",p:"zhí",m:"to hold; to carry out; to persist",zh:"执着。",py:"Zhízhuó.",en:"Persistent; dedicated."},
+  {id:1138,h:"着",p:"zhe",m:"(see #40)",zh:"执着追求。",py:"Zhízhuó zhuīqiú.",en:"Persistently pursue."},
+  {id:1139,h:"追",p:"zhuī",m:"to chase; to pursue; to trace back",zh:"追求。",py:"Zhuīqiú.",en:"Pursue; seek."},
+  {id:1140,h:"求",p:"qiú",m:"(see #780)",zh:"追求梦想。",py:"Zhuīqiú mèngxiǎng.",en:"Pursue dreams."},
+  {id:1141,h:"实",p:"shí",m:"(see #99)",zh:"实现。",py:"Shíxiàn.",en:"Realize; achieve."},
+  {id:1142,h:"效",p:"xiào",m:"(see #814)",zh:"有效。",py:"Yǒuxiào.",en:"Effective; valid."},
+  {id:1143,h:"率",p:"lǜ",m:"(see #972)",zh:"成功率。",py:"Chénggōnglǜ.",en:"Success rate."},
+  {id:1144,h:"胜",p:"shèng",m:"(see #790)",zh:"必胜！",py:"Bì shèng!",en:"Must win!"},
+  {id:1145,h:"信",p:"xìn",m:"(see #678)",zh:"必胜信念。",py:"Bì shèng xìnniàn.",en:"Belief in victory."},
+  {id:1146,h:"念",p:"niàn",m:"(see #346)",zh:"信念坚定。",py:"Xìnniàn jiāndìng.",en:"Firm belief."},
+  {id:1147,h:"坚",p:"jiān",m:"(see #783)",zh:"坚定。",py:"Jiāndìng.",en:"Firm; resolute."},
+  {id:1148,h:"决",p:"jué",m:"(see #386)",zh:"坚决。",py:"Jiānjué.",en:"Resolute; determined."},
+  {id:1149,h:"心",p:"xīn",m:"(see #89)",zh:"齐心。",py:"Qí xīn.",en:"Unite; be of one mind."},
+  {id:1150,h:"协",p:"xié",m:"(see #1052)",zh:"齐心协力。",py:"Qí xīn xié lì.",en:"Work together with one heart."},
+  {id:1151,h:"奔",p:"bēn",m:"to run; to rush towards",zh:"奔跑。",py:"Bēnpǎo.",en:"Run; sprint."},
+  {id:1152,h:"涌",p:"yǒng",m:"to gush; to well up; to emerge",zh:"涌现。",py:"Yǒngxiàn.",en:"Emerge in large numbers."},
+  {id:1153,h:"腾",p:"téng",m:"to leap; to gallop; to soar",zh:"飞腾。",py:"Fēiténg.",en:"Soar; fly high."},
+  {id:1154,h:"翱",p:"áo",m:"to soar; to hover",zh:"翱翔。",py:"Áoxiáng.",en:"Soar; glide."},
+  {id:1155,h:"翔",p:"xiáng",m:"to soar; to hover; detailed",zh:"翱翔蓝天。",py:"Áoxiáng lán tiān.",en:"Soar in the blue sky."},
+  {id:1156,h:"腾",p:"téng",m:"(see #1153)",zh:"腾空。",py:"Téngkōng.",en:"Rise into the air."},
+  {id:1157,h:"飞",p:"fēi",m:"(see #291)",zh:"飞翔。",py:"Fēixiáng.",en:"Fly; soar."},
+  {id:1158,h:"升",p:"shēng",m:"(see #825)",zh:"冉冉升起。",py:"Rǎnrǎn shēngqǐ.",en:"Slowly rise."},
+  {id:1159,h:"冉",p:"rǎn",m:"gradually; (surname Ran)",zh:"冉冉。",py:"Rǎnrǎn.",en:"Gradually; slowly."},
+  {id:1160,h:"闪",p:"shǎn",m:"to flash; to glisten; to dodge",zh:"闪闪发光。",py:"Shǎnshǎn fāguāng.",en:"Glittering; sparkling."},
+  {id:1161,h:"耀",p:"yào",m:"(see #1109)",zh:"耀眼。",py:"Yàoyǎn.",en:"Dazzling; shining."},
+  {id:1162,h:"明",p:"míng",m:"(see #131)",zh:"照亮前程。",py:"Zhàoliàng qiánchéng.",en:"Light up the future."},
+  {id:1163,h:"程",p:"chéng",m:"journey; distance; procedure",zh:"前程。",py:"Qiánchéng.",en:"Future; prospects."},
+  {id:1164,h:"途",p:"tú",m:"(see #955)",zh:"前途。",py:"Qiántú.",en:"Future; prospects."},
+  {id:1165,h:"希",p:"xī",m:"(see #534)",zh:"大有希望。",py:"Dà yǒu xīwàng.",en:"Very promising."},
+  {id:1166,h:"憧",p:"chōng",m:"to long for; to look forward to",zh:"憧憬。",py:"Chōngjǐng.",en:"Look forward to; yearn for."},
+  {id:1167,h:"憬",p:"jǐng",m:"to awaken; to long for",zh:"憧憬未来。",py:"Chōngjǐng wèilái.",en:"Look forward to the future."},
+  {id:1168,h:"期",p:"qī",m:"(see #169)",zh:"期待。",py:"Qīdài.",en:"Expect; look forward to."},
+  {id:1169,h:"盼",p:"pàn",m:"to hope; to long for; to look about",zh:"盼望。",py:"Pànwàng.",en:"Hope; look forward to."},
+  {id:1170,h:"渴",p:"kě",m:"(see #369)",zh:"渴望。",py:"Kěwàng.",en:"Thirst for; yearn for."},
+  {id:1171,h:"向往",p:"xiàng wàng",m:"to yearn for; to look forward to",zh:"向往美好生活。",py:"Xiàngwǎng měihǎo shēnghuó.",en:"Yearn for a beautiful life."},
+  {id:1172,h:"梦",p:"mèng",m:"(see #535)",zh:"梦想成真。",py:"Mèngxiǎng chéng zhēn.",en:"Dreams come true."},
+  {id:1173,h:"成",p:"chéng",m:"(see #58)",zh:"梦想成真！",py:"Mèngxiǎng chéng zhēn!",en:"Dreams come true!"},
+  {id:1174,h:"真",p:"zhēn",m:"(see #246)",zh:"美梦成真。",py:"Měimèng chéng zhēn.",en:"Beautiful dreams come true."},
+  {id:1175,h:"奋",p:"fèn",m:"(see #530)",zh:"奋斗到底。",py:"Fèndòu dào dǐ.",en:"Fight to the end."},
+  {id:1176,h:"斗",p:"dòu",m:"to fight; to struggle; bucket",zh:"斗志。",py:"Dòuzhì.",en:"Fighting spirit."},
+  {id:1177,h:"志",p:"zhì",m:"(see #532)",zh:"斗志昂扬。",py:"Dòuzhì ángyáng.",en:"High fighting spirit."},
+  {id:1178,h:"昂",p:"áng",m:"high; proud; to raise head",zh:"昂首阔步。",py:"Áng shǒu kuò bù.",en:"Stride forward with confidence."},
+  {id:1179,h:"扬",p:"yáng",m:"to raise; to spread; (surname Yang)",zh:"扬名立万。",py:"Yáng míng lì wàn.",en:"Make a name for oneself."},
+  {id:1180,h:"舒",p:"shū",m:"to stretch; comfortable; (surname Shu)",zh:"舒展。",py:"Shūzhǎn.",en:"Stretch; unfold."},
+  {id:1181,h:"展",p:"zhǎn",m:"(see #631)",zh:"舒展身姿。",py:"Shūzhǎn shēn zī.",en:"Stretch and unfold."},
+  {id:1182,h:"姿",p:"zī",m:"posture; appearance; (surname Zi)",zh:"姿态。",py:"Zītài.",en:"Posture; attitude."},
+  {id:1183,h:"态",p:"tài",m:"(see #837)",zh:"姿态优美。",py:"Zītài yōuměi.",en:"Beautiful posture."},
+  {id:1184,h:"优",p:"yōu",m:"(see #667)",zh:"优雅。",py:"Yōuyǎ.",en:"Elegant; graceful."},
+  {id:1185,h:"雅",p:"yǎ",m:"elegant; standard; (surname Ya)",zh:"典雅。",py:"Diǎnyǎ.",en:"Elegant; refined."},
+  {id:1186,h:"俊",p:"jùn",m:"talented; handsome",zh:"俊美。",py:"Jùnměi.",en:"Handsome; good-looking."},
+  {id:1187,h:"美",p:"měi",m:"(see #356)",zh:"美丽动人。",py:"Měilì dòng rén.",en:"Beautiful and moving."},
+  {id:1188,h:"漂",p:"piāo",m:"to float; (piào: beautiful, clean)",zh:"漂亮。",py:"Piàoliang.",en:"Pretty; beautiful; well done."},
+  {id:1189,h:"亮",p:"liàng",m:"(see #357)",zh:"靓丽。",py:"Liànglì.",en:"Bright and beautiful."},
+  {id:1190,h:"靓",p:"liàng",m:"beautiful; pretty (Cantonese influence)",zh:"靓丽。",py:"Liànglì.",en:"Bright and beautiful."},
+  {id:1191,h:"丽",p:"lì",m:"(see #1098)",zh:"秀丽。",py:"Xiùlì.",en:"Beautiful; pretty."},
+  {id:1192,h:"秀",p:"xiù",m:"(see #668)",zh:"秀气。",py:"Xiùqi.",en:"Delicate; elegant."},
+  {id:1193,h:"柔",p:"róu",m:"soft; gentle; tender",zh:"温柔。",py:"Wēnróu.",en:"Gentle; tender."},
+  {id:1194,h:"润",p:"rùn",m:"moist; smooth; to moisten",zh:"湿润。",py:"Shīrùn.",en:"Moist; humid."},
+  {id:1195,h:"滑",p:"huá",m:"smooth; slippery; to slide",zh:"滑动。",py:"Huádòng.",en:"Slide; glide."},
+  {id:1196,h:"腻",p:"nì",m:"greasy; tired of; fine",zh:"细腻。",py:"Xìnì.",en:"Delicate; exquisite."},
+  {id:1197,h:"细",p:"xì",m:"thin; fine; detailed; careful",zh:"细心。",py:"Xìxīn.",en:"Careful; attentive."},
+  {id:1198,h:"致",p:"zhì",m:"(see #925)",zh:"细致。",py:"Xìzhì.",en:"Careful; meticulous."},
+  {id:1199,h:"精",p:"jīng",m:"(see #675)",zh:"精致。",py:"Jīngzhì.",en:"Refined; exquisite."},
+  {id:1200,h:"工",p:"gōng",m:"(see #141)",zh:"精工细作。",py:"Jīnggōng xì zuò.",en:"Work with meticulous care."},
+  {id:1201,h:"匠",p:"jiàng",m:"craftsman; artisan",zh:"工匠精神。",py:"Gōngjiàng jīngshén.",en:"Craftsman spirit."},
+  {id:1202,h:"艺",p:"yì",m:"(see #524)",zh:"工艺品。",py:"Gōngyìpǐn.",en:"Handicraft; artwork."},
+  {id:1203,h:"心",p:"xīn",m:"(see #89)",zh:"匠心独运。",py:"Jiàngxīn dú yùn.",en:"Unique creative ability."},
+  {id:1204,h:"独",p:"dú",m:"alone; single; only; unique",zh:"独特。",py:"Dútè.",en:"Unique; distinctive."},
+  {id:1205,h:"特",p:"tè",m:"(see #152)",zh:"特色。",py:"Tèsè.",en:"Characteristic; feature."},
+  {id:1206,h:"色",p:"sè",m:"(see #314)",zh:"特色鲜明。",py:"Tèsè xiānmíng.",en:"Distinctive features."},
+  {id:1207,h:"风",p:"fēng",m:"(see #267)",zh:"风格。",py:"Fēnggé.",en:"Style."},
+  {id:1208,h:"韵",p:"yùn",m:"rhyme; charm; consonant",zh:"韵味。",py:"Yùnwèi.",en:"Charm; lasting appeal."},
+  {id:1209,h:"味",p:"wèi",m:"(see #1033)",zh:"意境。",py:"Yìjìng.",en:"Artistic mood; imagery."},
+  {id:1210,h:"境",p:"jìng",m:"(see #719)",zh:"意境深远。",py:"Yìjìng shēnyuǎn.",en:"Deep artistic mood."},
+  {id:1211,h:"诗",p:"shī",m:"(see #649)",zh:"诗情画意。",py:"Shī qíng huà yì.",en:"Poetic and picturesque."},
+  {id:1212,h:"情",p:"qíng",m:"(see #140)",zh:"诗情。",py:"Shī qíng.",en:"Poetic sentiment."},
+  {id:1213,h:"意",p:"yì",m:"(see #132)",zh:"画意。",py:"Huà yì.",en:"Picturesque charm."},
+  {id:1214,h:"悠",p:"yōu",m:"leisurely; remote; to swing",zh:"悠然。",py:"Yōurán.",en:"Leisurely; carefree."},
+  {id:1215,h:"然",p:"rán",m:"(see #54)",zh:"悠然自得。",py:"Yōurán zìdé.",en:"Leisurely and contented."},
+  {id:1216,h:"适",p:"shì",m:"(see #383)",zh:"悠闲自适。",py:"Yōuxián zì shì.",en:"Leisurely and comfortable."},
+  {id:1217,h:"雅",p:"yǎ",m:"(see #1185)",zh:"儒雅。",py:"Rúyǎ.",en:"Cultivated; refined."},
+  {id:1218,h:"儒",p:"rú",m:"Confucian; scholar; gentle",zh:"儒家。",py:"Rújiā.",en:"Confucianism."},
+  {id:1219,h:"孔",p:"kǒng",m:"hole; (surname Kong - Confucius)",zh:"孔子。",py:"Kǒngzǐ.",en:"Confucius."},
+  {id:1220,h:"老",p:"lǎo",m:"(see #237)",zh:"老子。",py:"Lǎozǐ.",en:"Laozi (Taoist philosopher)."},
+  {id:1221,h:"庄",p:"zhuāng",m:"solemn; village; (Zhuangzi)",zh:"庄子。",py:"Zhuāngzǐ.",en:"Zhuangzi (philosopher)."},
+  {id:1222,h:"墨",p:"mò",m:"ink; dark; Mohism",zh:"墨家。",py:"Mòjiā.",en:"Mohism."},
+  {id:1223,h:"道",p:"dào",m:"(see #51)",zh:"道家。",py:"Dàojiā.",en:"Taoism."},
+  {id:1224,h:"法",p:"fǎ",m:"(see #64)",zh:"法家。",py:"Fǎjiā.",en:"Legalism."},
+  {id:1225,h:"释",p:"shì",m:"(see #1012)",zh:"释家。",py:"Shìjiā.",en:"Buddhism."},
+  {id:1226,h:"佛",p:"fó",m:"Buddha; Buddhist",zh:"佛教。",py:"Fójiào.",en:"Buddhism."},
+  {id:1227,h:"教",p:"jiào",m:"religion; to teach",zh:"宗教。",py:"Zōngjiào.",en:"Religion."},
+  {id:1228,h:"宗",p:"zōng",m:"ancestor; religion; purpose; (surname Zong)",zh:"宗教信仰。",py:"Zōngjiào xìnyǎng.",en:"Religious belief."},
+  {id:1229,h:"仁",p:"rén",m:"benevolence; humanity; kernel",zh:"仁爱。",py:"Rén'ài.",en:"Benevolence; love for others."},
+  {id:1230,h:"义",p:"yì",m:"(see #209)",zh:"仁义礼智信。",py:"Rén yì lǐ zhì xìn.",en:"The five Confucian virtues."},
+  {id:1231,h:"礼",p:"lǐ",m:"(see #656)",zh:"礼义廉耻。",py:"Lǐ yì lián chǐ.",en:"Courtesy, righteousness, integrity, shame."},
+  {id:1232,h:"廉",p:"lián",m:"(see #883)",zh:"廉洁。",py:"Liánjié.",en:"Honest; clean-handed."},
+  {id:1233,h:"耻",p:"chǐ",m:"shame; disgrace",zh:"羞耻。",py:"Xiūchǐ.",en:"Shame."},
+  {id:1234,h:"羞",p:"xiū",m:"to be ashamed; shy; embarrassed",zh:"害羞。",py:"Hàixiū.",en:"Shy; bashful."},
+  {id:1235,h:"惭",p:"cán",m:"to be ashamed; blush",zh:"惭愧。",py:"Cánkuì.",en:"Ashamed; sorry."},
+  {id:1236,h:"愧",p:"kuì",m:"to be ashamed; to feel guilty",zh:"惭愧地说。",py:"Cánkuì de shuō.",en:"Say with shame."},
+  {id:1237,h:"骄",p:"jiāo",m:"(see #1110)",zh:"戒骄戒躁。",py:"Jiè jiāo jiè zào.",en:"Guard against arrogance and recklessness."},
+  {id:1238,h:"戒",p:"jiè",m:"to guard against; to warn; Buddhist precept",zh:"戒骄。",py:"Jiè jiāo.",en:"Guard against arrogance."},
+  {id:1239,h:"躁",p:"zào",m:"impatient; restless; rash",zh:"急躁。",py:"Jízào.",en:"Impatient; rash."},
+  {id:1240,h:"浮",p:"fú",m:"to float; superficial; excessive",zh:"浮躁。",py:"Fúzào.",en:"Impetuous; restless."},
+  {id:1241,h:"沉",p:"chén",m:"to sink; to deep; to be absorbed",zh:"沉稳。",py:"Chénwěn.",en:"Steady; calm."},
+  {id:1242,h:"稳",p:"wěn",m:"(see #589)",zh:"沉着冷静。",py:"Chénzhuó lěngjìng.",en:"Calm and composed."},
+  {id:1243,h:"着",p:"zhuó",m:"to wear; to touch; to apply",zh:"着落。",py:"Zhuóluò.",en:"Landing point; settlement."},
+  {id:1244,h:"落",p:"luò",m:"(see #1070)",zh:"着落点。",py:"Zhuóluò diǎn.",en:"Landing point."},
+  {id:1245,h:"踏",p:"tà",m:"to step on; to tread",zh:"踏实。",py:"Tāshi.",en:"Steadfast; down-to-earth."},
+  {id:1246,h:"实",p:"shí",m:"(see #99)",zh:"踏实做事。",py:"Tāshi zuò shì.",en:"Work in a down-to-earth manner."},
+  {id:1247,h:"务",p:"wù",m:"(see #848)",zh:"务实。",py:"Wùshí.",en:"Pragmatic; practical."},
+  {id:1248,h:"本",p:"běn",m:"(see #91)",zh:"本质。",py:"Běnzhì.",en:"Essence; nature."},
+  {id:1249,h:"质",p:"zhì",m:"(see #813)",zh:"本质问题。",py:"Běnzhì wèntí.",en:"Essential problem."},
+  {id:1250,h:"性",p:"xìng",m:"(see #674)",zh:"本性。",py:"Běnxìng.",en:"Nature; innate character."},
+  {id:1251,h:"源",p:"yuán",m:"source; origin",zh:"根源。",py:"Gēnyuán.",en:"Root cause; origin."},
+  {id:1252,h:"本",p:"běn",m:"(see #91)",zh:"本源。",py:"Běnyuán.",en:"Origin; source."},
+  {id:1253,h:"末",p:"mò",m:"end; final; last; powder",zh:"本末倒置。",py:"Běn mò dào zhì.",en:"Put the cart before the horse."},
+  {id:1254,h:"倒",p:"dǎo",m:"to fall; (dào: to pour; upside down)",zh:"倒置。",py:"Dàozhì.",en:"Invert; reverse."},
+  {id:1255,h:"置",p:"zhì",m:"(see #1147)",zh:"置之不理。",py:"Zhì zhī bù lǐ.",en:"Ignore; pay no attention."},
+  {id:1256,h:"忽",p:"hū",m:"(see #894)",zh:"忽略。",py:"Hūlüè.",en:"Overlook; ignore."},
+  {id:1257,h:"略",p:"lüè",m:"(see #1024)",zh:"略微。",py:"Lüèwēi.",en:"Slightly; a little."},
+  {id:1258,h:"微",p:"wēi",m:"(see #846)",zh:"微不足道。",py:"Wēi bù zú dào.",en:"Insignificant; trivial."},
+  {id:1259,h:"足",p:"zú",m:"(see #519)",zh:"足够。",py:"Zúgòu.",en:"Enough; sufficient."},
+  {id:1260,h:"额",p:"é",m:"forehead; quota; amount",zh:"额外。",py:"É wài.",en:"Extra; additional."},
+  {id:1261,h:"外",p:"wài",m:"(see #173)",zh:"额外奖励。",py:"É wài jiǎnglì.",en:"Extra reward."},
+  {id:1262,h:"付",p:"fù",m:"(see #504)",zh:"付出。",py:"Fùchū.",en:"Pay; give; contribute."},
+  {id:1263,h:"出",p:"chū",m:"(see #27)",zh:"付出努力。",py:"Fùchū nǔlì.",en:"Put in effort."},
+  {id:1264,h:"报",p:"bào",m:"(see #765)",zh:"回报。",py:"Huíbào.",en:"Return; reward."},
+  {id:1265,h:"偿",p:"cháng",m:"to repay; to compensate",zh:"补偿。",py:"Bǔcháng.",en:"Compensate; make up for."},
+  {id:1266,h:"还",p:"huán",m:"to return; to pay back",zh:"偿还。",py:"Chánghuán.",en:"Repay; pay back."},
+  {id:1267,h:"欠",p:"qiàn",m:"to owe; to lack; to yawn",zh:"欠债。",py:"Qiàn zhài.",en:"Be in debt."},
+  {id:1268,h:"债",p:"zhài",m:"debt; creditor",zh:"还债。",py:"Huán zhài.",en:"Pay off a debt."},
+  {id:1269,h:"感",p:"gǎn",m:"(see #537)",zh:"感恩。",py:"Gǎn'ēn.",en:"Be grateful."},
+  {id:1270,h:"恩",p:"ēn",m:"favor; grace; benevolence",zh:"恩情。",py:"Ēnqíng.",en:"Kindness; benevolence."},
+  {id:1271,h:"爱",p:"ài",m:"(see #340)",zh:"爱戴。",py:"Àidài.",en:"Love and respect."},
+  {id:1272,h:"戴",p:"dài",m:"to wear (accessories); to support; (surname Dai)",zh:"爱戴。",py:"Àidài.",en:"Beloved; respected."},
+  {id:1273,h:"敬",p:"jìng",m:"(see #659)",zh:"敬仰。",py:"Jìngyǎng.",en:"Respect and admire."},
+  {id:1274,h:"仰",p:"yǎng",m:"to look up; to admire; to rely on",zh:"仰慕。",py:"Yǎngmù.",en:"Admire; look up to."},
+  {id:1275,h:"慕",p:"mù",m:"to admire; to long for",zh:"羡慕。",py:"Xiànmù.",en:"Envy; admire."},
+  {id:1276,h:"羡",p:"xiàn",m:"to envy; to admire",zh:"羡慕你。",py:"Xiànmù nǐ.",en:"Envy you."},
+  {id:1277,h:"迷",p:"mí",m:"(see #910)",zh:"着迷。",py:"Zháomí.",en:"Be fascinated; be smitten."},
+  {id:1278,h:"崇",p:"chóng",m:"to respect; to worship; high",zh:"崇拜。",py:"Chóngbài.",en:"Worship; adore."},
+  {id:1279,h:"拜",p:"bài",m:"to bow; to pay respect; to visit",zh:"拜访。",py:"Bàifǎng.",en:"Pay a visit."},
+  {id:1280,h:"访",p:"fǎng",m:"to visit; to call on; to investigate",zh:"采访。",py:"Cǎifǎng.",en:"Interview; cover (a story)."},
+  {id:1281,h:"采",p:"cǎi",m:"to pick; to gather; (cǎi: color)",zh:"采集。",py:"Cǎijí.",en:"Collect; gather."},
+  {id:1282,h:"集",p:"jí",m:"(see #750)",zh:"收集资料。",py:"Shōují zīliào.",en:"Collect information."},
+  {id:1283,h:"整",p:"zhěng",m:"(see #552)",zh:"整合。",py:"Zhěnghé.",en:"Integrate; consolidate."},
+  {id:1284,h:"合",p:"hé",m:"(see #382)",zh:"整合资源。",py:"Zhěnghé zīyuán.",en:"Integrate resources."},
+  {id:1285,h:"汇",p:"huì",m:"(see #766)",zh:"汇总。",py:"Huìzǒng.",en:"Summarize; compile."},
+  {id:1286,h:"纳",p:"nà",m:"to receive; to accept; (surname Na)",zh:"纳入。",py:"Nàrù.",en:"Include; incorporate."},
+  {id:1287,h:"入",p:"rù",m:"(see #878)",zh:"纳入体系。",py:"Nàrù tǐxì.",en:"Incorporate into the system."},
+  {id:1288,h:"融",p:"róng",m:"to melt; to blend; to flow freely",zh:"融合。",py:"Rónghé.",en:"Blend; integrate; fusion."},
+  {id:1289,h:"合",p:"hé",m:"(see #382)",zh:"融为一体。",py:"Róng wéi yī tǐ.",en:"Merge into one."},
+  {id:1290,h:"贯",p:"guàn",m:"to pierce; to pass through; consistent",zh:"贯通。",py:"Guàntōng.",en:"Connect; thorough understanding."},
+  {id:1291,h:"通",p:"tōng",m:"(see #172)",zh:"融会贯通。",py:"Rónghui guàntōng.",en:"Master thoroughly."},
+  {id:1292,h:"透",p:"tòu",m:"to penetrate; thoroughly; through",zh:"透彻。",py:"Tòuchè.",en:"Thorough; penetrating."},
+  {id:1293,h:"彻",p:"chè",m:"thorough; to remove",zh:"彻底。",py:"Chèdǐ.",en:"Thorough; completely."},
+  {id:1294,h:"底",p:"dǐ",m:"(see #418)",zh:"彻底改变。",py:"Chèdǐ gǎibiàn.",en:"Completely change."},
+  {id:1295,h:"根",p:"gēn",m:"(see #709)",zh:"根深蒂固。",py:"Gēn shēn dì gù.",en:"Deeply rooted."},
+  {id:1296,h:"蒂",p:"dì",m:"stem of fruit; pedicle",zh:"根深蒂固。",py:"Gēn shēn dì gù.",en:"Firmly entrenched."},
+  {id:1297,h:"固",p:"gù",m:"solid; firm; (gù: to make firm)",zh:"坚固。",py:"Jiāngù.",en:"Solid; sturdy."},
+  {id:1298,h:"稳",p:"wěn",m:"(see #1242)",zh:"稳固。",py:"Wěngù.",en:"Stable; firm."},
+  {id:1299,h:"久",p:"jiǔ",m:"(see #449)",zh:"久而久之。",py:"Jiǔ ér jiǔ zhī.",en:"Over time; in the long run."},
+  {id:1300,h:"长",p:"cháng",m:"(see #104)",zh:"持之以恒。",py:"Chí zhī yǐ héng.",en:"Persevere consistently."},
+  {id:1301,h:"坚",p:"jiān",m:"(see #783)",zh:"坚持不懈。",py:"Jiānchí bù xiè.",en:"Persist unremittingly."},
+  {id:1302,h:"懈",p:"xiè",m:"slack; lazy; to relax",zh:"不懈努力。",py:"Bù xiè nǔlì.",en:"Unremitting effort."},
+  {id:1303,h:"勉",p:"miǎn",m:"to encourage; to strive",zh:"自勉。",py:"Zì miǎn.",en:"Encourage oneself."},
+  {id:1304,h:"励",p:"lì",m:"(see #901)",zh:"自励。",py:"Zì lì.",en:"Self-encouragement."},
+  {id:1305,h:"磨",p:"mó",m:"to grind; to sharpen; to pester",zh:"磨砺。",py:"Mólì.",en:"Sharpen; temper."},
+  {id:1306,h:"砺",p:"lì",m:"whetstone; to sharpen; to temper",zh:"砥砺前行。",py:"Dǐlì qiánxíng.",en:"Press forward despite hardships."},
+  {id:1307,h:"砥",p:"dǐ",m:"whetstone; to grind",zh:"砥砺奋进。",py:"Dǐlì fènjìn.",en:"Temper oneself and forge ahead."},
+  {id:1308,h:"磨",p:"mó",m:"(see #1305)",zh:"磨练意志。",py:"Mólian yìzhì.",en:"Temper one's will."},
+  {id:1309,h:"炼",p:"liàn",m:"(see #964)",zh:"历练。",py:"Lìliàn.",en:"Temper; train through experience."},
+  {id:1310,h:"锻",p:"duàn",m:"(see #963)",zh:"磨刀不误砍柴工。",py:"Mó dāo bù wù kǎn chái gōng.",en:"Sharpening the axe doesn't delay chopping wood."},
+  {id:1311,h:"刀",p:"dāo",m:"knife; blade",zh:"刀光剑影。",py:"Dāo guāng jiàn yǐng.",en:"Glinting of swords; intense fighting."},
+  {id:1312,h:"剑",p:"jiàn",m:"sword",zh:"宝剑锋从磨砺出。",py:"Bǎojiàn fēng cóng mólì chū.",en:"A sharp sword comes from grinding."},
+  {id:1313,h:"锋",p:"fēng",m:"sharp point; front; blade",zh:"锋芒毕露。",py:"Fēngmáng bì lù.",en:"Show one's abilities."},
+  {id:1314,h:"芒",p:"máng",m:"awn; point; ray of light",zh:"锋芒。",py:"Fēngmáng.",en:"Sharp point; talent."},
+  {id:1315,h:"露",p:"lù",m:"to reveal; dew; liquid",zh:"露出。",py:"Lùchū.",en:"Reveal; show."},
+  {id:1316,h:"显",p:"xiǎn",m:"obvious; to show; to display",zh:"显示。",py:"Xiǎnshì.",en:"Show; display."},
+  {id:1317,h:"示",p:"shì",m:"(see #761)",zh:"显示屏。",py:"Xiǎnshì píng.",en:"Display screen."},
+  {id:1318,h:"现",p:"xiàn",m:"(see #69)",zh:"体现。",py:"Tǐxiàn.",en:"Embody; reflect."},
+  {id:1319,h:"体",p:"tǐ",m:"(see #156)",zh:"体现价值。",py:"Tǐxiàn jiàzhí.",en:"Embody value."},
+  {id:1320,h:"价",p:"jià",m:"(see #525 area)",zh:"价值。",py:"Jiàzhí.",en:"Value."},
+  {id:1321,h:"创",p:"chuàng",m:"(see #556)",zh:"创造价值。",py:"Chuàngzào jiàzhí.",en:"Create value."},
+  {id:1322,h:"奉",p:"fèng",m:"to offer; to dedicate; to receive",zh:"奉献。",py:"Fèngxiàn.",en:"Dedicate; contribute."},
+  {id:1323,h:"献",p:"xiàn",m:"to offer; to dedicate; to present",zh:"贡献。",py:"Gòngxiàn.",en:"Contribute; contribution."},
+  {id:1324,h:"贡",p:"gòng",m:"to offer; tribute; to contribute",zh:"贡献力量。",py:"Gòngxiàn lìliàng.",en:"Contribute strength."},
+  {id:1325,h:"力",p:"lì",m:"(see #143)",zh:"出力。",py:"Chū lì.",en:"Contribute effort."},
+  {id:1326,h:"同",p:"tóng",m:"(see #68)",zh:"共同努力。",py:"Gòngtóng nǔlì.",en:"Work together."},
+  {id:1327,h:"齐",p:"qí",m:"together; uniform; even; all present",zh:"齐力断金。",py:"Qí lì duàn jīn.",en:"Together we can break through."},
+  {id:1328,h:"心",p:"xīn",m:"(see #89)",zh:"万众一心。",py:"Wànzhòng yī xīn.",en:"Millions of hearts beating as one."},
+  {id:1329,h:"众",p:"zhòng",m:"(see #800)",zh:"众志成城。",py:"Zhòng zhì chéng chéng.",en:"Unity is strength."},
+  {id:1330,h:"城",p:"chéng",m:"(see #409)",zh:"众人拾柴火焰高。",py:"Zhòngrén shí chái huǒyàn gāo.",en:"Many hands make a big fire."},
+  {id:1331,h:"拾",p:"shí",m:"to pick up; to tidy; ten (formal)",zh:"拾起信心。",py:"Shíqǐ xìnxīn.",en:"Pick up confidence."},
+  {id:1332,h:"柴",p:"chái",m:"firewood; (surname Chai)",zh:"柴米油盐。",py:"Chái mǐ yóu yán.",en:"Daily necessities."},
+  {id:1333,h:"米",p:"mǐ",m:"(see #579)",zh:"一粒米。",py:"Yī lì mǐ.",en:"A grain of rice."},
+  {id:1334,h:"粒",p:"lì",m:"grain; granule",zh:"粒粒皆辛苦。",py:"Lìlì jiē xīnkǔ.",en:"Every grain is hard-earned."},
+  {id:1335,h:"苦",p:"kǔ",m:"(see #364)",zh:"辛苦了！",py:"Xīnkǔ le!",en:"You've worked hard!"},
+  {id:1336,h:"辛",p:"xīn",m:"bitter; hard; (surname Xin)",zh:"辛勤。",py:"Xīnqín.",en:"Hardworking; industrious."},
+  {id:1337,h:"勤",p:"qín",m:"(see #529)",zh:"辛勤耕耘。",py:"Xīnqín gēngyún.",en:"Work diligently."},
+  {id:1338,h:"耕",p:"gēng",m:"to plow; to farm",zh:"耕耘。",py:"Gēngyún.",en:"Farm; cultivate; work hard."},
+  {id:1339,h:"耘",p:"yún",m:"to weed; to cultivate",zh:"耕耘收获。",py:"Gēngyún shōuhuò.",en:"Work hard and reap rewards."},
+  {id:1340,h:"丰",p:"fēng",m:"(see #1065)",zh:"丰硕成果。",py:"Fēngshuò chéngguǒ.",en:"Abundant results."},
+  {id:1341,h:"硕",p:"shuò",m:"large; (master's degree)",zh:"硕果累累。",py:"Shuòguǒ léiléi.",en:"Bearing abundant fruit."},
+  {id:1342,h:"果",p:"guǒ",m:"(see #584)",zh:"果实累累。",py:"Guǒshí léiléi.",en:"Laden with fruit."},
+  {id:1343,h:"甜",p:"tián",m:"(see #363)",zh:"甜蜜。",py:"Tiánmì.",en:"Sweet; honey-like."},
+  {id:1344,h:"蜜",p:"mì",m:"honey; sweet",zh:"蜂蜜。",py:"Fēngmì.",en:"Honey."},
+  {id:1345,h:"蜂",p:"fēng",m:"(see #700)",zh:"采蜜。",py:"Cǎi mì.",en:"Gather honey."},
+  {id:1346,h:"勤",p:"qín",m:"(see #529)",zh:"勤劳。",py:"Qínláo.",en:"Diligent; hardworking."},
+  {id:1347,h:"劳",p:"láo",m:"labor; to work hard; tired",zh:"劳动。",py:"Láodòng.",en:"Labor; work."},
+  {id:1348,h:"动",p:"dòng",m:"(see #72)",zh:"劳动人民。",py:"Láodòng rénmín.",en:"Working people."},
+  {id:1349,h:"汗",p:"hàn",m:"sweat; perspiration",zh:"汗水。",py:"Hànshuǐ.",en:"Sweat."},
+  {id:1350,h:"水",p:"shuǐ",m:"(see #137)",zh:"汗水换来甜蜜。",py:"Hànshuǐ huànlái tiánmì.",en:"Sweat brings sweetness."},
+  {id:1351,h:"换",p:"huàn",m:"(see #484)",zh:"换来。",py:"Huànlái.",en:"In exchange for; to bring."},
+  {id:1352,h:"来",p:"lái",m:"(see #14)",zh:"换来成功。",py:"Huànlái chénggōng.",en:"In exchange for success."},
+  {id:1353,h:"成",p:"chéng",m:"(see #58)",zh:"功成名就。",py:"Gōng chéng míng jiù.",en:"Achieve fame and success."},
+  {id:1354,h:"就",p:"jiù",m:"(see #26)",zh:"功成身退。",py:"Gōng chéng shēn tuì.",en:"Retire after achieving success."},
+  {id:1355,h:"退",p:"tuì",m:"(see #402)",zh:"急流勇退。",py:"Jí liú yǒng tuì.",en:"Retire at the height of success."},
+  {id:1356,h:"勇",p:"yǒng",m:"(see #671)",zh:"勇于放弃。",py:"Yǒng yú fàngqì.",en:"Courageous enough to give up."},
+  {id:1357,h:"放",p:"fàng",m:"(see #333)",zh:"放弃。",py:"Fàngqì.",en:"Give up; abandon."},
+  {id:1358,h:"弃",p:"qì",m:"to abandon; to give up",zh:"取舍。",py:"Qǔshě.",en:"Trade-off; to choose."},
+  {id:1359,h:"舍",p:"shě",m:"to give up; to donate; house",zh:"舍得。",py:"Shěde.",en:"Be willing to give up."},
+  {id:1360,h:"得",p:"dé",m:"(see #1179)",zh:"舍得付出。",py:"Shěde fùchū.",en:"Willing to contribute."},
+  {id:1361,h:"失",p:"shī",m:"(see #511)",zh:"有得有失。",py:"Yǒu dé yǒu shī.",en:"There are gains and losses."},
+  {id:1362,h:"乐",p:"lè",m:"(see #312)",zh:"苦中作乐。",py:"Kǔ zhōng zuò lè.",en:"Find joy in hardship."},
+  {id:1363,h:"道",p:"dào",m:"(see #51)",zh:"道路漫长。",py:"Dàolù màncháng.",en:"The road is long."},
+  {id:1364,h:"程",p:"chéng",m:"(see #1163)",zh:"路程遥远。",py:"Lùchéng yáoyuǎn.",en:"The journey is far."},
+  {id:1365,h:"遥",p:"yáo",m:"far; remote; to wave",zh:"遥远。",py:"Yáoyuǎn.",en:"Far away; distant."},
+  {id:1366,h:"远",p:"yuǎn",m:"(see #417)",zh:"任重道远。",py:"Rèn zhòng dào yuǎn.",en:"The task is heavy and the road is long."},
+  {id:1367,h:"任",p:"rèn",m:"(see #679)",zh:"任重。",py:"Rèn zhòng.",en:"Heavy responsibility."},
+  {id:1368,h:"负",p:"fù",m:"to carry on back; to lose; negative",zh:"负担。",py:"Fùdān.",en:"Burden."},
+  {id:1369,h:"担",p:"dān",m:"(see #683)",zh:"负担重。",py:"Fùdān zhòng.",en:"Heavy burden."},
+  {id:1370,h:"卸",p:"xiè",m:"to unload; to remove; to lay aside",zh:"卸下担子。",py:"Xiè xia dānzi.",en:"Lay down the burden."},
+  {id:1371,h:"轻",p:"qīng",m:"(see #426)",zh:"减轻负担。",py:"Jiǎnqīng fùdān.",en:"Reduce the burden."},
+  {id:1372,h:"松",p:"sōng",m:"(see #549)",zh:"轻松一下。",py:"Qīngsōng yīxià.",en:"Relax a little."},
+  {id:1373,h:"愉",p:"yú",m:"happy; cheerful",zh:"愉快。",py:"Yúkuài.",en:"Happy; pleasant."},
+  {id:1374,h:"快",p:"kuài",m:"(see #251)",zh:"心情愉快。",py:"Xīnqíng yúkuài.",en:"Happy mood."},
+  {id:1375,h:"悦",p:"yuè",m:"happy; pleased",zh:"悦耳。",py:"Yuè'ěr.",en:"Pleasant to hear; melodious."},
+  {id:1376,h:"耳",p:"ěr",m:"(see #492)",zh:"悦目。",py:"Yuè mù.",en:"Pleasing to the eye."},
+  {id:1377,h:"目",p:"mù",m:"(see #175)",zh:"赏心悦目。",py:"Shǎng xīn yuè mù.",en:"Visually delightful."},
+  {id:1378,h:"赏",p:"shǎng",m:"to admire; to reward; to appreciate",zh:"欣赏。",py:"Xīnshǎng.",en:"Appreciate; admire."},
+  {id:1379,h:"析",p:"xī",m:"(see #841)",zh:"欣赏美景。",py:"Xīnshǎng měijǐng.",en:"Appreciate beautiful scenery."},
+  {id:1380,h:"陶",p:"táo",m:"pottery; to mold; (surname Tao)",zh:"陶醉。",py:"Táozuì.",en:"Be intoxicated; be enchanted."},
+  {id:1381,h:"醉",p:"zuì",m:"drunk; to be fascinated",zh:"沉醉。",py:"Chénzuì.",en:"Be intoxicated; be absorbed."},
+  {id:1382,h:"迷",p:"mí",m:"(see #910)",zh:"迷人。",py:"Mírén.",en:"Charming; enchanting."},
+  {id:1383,h:"人",p:"rén",m:"(see #5)",zh:"迷人的风景。",py:"Mírén de fēngjǐng.",en:"Charming scenery."},
+  {id:1384,h:"画",p:"huà",m:"(see #313)",zh:"如诗如画。",py:"Rú shī rú huà.",en:"Like poetry and painting."},
+  {id:1385,h:"幽",p:"yōu",m:"quiet; hidden; secluded",zh:"幽静。",py:"Yōujìng.",en:"Quiet and secluded."},
+  {id:1386,h:"静",p:"jìng",m:"(see #550)",zh:"幽雅宁静。",py:"Yōuyǎ níngjìng.",en:"Quiet and elegant."},
+  {id:1387,h:"宁",p:"níng",m:"peaceful; (surname Ning; nìng: would rather)",zh:"宁静。",py:"Níngjìng.",en:"Peaceful; tranquil."},
+  {id:1388,h:"静",p:"jìng",m:"(see #550)",zh:"宁静致远。",py:"Níngjìng zhì yuǎn.",en:"Tranquility leads to far-reaching goals."},
+  {id:1389,h:"致",p:"zhì",m:"(see #925)",zh:"淡泊明志。",py:"Dànbó míng zhì.",en:"Simplicity clarifies ambition."},
+  {id:1390,h:"泊",p:"bó",m:"to moor; lake; indifferent to fame",zh:"淡泊。",py:"Dànbó.",en:"Indifferent to fame and fortune."},
+  {id:1391,h:"淡",p:"dàn",m:"light; thin; pale; indifferent",zh:"淡然。",py:"Dànrán.",en:"Calm and indifferent."},
+  {id:1392,h:"然",p:"rán",m:"(see #54)",zh:"处之泰然。",py:"Chǔ zhī tàirán.",en:"Remain calm; take it in stride."},
+  {id:1393,h:"泰",p:"tài",m:"peaceful; (Mount Tai); Thailand",zh:"泰然自若。",py:"Tàirán zìruò.",en:"Composed; unperturbed."},
+  {id:1394,h:"若",p:"ruò",m:"(see #167)",zh:"自若。",py:"Zìruò.",en:"Composed; at ease."},
+  {id:1395,h:"从",p:"cóng",m:"(see #97)",zh:"从容不迫。",py:"Cóngróng bù pò.",en:"Calm and unhurried."},
+  {id:1396,h:"容",p:"róng",m:"to contain; to tolerate; face; easy",zh:"从容。",py:"Cóngróng.",en:"Calm; unhurried."},
+  {id:1397,h:"笑",p:"xiào",m:"(see #322)",zh:"笑对人生。",py:"Xiào duì rénshēng.",en:"Face life with a smile."},
+  {id:1398,h:"豁",p:"huō",m:"(see #1019)",zh:"豁达开朗。",py:"Huòdá kāilǎng.",en:"Optimistic and open-minded."},
+  {id:1399,h:"达",p:"dá",m:"(see #850)",zh:"豁达。",py:"Huòdá.",en:"Optimistic; open-minded; magnanimous."},
+  {id:1400,h:"开",p:"kāi",m:"(see #93)",zh:"开朗。",py:"Kāilǎng.",en:"Cheerful; outgoing."},
+  {id:1401,h:"朗",p:"lǎng",m:"(see #1020)",zh:"开朗活泼。",py:"Kāilǎng huópō.",en:"Cheerful and lively."},
+  {id:1402,h:"泼",p:"pō",m:"lively; to splash; bold",zh:"活泼。",py:"Huópō.",en:"Lively; vivacious."},
+  {id:1403,h:"活",p:"huó",m:"(see #170)",zh:"活力四射。",py:"Huólì sìshè.",en:"Full of vitality."},
+  {id:1404,h:"力",p:"lì",m:"(see #143)",zh:"精力充沛。",py:"Jīnglì chōngpèi.",en:"Full of energy."},
+  {id:1405,h:"沛",p:"pèi",m:"abundant; (surname Pei)",zh:"充沛。",py:"Chōngpèi.",en:"Abundant; full of."},
+  {id:1406,h:"充",p:"chōng",m:"(see #876)",zh:"充满活力。",py:"Chōngmǎn huólì.",en:"Full of vitality."},
+  {id:1407,h:"满",p:"mǎn",m:"(see #437)",zh:"满怀热情。",py:"Mǎnhuái rèqíng.",en:"Full of enthusiasm."},
+  {id:1408,h:"怀",p:"huái",m:"(see #905)",zh:"满怀希望。",py:"Mǎnhuái xīwàng.",en:"Full of hope."},
+  {id:1409,h:"奔",p:"bēn",m:"(see #1151)",zh:"奔向未来。",py:"Bēn xiàng wèilái.",en:"Rush toward the future."},
+  {id:1410,h:"未",p:"wèi",m:"not yet; (surname Wei)",zh:"未来。",py:"Wèilái.",en:"Future."},
+  {id:1411,h:"来",p:"lái",m:"(see #14)",zh:"未来可期。",py:"Wèilái kě qī.",en:"The future is promising."},
+  {id:1412,h:"期",p:"qī",m:"(see #169)",zh:"可期。",py:"Kě qī.",en:"Promising; worth expecting."},
+  {id:1413,h:"可",p:"kě",m:"(see #29)",zh:"前途无量。",py:"Qiántú wúliàng.",en:"Boundless prospects."},
+  {id:1414,h:"前",p:"qián",m:"(see #92)",zh:"前途光明。",py:"Qiántú guāngmíng.",en:"Bright future."},
+  {id:1415,h:"光",p:"guāng",m:"(see #271)",zh:"光明磊落。",py:"Guāngmíng lěiluò.",en:"Open and aboveboard."},
+  {id:1416,h:"磊",p:"lěi",m:"(piled up) stones; honest",zh:"磊落。",py:"Lěiluò.",en:"Aboveboard; frank."},
+  {id:1417,h:"落",p:"luò",m:"(see #1070)",zh:"落落大方。",py:"Luòluò dàfāng.",en:"Natural and gracious."},
+  {id:1418,h:"方",p:"fāng",m:"(see #59)",zh:"大方。",py:"Dàfāng.",en:"Generous; natural (manner)."},
+  {id:1419,h:"得",p:"dé",m:"(see #1179)",zh:"得体。",py:"Détǐ.",en:"Appropriate; proper."},
+  {id:1420,h:"体",p:"tǐ",m:"(see #156)",zh:"举止得体。",py:"Jǔzhǐ détǐ.",en:"Behave appropriately."},
+  {id:1421,h:"举",p:"jǔ",m:"(see #334)",zh:"举止。",py:"Jǔzhǐ.",en:"Behavior; manner."},
+  {id:1422,h:"止",p:"zhǐ",m:"to stop; limit; only; manner",zh:"举止文明。",py:"Jǔzhǐ wénmíng.",en:"Civilized behavior."},
+  {id:1423,h:"风",p:"fēng",m:"(see #267)",zh:"风度翩翩。",py:"Fēngdù piānpiān.",en:"Graceful manner."},
+  {id:1424,h:"度",p:"dù",m:"(see #838)",zh:"风度。",py:"Fēngdù.",en:"Grace; bearing; manner."},
+  {id:1425,h:"翩",p:"piān",m:"to flutter; lightly",zh:"翩翩起舞。",py:"Piānpiān qǐwǔ.",en:"Dance gracefully."},
+  {id:1426,h:"舞",p:"wǔ",m:"(see #1137)",zh:"舞动。",py:"Wǔdòng.",en:"Dance; wave."},
+  {id:1427,h:"蹈",p:"dǎo",m:"to dance; to step on",zh:"舞蹈。",py:"Wǔdǎo.",en:"Dance."},
+  {id:1428,h:"律",p:"lǜ",m:"(see #553)",zh:"旋律。",py:"Xuánlǜ.",en:"Melody; tune."},
+  {id:1429,h:"节",p:"jié",m:"(see #457)",zh:"节拍。",py:"Jiépāi.",en:"Beat; rhythm."},
+  {id:1430,h:"拍",p:"pāi",m:"(see #903)",zh:"节拍器。",py:"Jiépāi qì.",en:"Metronome."},
+  {id:1431,h:"奏",p:"zòu",m:"to play music; to report to emperor",zh:"演奏。",py:"Yǎnzòu.",en:"Play music; perform."},
+  {id:1432,h:"响",p:"xiǎng",m:"(see #820 area)",zh:"响彻云霄。",py:"Xiǎng chè yúnxiāo.",en:"Resound through the clouds."},
+  {id:1433,h:"彻",p:"chè",m:"(see #1293)",zh:"彻响。",py:"Chè xiǎng.",en:"Resound."},
+  {id:1434,h:"云",p:"yún",m:"(see #269)",zh:"云霄。",py:"Yúnxiāo.",en:"The sky; the clouds."},
+  {id:1435,h:"霄",p:"xiāo",m:"sky; clouds; atmosphere",zh:"九霄云外。",py:"Jiǔxiāo yún wài.",en:"Beyond the ninth heaven; far away."},
+  {id:1436,h:"外",p:"wài",m:"(see #173)",zh:"九天之外。",py:"Jiǔ tiān zhī wài.",en:"Beyond the nine heavens."},
+  {id:1437,h:"天",p:"tiān",m:"(see #77)",zh:"天高地阔。",py:"Tiān gāo dì kuò.",en:"The sky is high and the earth is vast."},
+  {id:1438,h:"地",p:"dì",m:"(see #20)",zh:"地大物博。",py:"Dì dà wù bó.",en:"Vast land and abundant resources."},
+  {id:1439,h:"博",p:"bó",m:"(see #606)",zh:"博大精深。",py:"Bódà jīngshēn.",en:"Broad and profound."},
+  {id:1440,h:"精",p:"jīng",m:"(see #675)",zh:"精深。",py:"Jīngshēn.",en:"Profound; deep."},
+  {id:1441,h:"深",p:"shēn",m:"(see #422)",zh:"深入浅出。",py:"Shēnrù qiǎnchū.",en:"Explain in simple terms."},
+  {id:1442,h:"浅",p:"qiǎn",m:"(see #423)",zh:"深入浅出。",py:"Shēnrù qiǎnchū.",en:"From deep to simple."},
+  {id:1443,h:"出",p:"chū",m:"(see #27)",zh:"深入人心。",py:"Shēnrù rénxīn.",en:"Touch people's hearts deeply."},
+  {id:1444,h:"入",p:"rù",m:"(see #878)",zh:"深入了解。",py:"Shēnrù liǎojiě.",en:"Understand deeply."},
+  {id:1445,h:"了",p:"liǎo",m:"to finish; capable; to understand (liǎo)",zh:"了解。",py:"Liǎojiě.",en:"Understand; know."},
+  {id:1446,h:"解",p:"jiě",m:"(see #385)",zh:"了解情况。",py:"Liǎojiě qíngkuàng.",en:"Understand the situation."},
+  {id:1447,h:"掌",p:"zhǎng",m:"palm; to control; to be in charge",zh:"掌握。",py:"Zhǎngwò.",en:"Master; grasp; control."},
+  {id:1448,h:"握",p:"wò",m:"(see #562)",zh:"掌握知识。",py:"Zhǎngwò zhīshì.",en:"Master knowledge."},
+  {id:1449,h:"丰",p:"fēng",m:"(see #1065)",zh:"丰富。",py:"Fēngfù.",en:"Rich; abundant."},
+  {id:1450,h:"富",p:"fù",m:"(see #507)",zh:"丰富知识。",py:"Fēngfù zhīshì.",en:"Enrich knowledge."},
+  {id:1451,h:"广",p:"guǎng",m:"(see #608)",zh:"广博。",py:"Guǎngbó.",en:"Broad; extensive."},
+  {id:1452,h:"学",p:"xué",m:"(see #65)",zh:"博学。",py:"Bóxué.",en:"Learned; erudite."},
+  {id:1453,h:"问",p:"wèn",m:"(see #106)",zh:"学问。",py:"Xuéwèn.",en:"Knowledge; learning."},
+  {id:1454,h:"才",p:"cái",m:"(see #446)",zh:"才华横溢。",py:"Cáihuá héngyì.",en:"Brimming with talent."},
+  {id:1455,h:"华",p:"huá",m:"(see #159)",zh:"才华。",py:"Cáihuá.",en:"Talent; brilliance."},
+  {id:1456,h:"横",p:"héng",m:"horizontal; across; to cross",zh:"横溢。",py:"Héngyì.",en:"Overflowing; brimming."},
+  {id:1457,h:"溢",p:"yì",m:"to overflow; excessive",zh:"才华横溢。",py:"Cáihuá héngyì.",en:"Brimming with talent."},
+  {id:1458,h:"飞",p:"fēi",m:"(see #291)",zh:"展翅高飞。",py:"Zhǎn chì gāo fēi.",en:"Spread wings and soar high."},
+  {id:1459,h:"翅",p:"chì",m:"wing; fin",zh:"展翅。",py:"Zhǎn chì.",en:"Spread wings."},
+  {id:1460,h:"翔",p:"xiáng",m:"(see #1155)",zh:"自由翱翔。",py:"Zìyóu áoxiáng.",en:"Soar freely."},
+  {id:1461,h:"翱",p:"áo",m:"(see #1154)",zh:"翱翔天际。",py:"Áoxiáng tiānjì.",en:"Soar to the horizon."},
+  {id:1462,h:"际",p:"jì",m:"(see #157)",zh:"天际。",py:"Tiānjì.",en:"Horizon; the edge of the sky."},
+  {id:1463,h:"边",p:"biān",m:"(see #415)",zh:"天边。",py:"Tiānbiān.",en:"Horizon; the edge of the sky."},
+  {id:1464,h:"尽",p:"jìn",m:"(see #974)",zh:"天涯海角。",py:"Tiānyá hǎijiǎo.",en:"The ends of the earth."},
+  {id:1465,h:"涯",p:"yá",m:"shore; limit; end",zh:"天涯。",py:"Tiānyá.",en:"The horizon; the ends of the earth."},
+  {id:1466,h:"角",p:"jiǎo",m:"(see #865)",zh:"海角。",py:"Hǎijiǎo.",en:"Cape; promontory."},
+  {id:1467,h:"海",p:"hǎi",m:"(see #613)",zh:"四海为家。",py:"Sì hǎi wéi jiā.",en:"Make one's home everywhere."},
+  {id:1468,h:"家",p:"jiā",m:"(see #55)",zh:"以天下为家。",py:"Yǐ tiānxià wéi jiā.",en:"Treat the world as home."},
+  {id:1469,h:"天",p:"tiān",m:"(see #77)",zh:"天下一家。",py:"Tiānxià yī jiā.",en:"The world is one family."},
+  {id:1470,h:"下",p:"xià",m:"(see #41)",zh:"天下为公。",py:"Tiānxià wèi gōng.",en:"The world belongs to all."},
+  {id:1471,h:"公",p:"gōng",m:"(see #701)",zh:"公天下。",py:"Gōng tiānxià.",en:"The public world."},
+  {id:1472,h:"私",p:"sī",m:"private; personal; selfish",zh:"公私分明。",py:"Gōng sī fēnmíng.",en:"Clear distinction between public and private."},
+  {id:1473,h:"明",p:"míng",m:"(see #131)",zh:"分明。",py:"Fēnmíng.",en:"Clear; distinct."},
+  {id:1474,h:"公",p:"gōng",m:"(see #701)",zh:"大公无私。",py:"Dà gōng wú sī.",en:"Selfless; wholeheartedly devoted."},
+  {id:1475,h:"无",p:"wú",m:"(see #119)",zh:"无私奉献。",py:"Wúsī fèngxiàn.",en:"Selfless dedication."},
+  {id:1476,h:"私",p:"sī",m:"(see #1472)",zh:"无私。",py:"Wúsī.",en:"Selfless; unselfish."},
+  {id:1477,h:"奉",p:"fèng",m:"(see #1322)",zh:"奉公守法。",py:"Fèng gōng shǒu fǎ.",en:"Observe the law and serve the public."},
+  {id:1478,h:"守",p:"shǒu",m:"(see #555)",zh:"守法。",py:"Shǒu fǎ.",en:"Abide by the law."},
+  {id:1479,h:"法",p:"fǎ",m:"(see #64)",zh:"遵纪守法。",py:"Zūn jì shǒu fǎ.",en:"Abide by laws and discipline."},
+  {id:1480,h:"纪",p:"jì",m:"discipline; record; (surname Ji)",zh:"纪律。",py:"Jìlǜ.",en:"Discipline; rules."},
+  {id:1481,h:"廉",p:"lián",m:"(see #883)",zh:"廉洁奉公。",py:"Liánjié fèng gōng.",en:"Honest and devoted to public service."},
+  {id:1482,h:"洁",p:"jié",m:"(see #1121)",zh:"清廉洁白。",py:"Qīnglián jiébái.",en:"Clean and honest."},
+  {id:1483,h:"清",p:"qīng",m:"(see #394)",zh:"清正廉洁。",py:"Qīngzhèng liánjié.",en:"Clean and upright."},
+  {id:1484,h:"正",p:"zhèng",m:"(see #181)",zh:"清正。",py:"Qīngzhèng.",en:"Upright and honest."},
+  {id:1485,h:"爱",p:"ài",m:"(see #340)",zh:"爱岗敬业。",py:"Ài gǎng jìng yè.",en:"Love one's work and be dedicated."},
+  {id:1486,h:"岗",p:"gǎng",m:"(see #1032)",zh:"敬业。",py:"Jìng yè.",en:"Dedicated to one's work."},
+  {id:1487,h:"业",p:"yè",m:"(see #194)",zh:"敬业精神。",py:"Jìng yè jīngshén.",en:"Professional dedication."},
+  {id:1488,h:"心",p:"xīn",m:"(see #89)",zh:"全心全意。",py:"Quán xīn quán yì.",en:"Wholeheartedly; with all one's heart."},
+  {id:1489,h:"意",p:"yì",m:"(see #132)",zh:"全意贯注。",py:"Quányì guànzhù.",en:"Wholly concentrate."},
+  {id:1490,h:"力",p:"lì",m:"(see #143)",zh:"尽心尽力。",py:"Jìn xīn jìn lì.",en:"Do one's utmost."},
+  {id:1491,h:"心",p:"xīn",m:"(see #89)",zh:"尽心。",py:"Jìn xīn.",en:"Do one's best; with all one's heart."},
+  {id:1492,h:"能",p:"néng",m:"(see #34)",zh:"尽能力。",py:"Jìn nénglì.",en:"To the best of one's ability."},
+  {id:1493,h:"完",p:"wán",m:"(see #849)",zh:"完美。",py:"Wánměi.",en:"Perfect."},
+  {id:1494,h:"美",p:"měi",m:"(see #356)",zh:"完美无缺。",py:"Wánměi wú quē.",en:"Perfect without flaw."},
+  {id:1495,h:"缺",p:"quē",m:"(see #817)",zh:"无缺。",py:"Wú quē.",en:"Flawless; without defect."},
+  {id:1496,h:"善",p:"shàn",m:"(see #662)",zh:"尽善尽美。",py:"Jìn shàn jìn měi.",en:"Strive for perfection."},
+  {id:1497,h:"精",p:"jīng",m:"(see #675)",zh:"精益求精。",py:"Jīng yì qiú jīng.",en:"Constantly improve; strive for perfection."},
+  {id:1498,h:"益",p:"yì",m:"(see #815)",zh:"益求益好。",py:"Yì qiú yì hǎo.",en:"Seek to be ever better."},
+  {id:1499,h:"上",p:"shàng",m:"(see #15)",zh:"精益求精。",py:"Jīng yì qiú jīng.",en:"Strive for excellence."},
+  {id:1500,h:"好",p:"hǎo",m:"(see #81)",zh:"美好未来！",py:"Měihǎo wèilái!",en:"A beautiful future!"},
+];
+
+
+// ── TIER RANGES ──
+const TIERS = {
+  1:[1,100], 2:[101,300], 3:[301,600], 4:[601,1000], 5:[1001,1500]
+};
+
+const STORAGE_KEY = 'hsk1500-learned-v1';
+let learned = new Set();
+let currentTier = 'all';
+let shuffleOn = false;
+let reviewOnly = false;
+let deck = [];
+let idx = 0;
+let isFlipped = false;
+
+function loadProgress(){
+  try{const r=localStorage.getItem(STORAGE_KEY);if(r)learned=new Set(JSON.parse(r));}catch(e){}
+}
+function saveProgress(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify([...learned]));}catch(e){}
+}
+
+function buildDeck(){
+  let src;
+  if(currentTier==='all'){
+    src = [...DATA];
+  } else {
+    const [lo,hi]=TIERS[currentTier];
+    // Include custom cards in all tier views
+    src=DATA.filter(c=>c.id<0||(c.id>=lo&&c.id<=hi));
+  }
+  if(reviewOnly) src=src.filter(c=>!learned.has(c.id));
+  deck = shuffleOn ? src.sort(()=>Math.random()-.5) : src;
+  idx=0; isFlipped=false; render();
+}
+
+function render(){
+  const empty=deck.length===0;
+  document.getElementById('card-area').style.display=empty?'none':'block';
+  document.getElementById('card-counter').style.display=empty?'none':'block';
+  document.querySelector('.nav-row').style.display=empty?'none':'flex';
+  document.getElementById('empty').style.display=empty?'block':'none';
+
+  const learnedCount=[...DATA].filter(c=>learned.has(c.id)).length;
+  document.getElementById('stat-total').textContent=deck.length;
+  document.getElementById('stat-learned').textContent=learnedCount;
+  const baseTotal = DATA.length;
+  document.getElementById('stat-pct').textContent=Math.round(learnedCount/Math.max(baseTotal,1)*100)+'%';
+
+  if(empty)return;
+  const c=deck[idx];
+  document.getElementById('front-hanzi').textContent=c.h;
+  document.getElementById('front-freq').textContent=c.id<0?'自定义 Custom':'#'+c.id+(c.id===1?' · Most common':'');
+  document.getElementById('back-hanzi').textContent=c.h;
+  document.getElementById('back-pinyin').textContent=c.p;
+  document.getElementById('back-meaning').textContent=c.m;
+  document.getElementById('ex-zh').textContent=c.zh;
+  document.getElementById('ex-py').textContent=c.py;
+  document.getElementById('ex-en').textContent=c.en;
+  const pct=deck.length>1?(idx/(deck.length-1))*100:100;
+  document.getElementById('progress-fill').style.width=pct+'%';
+  document.getElementById('progress-label').textContent=(idx+1)+' / '+deck.length;
+  document.getElementById('card-counter').textContent='Card '+(idx+1)+' of '+deck.length;
+  document.getElementById('card-inner').classList.toggle('flipped',isFlipped);
+  const isLearned=learned.has(c.id);
+  const btn=document.getElementById('learn-btn');
+  btn.textContent=isLearned?'✓ Learned':'★ Mark Learned';
+  btn.className='nav-btn '+(isLearned?'learned':'primary');
+  document.getElementById('prev-btn').disabled=idx===0;
+  document.getElementById('next-btn').disabled=idx===deck.length-1;
+}
+
+function flipCard(){isFlipped=!isFlipped;document.getElementById('card-inner').classList.toggle('flipped',isFlipped);}
+function nextCard(){if(idx<deck.length-1){idx++;isFlipped=false;render();}}
+function prevCard(){if(idx>0){idx--;isFlipped=false;render();}}
+
+function toggleLearned(){
+  if(!deck[idx])return;
+  const id=deck[idx].id;
+  if(learned.has(id))learned.delete(id);else learned.add(id);
+  saveProgress();
+  if(reviewOnly&&learned.has(id)){
+    deck.splice(idx,1);
+    if(idx>=deck.length)idx=Math.max(0,deck.length-1);
+    isFlipped=false;
+  }
+  render();
+}
+
+function toggleShuffle(){
+  shuffleOn=!shuffleOn;
+  document.getElementById('shuffle-btn').classList.toggle('on',shuffleOn);
+  buildDeck();
+}
+
+function toggleReview(){
+  reviewOnly=!reviewOnly;
+  const btn=document.getElementById('review-btn');
+  btn.classList.toggle('on',reviewOnly);
+  btn.textContent=reviewOnly?'★ All cards':'★ Review unlearned';
+  buildDeck();
+}
+
+document.querySelectorAll('.tier-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tier-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTier=btn.dataset.tier;
+    buildDeck();
+  });
+});
+
+document.getElementById('shuffle-btn').addEventListener('click',toggleShuffle);
+document.getElementById('review-btn').addEventListener('click',toggleReview);
+document.getElementById('reset-btn').addEventListener('click',()=>{
+  if(!confirm('Reset all progress? This cannot be undone.'))return;
+  learned.clear();saveProgress();render();
+});
+
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT')return;
+  if(e.key===' '){e.preventDefault();flipCard();}
+  else if(e.key==='ArrowRight')nextCard();
+  else if(e.key==='ArrowLeft')prevCard();
+  else if(e.key==='l'||e.key==='L')toggleLearned();
+});
+
+loadProgress();
+buildDeck();
+
+// ── CUSTOM CARDS STORAGE ──
+const CUSTOM_KEY = 'hsk1500-custom-v1';
+let customCards = [];
+function loadCustomCards(){
+  try{const r=localStorage.getItem(CUSTOM_KEY);if(r)customCards=JSON.parse(r);}catch(e){}
+  // Inject custom cards into DATA array (they get negative ids to distinguish)
+  customCards.forEach(c=>{ if(!DATA.find(d=>d.id===c.id)) DATA.push(c); });
+}
+function saveCustomCards(){
+  try{localStorage.setItem(CUSTOM_KEY,JSON.stringify(customCards));}catch(e){}
+}
+
+// ── TOAST ──
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+// ── SEARCH ──
+const searchInput  = document.getElementById('search-input');
+const searchClear  = document.getElementById('search-clear');
+const searchResult = document.getElementById('search-result');
+
+let searchPrefill = ''; // character pre-filled from "not found" flow
+
+searchInput.addEventListener('input', ()=>{
+  const q = searchInput.value.trim();
+  searchClear.style.display = q ? 'inline-block' : 'none';
+  if(!q){ clearSearch(); return; }
+  doSearch(q);
+});
+
+searchClear.addEventListener('click', ()=>{
+  searchInput.value=''; searchClear.style.display='none'; clearSearch();
+});
+
+function clearSearch(){
+  searchResult.style.display='none'; searchResult.innerHTML='';
+}
+
+function doSearch(q){
+  // Match against full DATA (including custom)
+  const matches = DATA.filter(c => c.h === q || c.h.includes(q));
+  if(matches.length > 0){
+    renderSearchFound(matches[0]);
+  } else {
+    renderSearchNotFound(q);
+  }
+  searchResult.style.display='block';
+}
+
+function renderSearchFound(c){
+  const isCustom = c.id < 0;
+  const learnedMark = learned.has(c.id) ? ' · ✓ Learned' : '';
+  searchResult.innerHTML = `
+    <div class="sr-found">
+      <div class="sr-hanzi">${c.h}</div>
+      <div class="sr-info">
+        <div class="sr-pinyin">${c.p}${isCustom?'<span class="custom-badge">自定义</span>':''}</div>
+        <div class="sr-meaning">${c.m}</div>
+        <div class="sr-examples">
+          <div class="ex-label">Example sentence</div>
+          <div class="ex-zh">${c.zh}</div>
+          <div class="ex-py">${c.py||''}</div>
+          <div class="ex-en">${c.en||''}</div>
+        </div>
+        <div class="sr-badge">${isCustom ? '自定义卡片 Custom card' : '#'+c.id+' of 1500'}${learnedMark}</div>
+        <button class="sr-goto" onclick="jumpToCard(${c.id})">→ 跳到这张卡 Go to card</button>
+      </div>
+    </div>`;
+}
+
+function renderSearchNotFound(q){
+  searchResult.innerHTML = `
+    <div class="sr-not-found">
+      <div class="sr-nf-char">${q}</div>
+      <p>「${q}」不在卡片集里。This character is not in the deck.</p>
+      <button class="sr-add-btn" id="sr-add-btn">＋ 添加新卡片 Add new flashcard</button>
+    </div>`;
+  document.getElementById('sr-add-btn').addEventListener('click', ()=>openAddModal(q));
+}
+
+function jumpToCard(id){
+  // Switch to 'all' tier and find the card
+  currentTier='all';
+  document.querySelectorAll('.tier-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.tier-btn[data-tier="all"]').classList.add('active');
+  reviewOnly=false;
+  document.getElementById('review-btn').classList.remove('on');
+  document.getElementById('review-btn').textContent='★ Review unlearned';
+  shuffleOn=false;
+  document.getElementById('shuffle-btn').classList.remove('on');
+  // Rebuild deck with all cards
+  let src = [...DATA];
+  deck = src;
+  const pos = deck.findIndex(c=>c.id===id);
+  if(pos>=0){ idx=pos; isFlipped=false; render(); }
+  // Clear search
+  searchInput.value=''; searchClear.style.display='none'; clearSearch();
+  showToast('已跳转！Jumped to card.');
+}
+
+// ── ADD CARD MODAL ──
+const modalOverlay = document.getElementById('modal-overlay');
+
+function openAddModal(prefill=''){
+  document.getElementById('new-hanzi').value  = prefill;
+  document.getElementById('new-pinyin').value = '';
+  document.getElementById('new-meaning').value= '';
+  document.getElementById('new-zh').value     = '';
+  document.getElementById('new-ex-py').value  = '';
+  document.getElementById('new-ex-en').value  = '';
+  document.getElementById('modal-preview').textContent = prefill || '？';
+  modalOverlay.classList.add('open');
+  setTimeout(()=>document.getElementById('new-hanzi').focus(),100);
+}
+
+function closeModal(){ modalOverlay.classList.remove('open'); }
+
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('modal-cancel').addEventListener('click', closeModal);
+modalOverlay.addEventListener('click', e=>{ if(e.target===modalOverlay) closeModal(); });
+
+// Live preview of hanzi input
+document.getElementById('new-hanzi').addEventListener('input', function(){
+  const v = this.value.trim();
+  document.getElementById('modal-preview').textContent = v || '？';
+});
+
+document.getElementById('modal-save').addEventListener('click', ()=>{
+  const h  = document.getElementById('new-hanzi').value.trim();
+  const p  = document.getElementById('new-pinyin').value.trim();
+  const m  = document.getElementById('new-meaning').value.trim();
+  const zh = document.getElementById('new-zh').value.trim();
+  const py = document.getElementById('new-ex-py').value.trim();
+  const en = document.getElementById('new-ex-en').value.trim();
+
+  if(!h){ showToast('请输入汉字！Please enter a character.'); return; }
+  if(!p){ showToast('请输入拼音！Please enter pinyin.'); return; }
+  if(!m){ showToast('请输入意思！Please enter meaning.'); return; }
+  if(!zh){ showToast('请输入例句！Please enter an example.'); return; }
+
+  // Check duplicates
+  if(DATA.find(c=>c.h===h)){
+    showToast('这个字已经存在！This character already exists.'); return;
+  }
+
+  const newId = -1 * (Date.now()); // negative id = custom
+  const card = {id:newId, h, p, m, zh, py, en, custom:true};
+  DATA.push(card);
+  customCards.push(card);
+  saveCustomCards();
+  closeModal();
+  showToast('✓ 已添加「'+h+'」卡片！Card added.');
+  // Jump to the new card
+  buildDeck(); // rebuilds with new card included
+  jumpToCard(newId);
+});
+
+// ── ADD BUTTON IN ACTION ROW ──
+const addBtn = document.createElement('button');
+addBtn.className='action-btn';
+addBtn.textContent='＋ 添加卡片';
+addBtn.addEventListener('click',()=>openAddModal(''));
+document.querySelector('.action-row').appendChild(addBtn);
+
+// ── KEYBOARD: slash to focus search ──
+document.addEventListener('keydown',e=>{
+  if(e.key==='/'&&e.target.tagName!=='INPUT'&&e.target.tagName!=='TEXTAREA'){
+    e.preventDefault(); searchInput.focus();
+  }
+});
+
+loadCustomCards();
+
+// ══════════════════════════════════════════════
+// CARD CONNECTIONS
+// ══════════════════════════════════════════════
+const CONNECTIONS_KEY = 'hsk1500-connections-v1';
+let connections = {}; // { cardId: [linkedId, linkedId, ...] }
+
+function loadConnections(){
+  try{ const r=localStorage.getItem(CONNECTIONS_KEY); if(r) connections=JSON.parse(r); }catch(e){}
+}
+function saveConnections(){
+  try{ localStorage.setItem(CONNECTIONS_KEY, JSON.stringify(connections)); }catch(e){}
+}
+
+function getLinkedIds(cardId){
+  return connections[cardId] || [];
+}
+
+function setLinks(cardId, linkedIds){
+  if(linkedIds.length===0){ delete connections[cardId]; }
+  else{ connections[cardId] = linkedIds; }
+  // keep bi-directional: ensure each linked card also points back
+  linkedIds.forEach(lid=>{
+    if(!connections[lid]) connections[lid]=[];
+    if(!connections[lid].includes(cardId)) connections[lid].push(cardId);
+  });
+  // Clean up removed links
+  Object.keys(connections).forEach(k=>{
+    const kid = parseInt(k);
+    if(!linkedIds.includes(kid) && kid!==cardId) return; // not affected
+    // if kid was previously linked to cardId but was removed, remove reverse
+  });
+  saveConnections();
+}
+
+// ── RENDER RELATED TRAY ──
+function renderRelatedTray(){
+  const tray = document.getElementById('related-tray');
+  if(!deck[idx]){ tray.classList.remove('visible'); return; }
+  const c = deck[idx];
+  const linkedIds = getLinkedIds(c.id);
+  if(linkedIds.length===0){ tray.classList.remove('visible'); return; }
+
+  tray.classList.add('visible');
+  const row = document.getElementById('related-cards-row');
+  row.innerHTML='';
+  linkedIds.forEach(lid=>{
+    const linked = DATA.find(d=>d.id===lid);
+    if(!linked) return;
+    const mc = document.createElement('div');
+    mc.className='mini-card';
+    mc.innerHTML=`<div class="mini-card-hanzi">${linked.h}</div><div class="mini-card-pinyin">${linked.p}</div><div class="mini-card-meaning">${linked.m}</div>`;
+    mc.addEventListener('click', e=>{ e.stopPropagation(); mc.classList.toggle('flipped-mini'); });
+    row.appendChild(mc);
+  });
+}
+
+// Patch render to also render related tray
+const _origRender = render;
+window.render = function(){
+  _origRender();
+  renderRelatedTray();
+  // Update connect button state
+  if(deck[idx]){
+    const btn = document.getElementById('connect-btn-inline');
+    if(btn){
+      const hasLinks = getLinkedIds(deck[idx].id).length > 0;
+      btn.classList.toggle('has-links', hasLinks);
+      btn.textContent = hasLinks ? '⛓ 已关联 '+getLinkedIds(deck[idx].id).length : '⛓ 关联卡片';
+    }
+  }
+};
+
+// ── CONNECT MODAL LOGIC ──
+let connectTargetId = null;
+let connectDraftLinks = [];
+
+function openConnectModal(){
+  if(!deck[idx]) return;
+  const c = deck[idx];
+  connectTargetId = c.id;
+  connectDraftLinks = [...(connections[c.id]||[])];
+
+  document.getElementById('ccp-hanzi').textContent = c.h;
+  document.getElementById('ccp-pinyin').textContent = c.p;
+  document.getElementById('ccp-meaning').textContent = c.m;
+  document.getElementById('connect-search').value='';
+  renderChips();
+  renderConnectResults('');
+  document.getElementById('connect-modal-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('connect-search').focus(),150);
+}
+
+function closeConnectModal(){
+  document.getElementById('connect-modal-overlay').classList.remove('open');
+}
+
+function renderChips(){
+  const container = document.getElementById('connected-chips');
+  document.getElementById('link-count').textContent = connectDraftLinks.length;
+  if(connectDraftLinks.length===0){
+    container.innerHTML='<span class="chip-empty">No cards linked yet — search below to add</span>';
+    return;
+  }
+  container.innerHTML='';
+  connectDraftLinks.forEach(lid=>{
+    const linked = DATA.find(d=>d.id===lid);
+    if(!linked) return;
+    const chip = document.createElement('div');
+    chip.className='chip';
+    chip.innerHTML=`<span class="chip-hanzi">${linked.h}</span><span style="font-size:11px">${linked.p}</span><button class="chip-remove" title="Remove">✕</button>`;
+    chip.querySelector('.chip-remove').addEventListener('click',()=>{
+      connectDraftLinks = connectDraftLinks.filter(x=>x!==lid);
+      renderChips();
+      renderConnectResults(document.getElementById('connect-search').value);
+    });
+    container.appendChild(chip);
+  });
+}
+
+function renderConnectResults(query){
+  const container = document.getElementById('connect-results');
+  let candidates;
+  const q = query.trim();
+  if(!q){
+    // Show recently linked + first 20 cards
+    candidates = DATA.filter(d=>d.id!==connectTargetId).slice(0,30);
+  } else {
+    candidates = DATA.filter(d=>
+      d.id!==connectTargetId &&
+      (d.h.includes(q) || d.p.toLowerCase().includes(q.toLowerCase()) || d.m.toLowerCase().includes(q.toLowerCase()))
+    ).slice(0,30);
+  }
+  if(candidates.length===0){
+    container.innerHTML='<div style="padding:12px;text-align:center;font-size:12px;color:var(--text3)">没有找到 No results</div>';
+    return;
+  }
+  container.innerHTML='';
+  candidates.forEach(d=>{
+    const isSelected = connectDraftLinks.includes(d.id);
+    const item = document.createElement('div');
+    item.className='connect-result-item'+(isSelected?' selected':'');
+    item.innerHTML=`<div class="cri-hanzi">${d.h}</div><div class="cri-info"><div class="cri-pinyin">${d.p}</div><div class="cri-meaning">${d.m}</div></div><div class="cri-check">${isSelected?'✓':''}</div>`;
+    item.addEventListener('click',()=>{
+      if(connectDraftLinks.includes(d.id)){
+        connectDraftLinks = connectDraftLinks.filter(x=>x!==d.id);
+      } else {
+        connectDraftLinks.push(d.id);
+      }
+      renderChips();
+      renderConnectResults(document.getElementById('connect-search').value);
+    });
+    container.appendChild(item);
+  });
+}
+
+document.getElementById('connect-search').addEventListener('input', function(){
+  renderConnectResults(this.value);
+});
+
+document.getElementById('connect-save').addEventListener('click',()=>{
+  setLinks(connectTargetId, connectDraftLinks);
+  closeConnectModal();
+  render();
+  showToast('✓ 关联已保存 Links saved!');
+});
+
+document.getElementById('connect-cancel').addEventListener('click', closeConnectModal);
+document.getElementById('connect-modal-close').addEventListener('click', closeConnectModal);
+document.getElementById('connect-modal-overlay').addEventListener('click', e=>{
+  if(e.target===document.getElementById('connect-modal-overlay')) closeConnectModal();
+});
+
+// ── CONNECT BUTTON in card-counter row ──
+(function(){
+  const counter = document.getElementById('card-counter');
+  counter.style.display='flex';
+  counter.style.alignItems='center';
+  counter.style.justifyContent='space-between';
+  counter.style.padding='0 2px';
+  const label = document.createElement('span');
+  label.id='card-counter-text';
+  label.textContent=counter.textContent;
+  counter.textContent='';
+  counter.appendChild(label);
+  const btn = document.createElement('button');
+  btn.id='connect-btn-inline';
+  btn.className='connect-btn-inline';
+  btn.textContent='⛓ 关联卡片';
+  btn.addEventListener('click', openConnectModal);
+  counter.appendChild(btn);
+  // Patch render to update label too
+  const origRender2 = window.render;
+  window.render = function(){
+    origRender2();
+    const lbl = document.getElementById('card-counter-text');
+    if(lbl && deck[idx]) lbl.textContent = 'Card '+(idx+1)+' of '+deck.length;
+  };
+})();
+
+loadConnections();
+
+</script>
+
+</body>
+</html
+
+>
